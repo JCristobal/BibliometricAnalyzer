@@ -8,7 +8,7 @@
     <meta name="author" content="JCristobal">
     
 
-    <title>Consultor básico bibliométrico</title>
+    <title>Consultor bibliométrico</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -32,13 +32,13 @@
 
     <script>
         $(function() {
-            var temas = [
-              "Química",
+            var temas = [                    
+              "Agricultura y ciencias biológicas",
               "Artes y Humanidades",
               "Bioquímica, genética y biología molecular",
-              "Agricultura y ciencias biológicas",
               "Empresas , Administración y Contabilidad",
               "Ingeniería Química",
+              "Química",
               "Ciencias de la Computación",
               "Teoría de la decisión",
               "Odontología",
@@ -65,12 +65,19 @@
               source: temas
             });
         });
+  
     </script>
+
+
+<script src="pace.min.js"></script>
+<link href="css/pace_center_simple.css" rel="stylesheet" />
 
 
   </head>
 
   <body>
+
+
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -81,7 +88,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Consultor básico bibliométrico</a>
+          <a class="navbar-brand" href="#">Consultor bibliométrico</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -97,46 +104,80 @@
 
       <div class="starter-template">
 
-        <h1>Consultas bibliométricas básicas </h1>
+        <h1>Análisis de un autor </h1>
 
         <form name="ejemplo" action="busqueda.php" method="POST">
-          <p class="lead">Introduce la consulta: </p>
-           <input type="text" id="busqueda_basica" name="busqueda_basica" placeholder="albert einstein"  required><br>
-          <input type="submit" value="Buscar">
+          <p class="lead">Introduce el autor: </p>
+            <div class="ui-widget">
+
+                <input type="text" id="busqueda_basica_autor" name="busqueda_basica_autor" class="form-control" style="width:33%;display:inline" placeholder="autor" required><br>
+
+                <input type="submit" value="Buscar" class="btn btn-default">
+            </div>
         </form>
 
 
-
-        <!--
-        <form name="ejemplo2" action="http://api.elsevier.com:80/content/search/scopus?query=eintein&apiKey=c0dee35412af407a9c07b4fabc7bc447" method="POST">
-          <p class="lead">Pulsa para Einstein </p>
-          <input type="submit" value="Buscar">
-        </form>
-        -->
-    
-      </div>
-
-      <h1>Búsqueda por temas </h1>
+      <br>
+        
+      <h1>Análisis según temas/palabra clave/título </h1>
  
       <form name="formulario" id="formulario" action="busqueda_tema.php" method="POST" >
 
         <div class="ui-widget">
 
-          <input id="tags"  name="busqueda_tema" type="text" class="form-control" style="width:33%;display:inline" placeholder="Seleccione un tema" required>
-          <input type="submit" value="Buscar" class="btn btn-default">
+          <p><input id="tags" class="a" name="busqueda_tema" type="text" class="form-control" style="width:33%;" placeholder="Introduce un tema de los disponibles" ></p>
+
+          <p><input type="text" class="a" id="busqueda_basica" name="busqueda_basica" class="form-control" style="width:33%;" placeholder="Introduce una palabra clave o nombre" ></p>
+
+          <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%;" placeholder="Búsqueda según el título" ></p>
+
+          <br><input type="submit" value="Buscar" class="btn btn-default">
 
         </div>
 
       </form>
+
+
+    
+      </div>
+
+
+
+
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+<script>
+    $( "#formulario" ).validate({
+      rules: {
+        busqueda_basica: {
+          require_from_group: [1, ".a"]
+        },
+        busqueda_tema: {
+          require_from_group: [1, ".a"]
+        },
+        busqueda_titulo: {
+          require_from_group: [1, ".a"]
+        }
+      },
+       messages: {
+          busqueda_basica: "Introduce alguna palabra clave",
+          busqueda_tema: "Completa con un tema de los disponibles",
+          busqueda_titulo: "Introduce alguna palabra para buscar por su título"
+      }
+    });
+</script>
+
+
   
               <!-- La datalist con id 'listas' y sus diferentes valores 
 http://api.elsevier.com/documentation/search/SCOPUSSearchTips.htm
           -->
 
-
+<form>
+    <input type="submit" value="Borrar BD publicaciones" formaction="borra_publicaciones.php">
+</form>
 
     </div><!-- /.container -->
-
 
 
 
