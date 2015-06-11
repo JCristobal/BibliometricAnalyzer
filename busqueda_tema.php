@@ -53,7 +53,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Consultor bibliométrico</a>
+          <a class="navbar-brand" href="#">Bibliometric consultant by JCristobal</a>
         </div>  
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -88,99 +88,99 @@
 
         echo "<h1>Consulta  bibliométrica";
 
-        if(strlen($palabra)){ echo " sobre '".$palabra."'"; $hay_palabra=true;}
-        if(strlen($tema)){ echo " en el campo de ".$tema; $hay_tema=true;}
-        if(strlen($titulo)){ echo " con título ".$titulo; $hay_titulo=true;}
+        if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
+        if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
+        if(strlen($titulo)){ echo " with title: ".$titulo; $hay_titulo=true;}
         echo "</h1>";
 
 
         switch ($tema) {
-          case "Agricultura y ciencias biológicas":
+          case "Agricultural and Biological Sciences":
               $tema="AGRI";
               break;
           case "Artes y Humanidades":
               $tema="ARTS";
               break;
-          case "Bioquímica, genética y biología molecular":
+          case "Biochemistry, Genetics and Molecular Biology":
               $tema="BIOC";
               break;
-          case "Empresas , Administración y Contabilidad":
+          case "Business, Management and Accounting":
               $tema="BUSI";  
               break;  
-          case "Ingeniería Química":
+          case "Chemical Engineering":
               $tema="CENG"; 
               break;
-          case "Química":
+          case "Chemistry":
               $tema="CHEM";
               break;
-          case "Ciencias de la Computación":
+          case "Computer Science":
               $tema="COMP"; 
               break;
-          case "Teoría de la decisión":
+          case "Decision Sciences":
               $tema="DECI"; 
               break;
-          case "Odontología":
+          case "Dentistry":
               $tema="DENT"; 
               break;
-          case "Ciencia de la Tierra y Planetarias":
+          case "Earth and Planetary Sciences":
               $tema="EART"; 
               break;
-          case "Economía, Econometría y Finanzas":
+          case "Economics, Econometrics and Finance":
               $tema="ECON"; 
               break;
-          case "Energía":
+          case "Energy":
               $tema="ENER"; 
               break;
-          case "Ingeniería":
+          case "Engineering":
               $tema="ENGI"; 
               break;
-          case "Ciencias Medioambientales":
+          case "Environmental Science":
               $tema="ENVI"; 
               break;
-          case "Salud":
+          case "Health Professions":
               $tema="HEAL"; 
               break;
-          case "Inmunología y Microbiología":
+          case "Immunology and Microbiology":
               $tema="INMU"; 
               break;
-          case "Ciencia de los Materiales":
+          case "Materials Science":
               $tema="MATE"; 
               break;
-          case "Matemáticas":
+          case "Mathematics":
               $tema="MATH"; 
               break;
-          case "Medicina":
+          case "Medicine":
               $tema="MEDI"; 
               break;
-          case "Neurociencia":
+          case "Neuroscience":
               $tema="NEUR"; 
               break;
-          case "Enfermería":
+          case "Nursing":
               $tema="NURS"; 
               break;
-           case "Farmacología, Toxicología y Farmacia":
+           case "Pharmacology, Toxicology and Pharmaceutics":
               $tema="PHAR";    
               break;                  
-          case "Física y Astronomía":
+          case "Physics and Astronomy":
               $tema="FHYS"; 
               break;
-          case "Psicología":
+          case "Psychology":
               $tema="PSYC"; 
               break;
-          case "Ciencias Sociales":
+          case "Social Sciences":
               $tema="SOCI"; 
               break;
-          case "Veterinaria":
+          case "Veterinary":
               $tema="VETE"; 
               break;
-          case "Multidisciplinar":
+          case "Multidisciplinary":
               $tema="MULT"; 
               break;
         }
       
 
 
-        echo" <p>¿No quieres buscar esto? <a href=\"index.html\">Vuelve al inicio </a> </p>";
+        echo"<p>Did not you want to search this? <a href='index.html'> Go home </a> </p>";
 
 
         //Traducimos los caracteres especiales dados a UTF-8
@@ -229,7 +229,7 @@
         $entradasTotales = $datatema["search-results"]["opensearch:totalResults"];
         $hay_entradas=true;
 
-        echo " Número de resultados total: " .$entradasTotales,"<br><br>";
+        echo " Total number of results: " .$entradasTotales,"<br><br>";
 
         echo " <a href='",$json_stringtema,"'> URL de la 1º página de resultados  </a> <br> ";
 
@@ -274,7 +274,7 @@ if($entradasTotales > 0){
            //echo "Entrada número ",$i," almacenada<br>";
         }
 }
-else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
+else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
 
 
@@ -508,26 +508,30 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
 
         echo "<div style='border-style: solid; margin-bottom: 2px'>";
 
-          echo "Entrada número ".$i;
+          echo "Entry number ".$i;
           $i++;
-          echo " <p> Titulo: $muestratitulo del creador: $muestracreador  </p> <p> Publicado en $muestrapublicacion";
-          if($muestravolumen!=0){echo" (volumen $muestravolumen) ";}
-          echo "en las paginas $muestrarango y fecha de portada $muestrafecha</p> ";
-          echo "";
-          echo "<p> $muestratipo: $muestrasubtipo </p>";
-          if(strlen($muestraafil)){echo "<p> De la afiliación $muestraafil de $muestraafil_ciudad ($muestraafil_pais) </p>";}
-          else{echo " <p> No tiene asociada una afiliación  </p> ";}
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Enlace al PREVIEW de Scopus</a></p>";
+          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
+          <p> by $muestracreador ";
+          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
+          else{echo "(No associated affiliation)  </p> ";}  
+          echo "<p> Published in $muestrapublicacion ";
+          if($muestravolumen!=0){echo"(volume $muestravolumen) ";}
+          if($muestrarango!=0){echo "in the pages $muestrarango ";}
+          if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
+          echo "</p>";
+
+          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
+
+          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
 
           echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
 
           echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
           
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Enlace al CITAS de scopus</a></p>";
+          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
 
-        echo "</div>";
-
-          echo "<br><br>";      
+        echo "</div><br>";
+    
         }
 
 
@@ -592,8 +596,47 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
           }
         } 
 
+
+
+  //var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
+  if(hay_entradas){
+
+    var listaAnios = <?php echo json_encode($phpanios); ?>;
+    var soloAnios = {};
+    var soloAnios = new Array();
+
+    //Cogemos sólo el año de la fecha
+    for(index = 0; index < listaAnios.length; index++) {
+      var ss = listaAnios[index].split("-");
+      soloAnios[index]=ss[0];
+    }
+    //Contamos las veces que se repite cada año
+    var counts_anios = {};
+    var counts_anios = new Array();
+    for(var i=0;i< soloAnios.length;i++){
+      var key = soloAnios[i];
+      counts_anios[key] = (counts_anios[key])? counts_anios[key] + 1 : 1 ;       
+    }
+
+    // la función "unique" eliminará los elementos repetidos del array
+    /*Array.prototype.unique=function(a){
+      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+    });*/
+    soloAnios=soloAnios.unique()
+}
+</script>
+
+    <script type="text/javascript">
+
+    </script>
+
+
+
+<script>
       google.load("visualization", "1", {packages:["geochart"]});
       google.setOnLoadCallback(drawRegionsMap);
+
+      var data_paises;
 
       function drawRegionsMap() {
 
@@ -652,6 +695,8 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
 
         ]);
 
+        data_paises = data;
+
         var options = {colorAxis: {colors: ['#aacd9f', '#299f2e']}, keepAspectRatio: 'true',width: '100%'};
 
         var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
@@ -659,10 +704,27 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
         chart.draw(data, options);
       }
 
+      // DONUT
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        //  =
+        var data = data_paises;
+
+        var options = {
+          title: 'Contribución por pais',
+          pieHole: 0.4,
+          keepAspectRatio: 'true', width: '100%'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
 
 
       if(hay_entradas){ 
          document.write('<div id="regions_div" style="max-width:100%; height: 500px"></div>');
+         document.write('<div id="donutchart" style="max-width: 100%; height: 500px;"></div>');
       }   
 
 
@@ -671,40 +733,14 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
 
 
 
+
 <script>
-  //var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
-  if(hay_entradas){
-
-    var listaAnios = <?php echo json_encode($phpanios); ?>;
-    var soloAnios = {};
-    var soloAnios = new Array();
-
-    //Cogemos sólo el año de la fecha
-    for(index = 0; index < listaAnios.length; index++) {
-      var ss = listaAnios[index].split("-");
-      soloAnios[index]=ss[0];
-    }
-    //Contamos las veces que se repite cada año
-    var counts_anios = {};
-    var counts_anios = new Array();
-    for(var i=0;i< soloAnios.length;i++){
-      var key = soloAnios[i];
-      counts_anios[key] = (counts_anios[key])? counts_anios[key] + 1 : 1 ;       
-    }
-
-    // la función "unique" eliminará los elementos repetidos del array
-    Array.prototype.unique=function(a){
-      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-    });
-    soloAnios=soloAnios.unique()
-
+if(hay_entradas){ 
     //mostramos los años
     document.write("<p>Años y número de publicaciones : </p>");
     for(index = 0; index < soloAnios.length; index++) {
       document.write("Año "+soloAnios[index]+": "+counts_anios[soloAnios[index]]+" publicaciones<br>");
     }
-
-
 
     $(function () {
         $('#container_columns').highcharts({
@@ -749,9 +785,9 @@ else{ echo "NO TIENE ENTRADAS"; $hay_entradas=false;}
         });
     });
 
+
+
   document.write('<div id="container_columns" style="height: 400px"></div>');
-
-
 
 }
 </script>
