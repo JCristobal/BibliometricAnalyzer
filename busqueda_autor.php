@@ -33,18 +33,9 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 
-
-
-
-  <script src="http://phuonghuynh.github.io/js/bower_components/d3/d3.min.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/d3-transform/src/d3-transform.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/extarray.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/misc.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/micro-observer.js"></script> 
-  <script src="http://phuonghuynh.github.io/js/bower_components/microplugin/src/microplugin.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/bubble-chart.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/lines/lines.js"></script>
-  <script src="central-click.js"></script> 
+  <script src="js/bubble-chart-utils.js"></script> 
+  <script src="js/bubble-chart_lines.js"></script> 
+  <script src="js/bubble-chart_central-click.js"></script> 
    <style>
     .bubbleChart {
       min-width: 60px;
@@ -59,8 +50,8 @@
 
 
 
-<script src="pace.min.js"></script>
-<link href="css/pace_center_simple.css" rel="stylesheet" />
+  <script src="js/pace.min.js"></script>
+  <link href="css/pace_style.css" rel="stylesheet" />
 
   </head>
 
@@ -116,7 +107,7 @@
 
 
         echo "<h1>Consulta  bibliométrica del autor ".$autor_limpio." ".$autor_limpio2."</h1>";
-        echo "De la afiliación ".$afil_autor."<br>";
+
         echo "enlace a autor en G Escolar: ".$enlace_autor;
 
         // Formateamos de ASCII a UTF para trabajar con él
@@ -136,20 +127,6 @@
         $autor2 = str_replace("ú", "%C3%BA", $autor2);
         $autor2 = str_replace("-", "%2D", $autor2);
 
-        /*
-        $afil_autor = $_POST['busqueda_autor_afil'];
-        $hay_afil=false;
-        if(strlen($afil_autor)){
-          $hay_afil=true;
-
-          $afil_autor = str_replace(" ", "%20", $afil_autor);
-          $afil_autor = str_replace("á", "%C3%A1", $afil_autor);
-          $afil_autor = str_replace("é", "%C3%A9", $afil_autor);
-          $afil_autor = str_replace("í", "%C3%AD", $afil_autor);
-          $afil_autor = str_replace("ó", "%C3%B3", $afil_autor);
-          $afil_autor = str_replace("ú", "%C3%BA", $afil_autor);
-          $afil_autor = str_replace("-", "%2D", $afil_autor);
-        }*/
 
 ?>
 
@@ -158,7 +135,7 @@
 
      <?php
  
-        //error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
+        error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
         $apikey = "c0dee35412af407a9c07b4fabc7bc447";
 
 
@@ -528,6 +505,97 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
                    //echo "Entrada número ",$i," almacenada<br>";
                 }
+    }
+
+        if ($entradasTotales >= 50) {
+          if($entradasTotales <= 75) {$cuenta=$entradasTotales-50;}
+
+            $consulta_3_pag = array($json_string,'&start=50&count=',$cuenta);
+            $json_string_3_pag=implode("", $consulta_3_pag);      
+            echo " <a href='",$json_string_3_pag,"'> URL de la 3ª pagina de resultados </a> <br>";
+            $data_3_pag = json_decode(file_get_contents($json_string_3_pag),true);
+
+
+             //echo "<p> Almacenamos la 3 pagina en la BD </p>";
+            for($i = 0; $i < $data_3_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
+                  
+                  $titulo = $data_3_pag["search-results"]["entry"][$i]["dc:title"];
+                  $titulo = str_replace("'", "\'", $titulo);
+                  $creador =$data_3_pag["search-results"]["entry"][$i]["dc:creator"];
+                  $publicacion =$data_3_pag["search-results"]["entry"][$i]["prism:publicationName"];
+                  $publicacion = str_replace("(", "", $publicacion);
+                  $publicacion = str_replace(")", "", $publicacion); 
+                  $publicacion = str_replace("'", "", $publicacion);
+                  $rang_pag = $data_3_pag["search-results"]["entry"][$i]["prism:pageRange"];
+                  $fecha_letra = $data_3_pag["search-results"]["entry"][$i]["prism:coverDisplayDate"];
+                  $fecha = $data_3_pag["search-results"]["entry"][$i]["prism:coverDate"];
+                  $tipo = $data_3_pag["search-results"]["entry"][$i]["prism:aggregationType"];
+                  $subtipo = $data_3_pag["search-results"]["entry"][$i]["subtypeDescription"];
+                  $issn = $data_3_pag["search-results"]["entry"][$i]["prism:issn"];
+                  $volume = $data_3_pag["search-results"]["entry"][$i]["prism:volume"];
+                  $id = $data_3_pag["search-results"]["entry"][$i]["dc:identifier"]; 
+                  $eid = $data_3_pag["search-results"]["entry"][$i]["eid"];
+                  $afil = $data_3_pag["search-results"]["entry"][$i]["affiliation"][0]["affilname"];
+                  $afil = str_replace("'", "\'", $afil);
+                  $afil_ciudad = $data_3_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-city"];
+                  $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
+                  $afil_pais = $data_3_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
+                  $doi = $data_3_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_preview = $data_3_pag["search-results"]["entry"][$i]["link"][2]["@href"];
+                  $enlace_citedby = $data_3_pag["search-results"]["entry"][$i]["link"][3]["@href"];
+
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$id.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  
+                  mysql_query($insert) or die(mysql_error()); 
+
+                 //echo "Entrada de la 3PAG número ",$i," almacenada<br>";
+              }
+
+    }
+
+        if ($entradasTotales >= 75) {
+          if($entradasTotales <= 100) {$cuenta=$entradasTotales-75;}
+
+            $consulta_4_pag = array($json_string,'&start=75&count=',$cuenta);
+            $json_string_4_pag=implode("", $consulta_4_pag);        
+            echo " <a href='",$json_string_4_pag,"'> URL de la 4ª pagina de resultados </a> <br>";
+            $data_4_pag = json_decode(file_get_contents($json_string_4_pag),true);
+
+             //echo "<p> Almacenamos la 4 pagina en la BD </p>";
+            for($i = 0; $i < $data_4_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
+                  
+                  $titulo = $data_4_pag["search-results"]["entry"][$i]["dc:title"];
+                  $titulo = str_replace("'", "\'", $titulo);
+                  $creador =$data_4_pag["search-results"]["entry"][$i]["dc:creator"];
+                  $publicacion =$data_4_pag["search-results"]["entry"][$i]["prism:publicationName"];
+                  $publicacion = str_replace("(", "", $publicacion);
+                  $publicacion = str_replace(")", "", $publicacion); 
+                  $publicacion = str_replace("'", "", $publicacion);
+                  $rang_pag = $data_4_pag["search-results"]["entry"][$i]["prism:pageRange"];
+                  $fecha_letra = $data_4_pag["search-results"]["entry"][$i]["prism:coverDisplayDate"];
+                  $fecha = $data_4_pag["search-results"]["entry"][$i]["prism:coverDate"];
+                  $tipo = $data_4_pag["search-results"]["entry"][$i]["prism:aggregationType"];
+                  $subtipo = $data_4_pag["search-results"]["entry"][$i]["subtypeDescription"];
+                  $issn = $data_4_pag["search-results"]["entry"][$i]["prism:issn"];
+                  $volume = $data_4_pag["search-results"]["entry"][$i]["prism:volume"];
+                  $id = $data_4_pag["search-results"]["entry"][$i]["dc:identifier"]; 
+                  $eid = $data_4_pag["search-results"]["entry"][$i]["eid"];
+                  $afil = $data_4_pag["search-results"]["entry"][$i]["affiliation"][0]["affilname"];
+                  $afil = str_replace("'", "\'", $afil);
+                  $afil_ciudad = $data_4_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-city"];
+                  $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
+                  $afil_pais = $data_4_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
+                  $doi = $data_4_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_preview = $data_4_pag["search-results"]["entry"][$i]["link"][2]["@href"];
+                  $enlace_citedby = $data_4_pag["search-results"]["entry"][$i]["link"][3]["@href"];
+
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$id.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  
+                  mysql_query($insert) or die(mysql_error()); 
+
+                 //echo "Entrada de la 4PAG número ",$i," almacenada<br>";
+              }
+
     }
 
 

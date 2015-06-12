@@ -35,10 +35,8 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>  
 
 <!-- http://github.hubspot.com/pace/docs/welcome/  -->
-<script src="pace.min.js"></script>
-<link href="css/pace_center_simple.css" rel="stylesheet" />
-<!--<link href="css/pace_big_counter.css" rel="stylesheet" />
-<link href="css/pace_center_atom.css" rel="stylesheet" />-->
+    <script src="js/pace.min.js"></script>
+    <link href="css/pace_style.css" rel="stylesheet" />
 
   </head>
 

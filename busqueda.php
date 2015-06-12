@@ -25,6 +25,10 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+  <script src="js/pace.min.js"></script>
+  <link href="css/pace_style.css" rel="stylesheet" />
+
   </head>
 
   <body>
@@ -89,7 +93,7 @@
 
      <?php
  
-      //  error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
+        error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
 
 
