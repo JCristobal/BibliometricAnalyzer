@@ -362,6 +362,8 @@ echo '<div id="container_columns" style="height: 400px"></div>';
 */
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
 
+        $idConsulta = mt_rand();
+
       include'conexion.php'; 
 
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
@@ -374,7 +376,7 @@ echo '<div id="container_columns" style="height: 400px"></div>';
 
       echo "<p> Almacenamos el autor </p>";
 
-           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$autor_limpio.'\',\''.$autor_limpio." ".$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
+           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio." ".$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
 
@@ -386,7 +388,7 @@ echo '<div id="container_columns" style="height: 400px"></div>';
         echo "<p> Mostramos de la BD </p>";
 
         $i=1;
-        $consulta= "SELECT * FROM publicaciones";
+        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta ;
                     
         $resultados=mysql_query($consulta,$conexion);   
 
@@ -453,7 +455,7 @@ echo '<div id="container_columns" style="height: 400px"></div>';
 
 
         $phpanios = array(); 
-        $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones ORDER BY `fecha_portada_0` ASC";
+        $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
         $resultados_anios=mysql_query($consulta_anios,$conexion);
         while ($row=mysql_fetch_array($resultados_anios)) {  
           $phpanios[]=$row['fecha_portada_0'];
@@ -463,7 +465,7 @@ echo '<div id="container_columns" style="height: 400px"></div>';
 
     
 
-      $borratodo= "DELETE FROM publicaciones";            
+      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
       echo "<p> Borrados los datos de la BD </p>";
 

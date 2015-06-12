@@ -220,6 +220,7 @@
           $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=',$palabra,'%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
 
+      $idConsulta = mt_rand();
 
       include'conexion.php'; 
 
@@ -240,7 +241,7 @@
          echo'<div id="regions_div" style="max-width:100%; height: 500px"></div>';
 
          echo'<div id="container_columns" style="height: 400px"></div>';
-         
+
       }  
 
 
@@ -251,7 +252,7 @@
         echo "<p> Mostramos de la BD </p>";
 
         $i=1;
-        $consulta= "SELECT * FROM publicaciones";
+        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta;
                     
         $resultados=mysql_query($consulta,$conexion);   
 
@@ -303,7 +304,7 @@
 
 
         $phpaises = array(); 
-        $consulta_paises= "SELECT afiliacion_pais FROM publicaciones";
+        $consulta_paises= "SELECT afiliacion_pais FROM publicaciones WHERE id=".$idConsulta;
         $resultados_paises=mysql_query($consulta_paises,$conexion);
         while ($row=mysql_fetch_array($resultados_paises)) {  
           $muestrapais=$row['afiliacion_pais'];
@@ -312,23 +313,23 @@
         
 
         $phpanios = array(); 
-        $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones ORDER BY `fecha_portada_0` ASC";
+        $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC";
         $resultados_anios=mysql_query($consulta_anios,$conexion);
         while ($row=mysql_fetch_array($resultados_anios)) {  
           $phpanios[]=$row['fecha_portada_0'];
         }
 
         $phpautor = array(); 
-        $consulta_autor= "SELECT nombre_publi FROM publicaciones ";
+        $consulta_autor= "SELECT nombre_publi FROM publicaciones WHERE id=".$idConsulta;
         $resultados_autor=mysql_query($consulta_autor,$conexion);
         while ($row=mysql_fetch_array($resultados_autor)) {  
           $phpautor[]=$row['nombre_publi'];
         }
 
-      $borratodo= "DELETE FROM publicaciones";            
+      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
       echo "<p> Borrados los datos de la BD </p>";
-      
+  
 
 ?>
 
