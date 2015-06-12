@@ -25,11 +25,12 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/highcharts-3d.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 
 
@@ -39,26 +40,27 @@
   <script src="http://phuonghuynh.github.io/js/bower_components/d3-transform/src/d3-transform.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/extarray.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/misc.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/micro-observer.js"></script>
+  <script src="http://phuonghuynh.github.io/js/bower_components/cafej/src/micro-observer.js"></script> 
   <script src="http://phuonghuynh.github.io/js/bower_components/microplugin/src/microplugin.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/bubble-chart.js"></script>
-  <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/central-click/central-click.js"></script>
   <script src="http://phuonghuynh.github.io/js/bower_components/bubble-chart/src/plugins/lines/lines.js"></script>
+  <script src="central-click.js"></script> 
    <style>
     .bubbleChart {
-      min-width: 50px;
-      max-width: 350px;
-      height: 350px;
+      min-width: 60px;
+      max-width: 420px;
+      height: 420px;
       margin: 0 auto;
     }
     .bubbleChart svg{
-      background: #000000 ;
+      background: #FFFFFF ;
     }
   </style>
 
 
 
-
+<script src="pace.min.js"></script>
+<link href="css/pace_center_simple.css" rel="stylesheet" />
 
   </head>
 
@@ -101,6 +103,8 @@
 
         $enlace_autor = $_POST['busqueda_autor_enlace'];
 
+
+
         // Formateamos de UTF a ASCII para mostrarlo
         $autor_limpio = str_replace("%20", " ", $autor_limpio);
         $autor_limpio = str_replace("%C3%A1", "á", $autor_limpio);
@@ -112,7 +116,7 @@
 
 
         echo "<h1>Consulta  bibliométrica del autor ".$autor_limpio." ".$autor_limpio2."</h1>";
-
+        echo "De la afiliación ".$afil_autor."<br>";
         echo "enlace a autor en G Escolar: ".$enlace_autor;
 
         // Formateamos de ASCII a UTF para trabajar con él
@@ -132,8 +136,20 @@
         $autor2 = str_replace("ú", "%C3%BA", $autor2);
         $autor2 = str_replace("-", "%2D", $autor2);
 
+        /*
+        $afil_autor = $_POST['busqueda_autor_afil'];
+        $hay_afil=false;
+        if(strlen($afil_autor)){
+          $hay_afil=true;
 
-        
+          $afil_autor = str_replace(" ", "%20", $afil_autor);
+          $afil_autor = str_replace("á", "%C3%A1", $afil_autor);
+          $afil_autor = str_replace("é", "%C3%A9", $afil_autor);
+          $afil_autor = str_replace("í", "%C3%AD", $afil_autor);
+          $afil_autor = str_replace("ó", "%C3%B3", $afil_autor);
+          $afil_autor = str_replace("ú", "%C3%BA", $afil_autor);
+          $afil_autor = str_replace("-", "%2D", $afil_autor);
+        }*/
 
 ?>
 
@@ -190,6 +206,13 @@
                echo $element."<br>";
         }
 
+        $phpafiliacion= array(); 
+        echo "AFILIACION: ";
+           foreach($html->find('div.gsc_prf_il') as $element){
+               $phpafiliacion[]=$element->plaintext;
+        }
+        echo $phpafiliacion[0];
+
         echo "<p> ------- </p> ";
 
         $coautores= array(); 
@@ -243,7 +266,7 @@ if(count($coautores)!=0){
             }
           }
           else{
-              for ($i = 0; $i <= count($coautores); $i++) { //foreach ($coautores as $v) {
+              for ($i = 0; $i < count($coautores); $i++) { //foreach ($coautores as $v) {
                   echo '{text: "'.$coautores[$i].'", count: "0"},';
               } 
           }
@@ -253,24 +276,23 @@ if(count($coautores)!=0){
           classed: function (item) {return item.text.split(" ").join("");}
         },
         plugins: [
-          {
-            name: "central-click",
-            options: {
-              text: "(See more detail)",
-              style: {
-                "font-size": "12px",
-                "font-style": "italic",
-                "font-family": "Source Sans Pro, sans-serif",
-                //"font-weight": "700",
-                "text-anchor": "middle",
-                "fill": "white"
-              },
-              attr: {dy: "65px"},
-              centralClick: function() {
-                //alert("Here is more details!!");
-              }
-            }
-          },
+            {
+                name: "central-click",
+                options: {
+                  style: {
+                    "font-size": "12px",
+                    "font-style": "italic",
+                    "font-family": "Source Sans Pro, sans-serif",
+                    //"font-weight": "700",
+                    "text-anchor": "middle",
+                    "fill": "white"
+                  },
+                  attr: {dy: "65px"}/*,
+                  centralClick: function() {
+                    alert("Here is more details!!");
+                  }*/
+                }
+            },
           {
             name: "lines",
             options: {
@@ -294,7 +316,7 @@ if(count($coautores)!=0){
                     "font-size": "14px",
                     "font-family": "Source Sans Pro, sans-serif",
                     "text-anchor": "middle",
-                    fill: "white"
+                    fill: "black"
                   },
                   attr: {
                     dy: "20px",
@@ -305,7 +327,7 @@ if(count($coautores)!=0){
               ],
               centralFormat: [
                 {// Line #0
-                  style: {"font-size": "30px"},
+                  style: {"font-size": "3px"},
                   attr: {visibility: "hidden"}
                 },
                 {// Line #1
@@ -321,6 +343,7 @@ if(count($coautores)!=0){
 
     <div class="bubbleChart"> </div>  ';
 }
+else{echo "Without coauthors registered";}
 
 
         echo "<p> ---------- CONSULTA A SCOPUS ----------  </p>";
@@ -337,7 +360,20 @@ if(count($coautores)!=0){
 
 
 
-        $consulta = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');          
+/*    
+        // Consulta añadiendo la afiliacion (demasiado restritiva o la afiliación que proporciona G Scholar no se ajusta bien)
+          $phpafiliacion[0] = str_replace(" ", "%20", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("á", "%C3%A1", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("é", "%C3%A9", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("í", "%C3%AD", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ó", "%C3%B3", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ú", "%C3%BA", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("-", "%2D", $phpafiliacion[0]);
+
+        $consulta = array('http://api.elsevier.com/content/search/scopus?query=affil(',$phpafiliacion[0],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');   
+*/
+        $consulta = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+
         $json_string=implode("", $consulta); 
         
         echo " <a href='",$json_string,"'> URL de consulta  </a>";

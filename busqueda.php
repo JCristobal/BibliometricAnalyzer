@@ -138,12 +138,17 @@
 
         $listaNombres = array(); 
         foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
-               echo $elemento->plaintext."<br>";
+               echo $elemento->plaintext;
                $listaNombres[]= $elemento->plaintext;
                
         }
 
 
+        $listaAfiliaciones = array(); 
+        foreach($html->find('div.gsc_1usr_aff') as $elemento){
+               $listaAfiliaciones[]= $elemento->plaintext;
+               
+        }
             
 
       ?>
@@ -153,6 +158,7 @@
       var listaAut = <?php echo json_encode($listaAutores); ?>; 
       var listaFot = <?php echo json_encode($listaFotos); ?>; 
       var listaNom = <?php echo json_encode($listaNombres); ?>; 
+      var listaAfil = <?php echo json_encode($listaAfiliaciones); ?>; 
 
 //      var hay_nombre = <?php echo json_encode($hay_nombre); ?>;
 //      var hay_nombre2 = <?php echo json_encode($hay_nombre2); ?>; 
@@ -168,7 +174,8 @@
           //document.write("<img src=\"http://scholar.google.es"+listaFot[index]+"\" </img> " );
           //document.write("<p><a href='http://scholar.google.es"+listaAut[indice]+"\'> Enlace al autor</a></p>");
           document.write(listaFot[index]);
-          document.write(listaNom[index]);
+          document.write(listaNom[index]+"<br>");
+          document.write("Affiliation: "+listaAfil[index]+"<br>");
           
           var nombreCompleto = listaNom[index].split(" ");
           var inicial ="";
@@ -199,8 +206,9 @@
             }
           }
 */
+          //document.write('<form> <input type="text" name="busqueda_autor_afil" style ="visibility: hidden; display: inline;" value ="'+listaAfil[index]+'"> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor </button></form>');
           document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor</button></form>');
-
+          
           //document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+listaNom[index]+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+listaNom[index]+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor</button></form>');
           
           document.write("<p> <a href='"+listaAut[index]+"'> Enlace (a G Scholar) del autor </a></p>");
