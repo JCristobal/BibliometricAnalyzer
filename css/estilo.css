@@ -13,3 +13,7 @@ body {
   margin: 0 auto;
 }
 
+.entrada{
+	border-style: solid; 
+	margin-bottom: 2px;
+}

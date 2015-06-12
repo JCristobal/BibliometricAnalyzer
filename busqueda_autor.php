@@ -39,7 +39,9 @@
    <style>
     .bubbleChart {
       min-width: 60px;
-      max-width: 420px;
+      max-width: 100%;
+      min-height: 60px;
+      max-height: 100%;
       height: 420px;
       margin: 0 auto;
     }
@@ -141,26 +143,41 @@
 
 
 
-
-        echo "<p> ---------- CONSULTA Al enlace -------  </p>";
-
-        include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
+        include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
 
 
 
         // Create DOM from URL or file
         $html = file_get_html($enlace_autor);
 
-        echo "<p> imagen </p> ";
+        $nombreGS = "";
+        foreach($html->find('#gsc_prf_in') as $element){
+               echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$element->plaintext.'</b><br>';
+               $nombreGS = $element->plaintext;
+        }
+
 
         $foto = "";
-
         foreach($html->find('img') as $element){
                $foto = array('<img src="http://scholar.google.es',$element->src,'" />');
                $foto=implode("", $foto); 
-               echo $foto."<br>";
-           
+               echo $foto."<br> </div>";           
         }
+
+
+        echo '<div style="float: left; margin: 15px 2px 2px 15px;"> Verified email: ';
+           foreach($html->find('#gsc_prf_ivh') as $element){
+               echo $element."<br>";
+        }
+
+        $phpafiliacion= array(); 
+        echo "AFILIACION: ";
+           foreach($html->find('div.gsc_prf_il') as $element){
+               $phpafiliacion[]=$element->plaintext;
+        }
+        echo $phpafiliacion[0]."</div>";
+
+        echo "<p style='clear: left;'> ------- </p> ";
 
 
         $datos = array(); 
@@ -178,28 +195,18 @@
 
         echo "<p> ------- </p> ";
 
-        echo "Correo confirmado: ";
-           foreach($html->find('#gsc_prf_ivh') as $element){
-               echo $element."<br>";
-        }
 
-        $phpafiliacion= array(); 
-        echo "AFILIACION: ";
-           foreach($html->find('div.gsc_prf_il') as $element){
-               $phpafiliacion[]=$element->plaintext;
-        }
-        echo $phpafiliacion[0];
-
-        echo "<p> ------- </p> ";
 
         $coautores= array(); 
 
-        echo "Coautores: <br>";
+        echo '<div class="bubbleChart" style=" border-style: solid; border-width: 3px;  float: left;"> </div> ';
+
+        echo '<div style=" border-style: solid; border-width: 3px;  float: left;">Coautores: <br>';
            foreach($html->find('.gsc_rsb_aa') as $element){
 
               // "extraigo" de la URL el ID del autor para ver su foto
               $img = substr($element->href, 11, 17);
-              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img."&amp;citpid=1'> </img>";
+              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img."&amp;citpid=1'  height='15%' width='15%'> </img>";
 
               $coautores[]=$element->plaintext;
                
@@ -214,7 +221,7 @@
 
                echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$element->plaintext."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$element->href."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-default\">Info sobre el autor con este buscador</button></form><br>";
         }
-
+        echo "</div>";
 
 if(count($coautores)!=0){
     //http://bl.ocks.org/phuonghuynh/54a2f97950feadb45b07
@@ -235,7 +242,7 @@ if(count($coautores)!=0){
         //circleColor: use @default
         data: {
           items: [
-            {text: "'.$autor_limpio2.'", count: "1"},';
+            {text: "'.$nombreGS.'", count: "1"},';
 
           if(count($coautores)>=11){
             for ($i = 0; $i <11; $i++) { //foreach ($coautores as $v) {
@@ -318,12 +325,16 @@ if(count($coautores)!=0){
     });
     </script>
 
-    <div class="bubbleChart"> </div>  ';
+     ';
 }
 else{echo "Without coauthors registered";}
 
+echo "<p style='clear: left;'> ----- </p>";
 
-        echo "<p> ---------- CONSULTA A SCOPUS ----------  </p>";
+echo '<div id="container_columns" style="height: 400px"></div>';
+
+
+        echo "<p> ---------- CONSULTA A SCOPUS del autor ".$autor_limpio." ".$autor_limpio2."----------  </p>";
 /*
         //$consulta_0 = array('http://api.elsevier.com/content/search/scopus?query=FIRSTAUTH(', $autor, ')&apiKey=',$apikey,'&httpAccept=application/json'); 
         $consulta_0 = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');     
@@ -367,51 +378,11 @@ else{echo "Without coauthors registered";}
 
       echo "<p> Almacenamos el autor </p>";
 
-           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$autor_limpio.'\',\''.$autor_limpio.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
+           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$autor_limpio.'\',\''.$autor_limpio." ".$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
 
            echo "Autor almacenado<br>";
-        
-/*
-      echo "<p> Almacenamos las propias en la BD </p>";
-
-      for($i = 0; $i < $data_0["search-results"]["opensearch:itemsPerPage"]; $i++){
-            
-            $titulo = $data_0["search-results"]["entry"][$i]["dc:title"];
-            $titulo = str_replace("'", "\'", $titulo);
-            $creador =$data_0["search-results"]["entry"][$i]["dc:creator"];
-            $creador = str_replace("'", "", $creador);
-            $publicacion =$data_0["search-results"]["entry"][$i]["prism:publicationName"];
-            $publicacion = str_replace("(", "", $publicacion);
-            $publicacion = str_replace(")", "", $publicacion); 
-            $publicacion = str_replace("'", "", $publicacion);
-            $rang_pag = $data_0["search-results"]["entry"][$i]["prism:pageRange"];
-            $fecha_letra = $data_0["search-results"]["entry"][$i]["prism:coverDisplayDate"];
-            $fecha = $data_0["search-results"]["entry"][$i]["prism:coverDate"];
-            $tipo = $data_0["search-results"]["entry"][$i]["prism:aggregationType"];
-            $subtipo = $data_0["search-results"]["entry"][$i]["subtypeDescription"];
-            $issn = $data_0["search-results"]["entry"][$i]["prism:issn"];
-            $volume = $data_0["search-results"]["entry"][$i]["prism:volume"];
-            $id = $data_0["search-results"]["entry"][$i]["dc:identifier"]; 
-            $eid = $data_0["search-results"]["entry"][$i]["eid"];
-            $afil = $data_0["search-results"]["entry"][$i]["affiliation"][0]["affilname"];
-            $afil = str_replace("'", "\'", $afil);
-            $afil_ciudad = $data_0["search-results"]["entry"][$i]["affiliation"][0]["affiliation-city"];
-            $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
-            $afil_pais = $data_0["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
-            $doi = $data_0["search-results"]["entry"][$i]["prism:doi"];
-            $enlace_preview = $data_0["search-results"]["entry"][$i]["link"][2]["@href"];
-            $enlace_citedby = $data_0["search-results"]["entry"][$i]["link"][3]["@href"];
-
-           $insert = 'INSERT INTO publicaciones(consulta, id, eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby, publi_propia) VALUES (\''.$autor_limpio.'\',\''.$id.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',true)'; 
-                                                                                  
-           mysql_query($insert) or die(mysql_error()); 
-
-           //echo "Entrada número ",$i," almacenada<br>";
-        }
-*/
-
 
 
 
@@ -626,7 +597,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
           $muestraeid=$row['eid'];
           $muestraissn=$row['issn'];
 
-        echo "<div style='border-style: solid; margin-bottom: 2px'>";
+        echo "<div class='entrada'>";
 
           echo "Entry number ".$i; if($row['publi_propia']){echo "(Propia)";}
           $i++;
@@ -668,14 +639,6 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
         }
 
 
-
-/*        $phpanios_publi_propia = array(); 
-        $consulta_anios_publi_propia= "SELECT fecha_portada_0 FROM publicaciones  WHERE `publi_propia` ORDER BY `fecha_portada_0` ASC";
-        $resultados_anios_publi_propia=mysql_query($consulta_anios_publi_propia,$conexion);
-        while ($row=mysql_fetch_array($resultados_anios_publi_propia)) {  
-          $phpanios_publi_propia[]=$row['fecha_portada_0'];
-        }
-*/ 
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones ORDER BY `fecha_portada_0` ASC";
@@ -756,10 +719,10 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
   soloAnios=soloAnios.unique()
 
   //mostramos los años
-  document.write("<p>Años y número de publicaciones  (en total): </p>");
+  /*document.write("<p>Años y número de publicaciones  (en total): </p>");
   for(index = 0; index < soloAnios.length; index++) {
     document.write("Año "+soloAnios[index]+": "+counts[soloAnios[index]]+" publicaciones<br>");
-  }
+  }*/
 
 
 
@@ -800,12 +763,7 @@ $(function () {
             name: 'Número de publicaciones',
             data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]]]
             
-        }/*,
-        {
-            name: 'Publicaciones propias',                    
-            data: [counts_publi_propia[soloAnios_publi_propia[0]], counts_publi_propia[soloAnios_publi_propia[1]], counts_publi_propia[soloAnios_publi_propia[2]], counts_publi_propia[soloAnios_publi_propia[3]], counts_publi_propia[soloAnios_publi_propia[4]], counts_publi_propia[soloAnios_publi_propia[5]], counts_publi_propia[soloAnios_publi_propia[6]], counts_publi_propia[soloAnios_publi_propia[7]], counts_publi_propia[soloAnios_publi_propia[8]], counts_publi_propia[soloAnios_publi_propia[9]], counts_publi_propia[soloAnios_publi_propia[10]], counts_publi_propia[soloAnios_publi_propia[11]], counts_publi_propia[soloAnios_publi_propia[12]]]
-            
-        }*/
+        }
         ]
 
     });
@@ -815,7 +773,7 @@ $(function () {
 
 
 
-<div id="container_columns" style="height: 400px"></div>
+<!--  <div id="container_columns" style="height: 400px"></div>  -->
 
 
 

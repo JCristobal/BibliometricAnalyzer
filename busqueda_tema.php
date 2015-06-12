@@ -476,6 +476,19 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
 
 
+      if($hay_entradas){ 
+
+
+
+         echo'<div id="donutchart" style="max-width: 100%; height: 500px;"></div>';
+
+         echo'<div id="regions_div" style="max-width:100%; height: 500px"></div>';
+
+         echo'<div id="container_columns" style="height: 400px"></div>';
+      }  
+
+
+
 
         //include_once('simple_html_dom.php');
 
@@ -504,7 +517,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
           $muestracitedby=$row['enlace_citedby'];
           $muestraeid=$row['eid'];
 
-        echo "<div style='border-style: solid; margin-bottom: 2px'>";
+        echo "<div class='entrada'>";
 
           echo "Entry number ".$i;
           $i++;
@@ -588,7 +601,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
         if(hay_entradas){ 
           //mostramos los paises
-          document.write("<p>Paises y número de publicaciones recientes: </p>");
+          document.write("<p>Paises y número de publicaciones : </p>");
           for(index = 0; index < listaPaises.length; index++) {
               document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
           }
@@ -720,12 +733,6 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
       }
 
 
-      if(hay_entradas){ 
-         document.write('<div id="regions_div" style="max-width:100%; height: 500px"></div>');
-         document.write('<div id="donutchart" style="max-width: 100%; height: 500px;"></div>');
-      }   
-
-
 </script>
 
 
@@ -785,7 +792,7 @@ if(hay_entradas){
 
 
 
-  document.write('<div id="container_columns" style="height: 400px"></div>');
+
 
 }
 </script>

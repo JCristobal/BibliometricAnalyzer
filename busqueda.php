@@ -102,13 +102,13 @@
         include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
                                                                                   //  &mauthors=autor:', $autor, '&hl=es&oi=ao');
         if($hay_nombre){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor, '&hl=es&oi=ao');     
+          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor, '&hl=en&oi=ao');     
         }
         if($hay_nombre2){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor2, '&hl=es&oi=ao');     
+          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor2, '&hl=en&oi=ao');     
         }
         if($hay_nombre && $hay_nombre2){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor,'%20',$autor2,'&hl=es&oi=ao');     
+          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor,'%20',$autor2,'&hl=en&oi=ao');     
         }
 
         $string2=implode("", $consulta2); 
@@ -142,7 +142,7 @@
 
         $listaNombres = array(); 
         foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
-               echo $elemento->plaintext;
+               echo $elemento->plaintext."<br>";
                $listaNombres[]= $elemento->plaintext;
                
         }
