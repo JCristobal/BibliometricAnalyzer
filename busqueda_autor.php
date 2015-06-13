@@ -33,27 +33,13 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 
-  <script src="js/bubble-chart-utils.js"></script> 
-  <script src="js/bubble-chart_lines.js"></script> 
-  <script src="js/bubble-chart_central-click.js"></script> 
-   <style>
-    .bubbleChart {
-      min-width: 60px;
-      max-width: 100%;
-      min-height: 60px;
-      max-height: 100%;
-      height: 420px;
-      margin: 0 auto;
-    }
-    .bubbleChart svg{
-      background: #FFFFFF ;
-    }
-  </style>
+    <script src="js/bubble-chart-utils.js"></script> 
+    <script src="js/bubble-chart_lines.js"></script> 
+    <script src="js/bubble-chart_central-click.js"></script> 
 
 
-
-  <script src="js/pace.min.js"></script>
-  <link href="css/pace_style.css" rel="stylesheet" />
+    <script src="js/pace.min.js"></script>
+    <link href="css/pace_style.css" rel="stylesheet" />
 
   </head>
 
@@ -312,9 +298,9 @@ if(count($coautores)!=0){
      ';
 
 
-      echo '<div class="bubbleChart" style=" border-style: solid; border-width: 1px;  float: left;"> </div> ';
+      echo '<div class="bubbleChart" style=" float: left;"> </div> ';
 
-        echo '<div style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
+        echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
               echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";
@@ -328,7 +314,7 @@ if(count($coautores)!=0){
               $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
               $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
 
-               echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-default\">Info sobre el autor con este buscador</button></form><br>";
+               echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
             } 
         echo "</div>";
 
@@ -392,73 +378,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 
-        echo "<p> Mostramos de la BD </p>";
-
-        $i=1;
-        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta ;
-                    
-        $resultados=mysql_query($consulta,$conexion);   
-
-        while ($row=mysql_fetch_array($resultados)) {   
-          $muestratitulo=$row['titulo']; 
-          $muestracreador=$row['creador']; 
-          $muestrapublicacion=$row['nombre_publi']; 
-          $muestrafecha=$row['fecha_portada'];
-          $muestravolumen=$row['volumen'];
-          $muestrarango=$row['rango_pags'];  
-          $muestraafil=$row['afiliacion_nombre'];
-          $muestraafil_ciudad=$row['afiliacion_ciudad'];
-          $muestraafil_pais=$row['afiliacion_pais'];
-          $muestraenlace=$row['enlace_preview'];
-          $muestratipo=$row['tipo_publi'];
-          $muestrasubtipo=$row['subtipo_publi'];
-          $muestraenlace=$row['enlace_preview'];
-          $muestradoi=$row['doi'];
-          $muestracitedby=$row['enlace_citedby'];
-          $muestraeid=$row['eid'];
-          $muestraissn=$row['issn'];
-
-        echo "<div class='entrada'>";
-
-          echo "Entry number ".$i; if($row['publi_propia']){echo "(Propia)";}
-          $i++;
-          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
-          <p> by $muestracreador ";
-          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
-          else{echo "(No associated affiliation)  </p> ";}  
-          echo "<p> Published in $muestrapublicacion ";
-          if($muestravolumen!=0){echo"(volume $muestravolumen) ";}
-          if($muestrarango!=0){echo "in the pages $muestrarango ";}
-          if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
-          echo "</p>";
-
-          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
-
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-
-          echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
-
-          echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
-          
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
-
-        echo "</div><br>";
-      
-//http://api.elsevier.com/documentation/AbstractCitationCountAPI.wadl
-//http://api.elsevier.com/documentation/metadata/abstractCitationCountMeta.json
-//http://www.scopus.com/results/citedbyresults.url?sort=plf-f&cite=2-s2.0-49549114022&src=s&imp=t&sid=EC4E03F932C14A3FE555B99C71AB440B.aXczxbyuHHiXgaIW6Ho7g%3a780&sot=cite&sdt=a&sl=0&origin=inward&editSaveSearch=&txGid=EC4E03F932C14A3FE555B99C71AB440B.aXczxbyuHHiXgaIW6Ho7g%3a77
-//http://api.elsevier.com/content/search/scopus?query=refeid%282-s2.0-49549114022%29&apiKey=c0dee35412af407a9c07b4fabc7bc447          
-
-
-        /*$html = file_get_html($muestraenlace);
-        foreach($html->find('hr p.marginB3') as $elemento){
-               echo $elemento->plaintext."<br>";           
-        } */       
-
-
-          echo "<br><br>";      
-        }
-
+        include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
 
         $phpanios = array(); 

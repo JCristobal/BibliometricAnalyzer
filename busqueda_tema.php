@@ -476,60 +476,8 @@ if(hay_entradas){
 
       }  
 
-        //include('simple_html_dom.php');
-
-        echo "<p> Mostramos de la BD </p>";
-
-        $i=1;
-        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta;
-                    
-        $resultados=mysql_query($consulta,$conexion);   
-
-        while ($row=mysql_fetch_array($resultados)) {   
-          $muestratitulo=$row['titulo']; 
-          $muestracreador=$row['creador']; 
-          $muestrapublicacion=$row['nombre_publi']; 
-          $muestrafecha=$row['fecha_portada'];
-          $muestravolumen=$row['volumen'];
-          $muestrarango=$row['rango_pags'];  
-          $muestraafil=$row['afiliacion_nombre'];
-          $muestraafil_ciudad=$row['afiliacion_ciudad'];
-          $muestraafil_pais=$row['afiliacion_pais'];
-          $muestraenlace=$row['enlace_preview'];
-          $muestratipo=$row['tipo_publi'];
-          $muestrasubtipo=$row['subtipo_publi'];
-          $muestradoi=$row['doi'];
-          $muestraissn=$row['issn'];
-          $muestracitedby=$row['enlace_citedby'];
-          $muestraeid=$row['eid'];
-
-        echo "<div class='entrada'>";
-
-          echo "Entry number ".$i;
-          $i++;
-          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
-          <p> by $muestracreador ";
-          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
-          else{echo "(No associated affiliation)  </p> ";}  
-          echo "<p> Published in $muestrapublicacion ";
-          if($muestravolumen!=0){echo"(volume $muestravolumen) ";}
-          if($muestrarango!=0){echo "in the pages $muestrarango ";}
-          if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
-          echo "</p>";
-
-          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
-
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-
-          echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
-
-          echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
-          
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
-
-        echo "</div><br>";
-    
-        }
+      
+      include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
 
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
