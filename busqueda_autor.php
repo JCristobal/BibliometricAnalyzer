@@ -88,6 +88,9 @@
 
 <?php
 
+ 
+        error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
+
         $autor_limpio = $_POST['busqueda_autor'];
         $autor = $_POST['busqueda_autor'];
 
@@ -107,10 +110,7 @@
         $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
         $autor_limpio = str_replace("%2D", "-", $autor_limpio);
 
-
-        echo "<h1>Consulta  bibliométrica del autor ".$autor_limpio." ".$autor_limpio2."</h1>";
-
-        echo "enlace a autor en G Escolar: ".$enlace_autor;
+        $autor_limpio = strtoupper($autor_limpio);
 
         // Formateamos de ASCII a UTF para trabajar con él
         $autor = str_replace(" ", "%20", $autor);
@@ -130,29 +130,23 @@
         $autor2 = str_replace("-", "%2D", $autor2);
 
 
-?>
 
 
-     <p>Did not you want to search this? <a href="index.html"> Go home </a> </p>
 
-     <?php
- 
-        error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
+        echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
+
+
+
         $apikey = "c0dee35412af407a9c07b4fabc7bc447";
 
 
-
-
         include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
-
-
 
         // Create DOM from URL or file
         $html = file_get_html($enlace_autor);
 
         $nombreGS = "";
         foreach($html->find('#gsc_prf_in') as $element){
-               echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$element->plaintext.'</b><br>';
                $nombreGS = $element->plaintext;
         }
 
@@ -161,31 +155,48 @@
         foreach($html->find('img') as $element){
                $foto = array('<img src="http://scholar.google.es',$element->src,'" />');
                $foto=implode("", $foto); 
-               echo $foto."<br> </div>";           
         }
 
-
-        echo '<div style="float: left; margin: 15px 2px 2px 15px;"> Verified email: ';
-           foreach($html->find('#gsc_prf_ivh') as $element){
-               echo $element."<br>";
+        $email = "";
+        foreach($html->find('#gsc_prf_ivh') as $element){
+               $email = $element;
+               //echo $element."<br>";
         }
 
         $phpafiliacion= array(); 
-        echo "AFILIACION: ";
-           foreach($html->find('div.gsc_prf_il') as $element){
+        foreach($html->find('div.gsc_prf_il') as $element){
                $phpafiliacion[]=$element->plaintext;
         }
-        echo $phpafiliacion[0]."</div>";
+
+        $datos = array(); 
+        foreach($html->find('td.gsc_rsb_std') as $element){
+               $datos[]=$element->plaintext;
+        }
+
+        $coautores= array();
+        $img_coautores=array();
+        $enlace_coautores=array();
+
+        foreach($html->find('.gsc_rsb_aa') as $element){
+          $coautores[]=$element->plaintext;
+          $img_coautores[] = substr($element->href, 11, 17); // "extraigo" de la URL el ID del autor para ver su foto
+          $enlace_coautores[] = $element->href;
+        }
+
+
+        echo "<h1>Consulta  bibliométrica del autor ".$autor_limpio." ".$autor_limpio2."</h1>";
+
+        echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
+
+
+        echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
+
+        echo '<div style="float: left; margin: 15px 2px 2px 15px;">'.$email;
+        echo "AFILIATION: ".$phpafiliacion[0]."</div>";
 
         echo "<p style='clear: left;'> ------- </p> ";
 
 
-        $datos = array(); 
-
-        foreach($html->find('td.gsc_rsb_std') as $element){
-               //echo $element->plaintext."<br>";
-               $datos[]=$element->plaintext;
-        }
         echo "<p> ".$datos[0]." citas </p> ";
         echo "<p> Desde 2010: ".$datos[1]." citas </p> ";
         echo "<p> indice H: ".$datos[2]." </p> ";
@@ -196,34 +207,8 @@
         echo "<p> ------- </p> ";
 
 
-
-        $coautores= array(); 
-
-        echo '<div class="bubbleChart" style=" border-style: solid; border-width: 3px;  float: left;"> </div> ';
-
-        echo '<div style=" border-style: solid; border-width: 3px;  float: left;">Coautores: <br>';
-           foreach($html->find('.gsc_rsb_aa') as $element){
-
-              // "extraigo" de la URL el ID del autor para ver su foto
-              $img = substr($element->href, 11, 17);
-              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img."&amp;citpid=1'  height='15%' width='15%'> </img>";
-
-              $coautores[]=$element->plaintext;
-               
-              echo $element->plaintext." y  <a href=\"http://scholar.google.es".$element->href."\"> enlace a GSCHOLAR </a>  ";   
-
-              $element->plaintext = str_replace(" ", "%20", $element->plaintext);
-              $element->plaintext = str_replace("á", "%C3%A1", $element->plaintext);
-              $element->plaintext = str_replace("é", "%C3%A9", $element->plaintext);
-              $element->plaintext = str_replace("í", "%C3%AD", $element->plaintext);
-              $element->plaintext = str_replace("ó", "%C3%B3", $element->plaintext);
-              $element->plaintext = str_replace("ú", "%C3%BA", $element->plaintext);
-
-               echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$element->plaintext."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$element->href."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-default\">Info sobre el autor con este buscador</button></form><br>";
-        }
-        echo "</div>";
-
 if(count($coautores)!=0){
+
     //http://bl.ocks.org/phuonghuynh/54a2f97950feadb45b07
     echo '  
     <script>
@@ -324,14 +309,36 @@ if(count($coautores)!=0){
       });
     });
     </script>
-
      ';
+
+
+      echo '<div class="bubbleChart" style=" border-style: solid; border-width: 1px;  float: left;"> </div> ';
+
+        echo '<div style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
+            for ($i = 0; $i < count($coautores); $i++) { 
+
+              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";
+
+              echo $coautores[$i]." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; 
+
+              $coautores[$i] = str_replace(" ", "%20", $coautores[$i]);
+              $coautores[$i] = str_replace("á", "%C3%A1", $coautores[$i]);
+              $coautores[$i] = str_replace("é", "%C3%A9", $coautores[$i]);
+              $coautores[$i] = str_replace("í", "%C3%AD", $coautores[$i]);
+              $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
+              $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
+
+               echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-default\">Info sobre el autor con este buscador</button></form><br>";
+            } 
+        echo "</div>";
+
+
 }
 else{echo "Without coauthors registered";}
 
 echo "<p style='clear: left;'> ----- </p>";
 
-echo '<div id="container_columns" style="height: 400px"></div>';
+
 
 
         echo "<p> ---------- CONSULTA A SCOPUS del autor ".$autor_limpio." ".$autor_limpio2."----------  </p>";
@@ -371,17 +378,17 @@ echo '<div id="container_columns" style="height: 400px"></div>';
       
       echo " Total number of results: " .$entradasTotales,"<br><br>";
 
+      if($hay_entradas){ 
 
+        echo '<div id="container_columns" style="height: 400px"></div><br>';
+              
+      }
 
-
-      echo "<p> Almacenamos el autor </p>";
 
            $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio." ".$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
-
-      echo "Autor almacenado<br>";
-
+           echo "Autor almacenado<br>";
 
 
 

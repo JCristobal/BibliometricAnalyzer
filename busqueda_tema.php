@@ -233,82 +233,11 @@
       echo "<p> ------- </p>";
 
 
-
-      if($hay_entradas){ 
-
-         echo'<div id="donutchart" style="max-width: 100%; height: 500px;"></div>';
-
-         echo'<div id="regions_div" style="max-width:100%; height: 500px"></div>';
-
-         echo'<div id="container_columns" style="height: 400px"></div>';
-
-      }  
-
-
-
-
-        //include('simple_html_dom.php');
-
-        echo "<p> Mostramos de la BD </p>";
-
-        $i=1;
-        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta;
-                    
-        $resultados=mysql_query($consulta,$conexion);   
-
-        while ($row=mysql_fetch_array($resultados)) {   
-          $muestratitulo=$row['titulo']; 
-          $muestracreador=$row['creador']; 
-          $muestrapublicacion=$row['nombre_publi']; 
-          $muestrafecha=$row['fecha_portada'];
-          $muestravolumen=$row['volumen'];
-          $muestrarango=$row['rango_pags'];  
-          $muestraafil=$row['afiliacion_nombre'];
-          $muestraafil_ciudad=$row['afiliacion_ciudad'];
-          $muestraafil_pais=$row['afiliacion_pais'];
-          $muestraenlace=$row['enlace_preview'];
-          $muestratipo=$row['tipo_publi'];
-          $muestrasubtipo=$row['subtipo_publi'];
-          $muestradoi=$row['doi'];
-          $muestraissn=$row['issn'];
-          $muestracitedby=$row['enlace_citedby'];
-          $muestraeid=$row['eid'];
-
-        echo "<div class='entrada'>";
-
-          echo "Entry number ".$i;
-          $i++;
-          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
-          <p> by $muestracreador ";
-          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
-          else{echo "(No associated affiliation)  </p> ";}  
-          echo "<p> Published in $muestrapublicacion ";
-          if($muestravolumen!=0){echo"(volume $muestravolumen) ";}
-          if($muestrarango!=0){echo "in the pages $muestrarango ";}
-          if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
-          echo "</p>";
-
-          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
-
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-
-          echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
-
-          echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
-          
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
-
-        echo "</div><br>";
-    
-        }
-
-
         $phpaises = array(); 
         $consulta_paises= "SELECT afiliacion_pais FROM publicaciones WHERE id=".$idConsulta;
         $resultados_paises=mysql_query($consulta_paises,$conexion);
         while ($row=mysql_fetch_array($resultados_paises)) {  
-          $muestrapais=$row['afiliacion_pais'];
-          $phpaises[]=$muestrapais;
+          $phpaises[]=$row['afiliacion_pais'];
         }
         
 
@@ -326,18 +255,14 @@
           $phpautor[]=$row['nombre_publi'];
         }
 
-      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
-      mysql_query($borratodo) or die(mysql_error()); 
-      echo "<p> Borrados los datos de la BD </p>";
-  
 
 ?>
 
 
 <script>
-        var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
+  var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
      
-
+  if(hay_entradas){ 
         //Copiamos el vector de paises que hemos calculado con php
         var listaPaises = <?php echo json_encode($phpaises); ?>; 
 
@@ -356,18 +281,15 @@
         });
         listaPaises=listaPaises.unique()
 
-        if(hay_entradas){ 
-          //mostramos los paises
-          document.write("<p>Paises y número de publicaciones : </p>");
-          for(index = 0; index < listaPaises.length; index++) {
-              document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
-          }
-        } 
+        //mostramos los paises
+        document.write('<div style="width: 20%; margin: 100px 0px 0px 0px; float: left;"><p>Paises y número de publicaciones: </p>');
+        for(index = 0; index < listaPaises.length; index++) {
 
+            document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
 
+        }
+        document.write('</div>');
 
-  //var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
-  if(hay_entradas){
 
     var listaAnios = <?php echo json_encode($phpanios); ?>;
     var soloAnios = {};
@@ -391,16 +313,10 @@
       return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
     });*/
     soloAnios=soloAnios.unique()
-}
-</script>
-
-    <script type="text/javascript">
-
-    </script>
+    
+}// fin if(hay_entradas)
 
 
-
-<script>
       google.load("visualization", "1", {packages:["geochart"]});
       google.setOnLoadCallback(drawRegionsMap);
 
@@ -472,11 +388,12 @@
         chart.draw(data, options);
       }
 
+
       // DONUT
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-        //  =
+
         var data = data_paises;
 
         var options = {
@@ -490,20 +407,15 @@
       }
 
 
-</script>
 
-
-
-
-
-<script>
 if(hay_entradas){ 
+/*
     //mostramos los años
     document.write("<p>Años y número de publicaciones : </p>");
     for(index = 0; index < soloAnios.length; index++) {
       document.write("Año "+soloAnios[index]+": "+counts_anios[soloAnios[index]]+" publicaciones<br>");
     }
-
+*/
     $(function () {
         $('#container_columns').highcharts({
             chart: {
@@ -547,14 +459,84 @@ if(hay_entradas){
         });
     });
 
-
-
-
-
 }
+
 </script>
 
 
+<?php
+
+      if($hay_entradas){ 
+
+         echo'<div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
+
+         echo'<div id="regions_div" style="clear: left; max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
+
+         echo'<div id="container_columns" style="height: 400px;"></div><br>';
+
+      }  
+
+        //include('simple_html_dom.php');
+
+        echo "<p> Mostramos de la BD </p>";
+
+        $i=1;
+        $consulta= "SELECT * FROM publicaciones WHERE id=".$idConsulta;
+                    
+        $resultados=mysql_query($consulta,$conexion);   
+
+        while ($row=mysql_fetch_array($resultados)) {   
+          $muestratitulo=$row['titulo']; 
+          $muestracreador=$row['creador']; 
+          $muestrapublicacion=$row['nombre_publi']; 
+          $muestrafecha=$row['fecha_portada'];
+          $muestravolumen=$row['volumen'];
+          $muestrarango=$row['rango_pags'];  
+          $muestraafil=$row['afiliacion_nombre'];
+          $muestraafil_ciudad=$row['afiliacion_ciudad'];
+          $muestraafil_pais=$row['afiliacion_pais'];
+          $muestraenlace=$row['enlace_preview'];
+          $muestratipo=$row['tipo_publi'];
+          $muestrasubtipo=$row['subtipo_publi'];
+          $muestradoi=$row['doi'];
+          $muestraissn=$row['issn'];
+          $muestracitedby=$row['enlace_citedby'];
+          $muestraeid=$row['eid'];
+
+        echo "<div class='entrada'>";
+
+          echo "Entry number ".$i;
+          $i++;
+          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
+          <p> by $muestracreador ";
+          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
+          else{echo "(No associated affiliation)  </p> ";}  
+          echo "<p> Published in $muestrapublicacion ";
+          if($muestravolumen!=0){echo"(volume $muestravolumen) ";}
+          if($muestrarango!=0){echo "in the pages $muestrarango ";}
+          if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
+          echo "</p>";
+
+          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
+
+          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
+
+          echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
+
+          echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
+          
+          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
+
+        echo "</div><br>";
+    
+        }
+
+
+      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+      mysql_query($borratodo) or die(mysql_error()); 
+      echo "<p> Borrados los datos de la BD </p>";
+
+?>
 
 
 <form>
