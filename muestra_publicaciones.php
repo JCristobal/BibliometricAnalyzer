@@ -31,9 +31,23 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
 
         echo "<div class='entrada'>";
 
-          echo "Entry number ".$i; 
+          echo "<p> Entry number ".$i."</p>"; 
           $i++;
-          echo " <p style='font-weight: bold;'> $muestratitulo </p> 
+
+          // Comprobamos que tiene portada. Primero creamos el enlace a la portada
+          $portada = array('http://www.sciencedirect.com/science/journal/',$muestraissn);
+          $portada=implode("", $portada); 
+          // Y vemos las cabeceras enviadas  en respuesta a una petición HTTP del enlace creado
+          $headers =get_headers($portada);
+          // Viendo la cabeceras comprobamos si existe el enlace a la publicación y creamos una imagen con su portada
+          if($headers[0]=="HTTP/1.0 200 OK"){
+            echo "<a class=\"img_portada\" href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\" alt=\"sin imagen\" \"></img> </a>"; 
+          }
+          else{  // si no existe cargamos una imagen por defecto
+            echo "<img class=\"img_portada\" src=\"img/Sin_imagen_disponible.jpg\" height=\"200\" width=\"150\"></img>";
+          }
+
+          echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p> 
           <p> <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$muestracreador\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">by $muestracreador </button></form>";
           if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
           else{echo "(No associated affiliation)  </p> ";}  
@@ -46,12 +60,12 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
           echo "<p> Type $muestratipo: $muestrasubtipo </p>";
 
           echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-
-          echo" <a href=\"$muestracitedby\"><img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img> </a>";
-
-          echo "<a href=\"http://www.sciencedirect.com/science/journal/$muestraissn\"><img src=\"http://api.elsevier.com/content/serial/title/issn/$muestraissn?view=coverimage&httpAccept=image/gif&apiKey=$apikey\"></img> </a>"; 
+                                                                                                                                                              //QUOTA_EXCEEDED: Maximum number of 20000 requests exceeded  
+          echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  // 6492f9c867ddf3e84baa10b5971e3e3d
           
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>";
+          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
+
+          echo '</div>  <div style="clear: left"></div> ';
 
         echo "</div><br>";
       

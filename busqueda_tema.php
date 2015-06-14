@@ -476,7 +476,7 @@ if(hay_entradas){
 
       }  
 
-      
+
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
 

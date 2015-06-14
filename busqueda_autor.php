@@ -98,7 +98,7 @@
 
         $autor_limpio = strtoupper($autor_limpio);
 
-
+        include_once('simple_html_dom.php');
 
         //$busqueda_directa=false;
         $autor_directo = $_POST['busqueda_directa'];
@@ -118,7 +118,7 @@
           $enlace_autor = array('https://scholar.google.es/citations?hl=en&oe=ASCII&view_op=search_authors&mauthors=',$enlace_autor);
           $enlace_autor=implode("", $enlace_autor); 
 
-          include_once('simple_html_dom.php');          
+          //include_once('simple_html_dom.php');          
 
           $aux= array(); 
           $html = file_get_html($enlace_autor);
@@ -162,7 +162,7 @@
         $apikey = "c0dee35412af407a9c07b4fabc7bc447";
 
 
-        include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
+        //include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
 
         // Create DOM from URL or file
         $html = file_get_html($enlace_autor);

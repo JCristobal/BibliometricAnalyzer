@@ -24,7 +24,16 @@ body {
 	margin-bottom: 2px;
 
 }
+.img_portada{
+	min-width: 149px;
+	float: left;
+	margin: 4% 10px 5px 5px;
+}
 
+.cuerpo_entrada{
+	float: left;
+		margin: 3% 0px 5px 0px;
+}
 .bubbleChart {
     min-width: 60px;
     max-width: 100%;
