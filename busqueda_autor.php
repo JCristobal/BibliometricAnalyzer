@@ -86,26 +86,19 @@
         $enlace_autor = $_POST['busqueda_autor_enlace'];
 
 
-
-        // Formateamos de UTF a ASCII para mostrarlo
-        $autor_limpio = str_replace("%20", " ", $autor_limpio);
-        $autor_limpio = str_replace("%C3%A1", "á", $autor_limpio);
-        $autor_limpio = str_replace("%C3%A9", "é", $autor_limpio);
-        $autor_limpio = str_replace("%C3%AD", "í", $autor_limpio);
-        $autor_limpio = str_replace("%C3%B3", "ó", $autor_limpio);
-        $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
-        $autor_limpio = str_replace("%2D", "-", $autor_limpio);
-
-        $autor_limpio = strtoupper($autor_limpio);
-
         include_once('simple_html_dom.php');
 
-        //$busqueda_directa=false;
+
         $autor_directo = $_POST['busqueda_directa'];
+        $busqueda_coautor = $_POST['busqueda_coautor'];
+        $enlace_aux = $enlace_autor;
+        $nombre_aux = $autor_directo;  
+        
+
         if(strlen($autor_directo)){
 
-          //$busqueda_directa=true; 
-          echo "DIRECTA";
+          //echo "DIRECTA";
+
           $enlace_autor = $autor_directo;
           $enlace_autor = str_replace(" ", "%20", $enlace_autor);
           $enlace_autor = str_replace("á", "%C3%A1", $enlace_autor);
@@ -137,6 +130,54 @@
           $autor_limpio2 = $autor2;
         }
 
+        if($busqueda_coautor){
+
+          //echo  $busqueda_coautor;
+
+          $enlace_autor = $enlace_aux; // Recuperamos el enlace del autor
+          $autor_directo = $nombre_aux ; // y el nombre
+          
+          // Formateamos de UTF a ASCII 
+          $autor_directo = str_replace("%20", " ", $autor_directo);
+          $autor_directo = str_replace("%C3%A1", "á", $autor_directo);
+          $autor_directo = str_replace("%C3%A9", "é", $autor_directo);
+          $autor_directo = str_replace("%C3%AD", "í", $autor_directo);
+          $autor_directo = str_replace("%C3%B3", "ó", $autor_directo);
+          $autor_directo = str_replace("%C3%BA", "ú", $autor_directo);
+          $autor_directo = str_replace("%2D", "-", $autor_directo);
+                     
+          //Asigno valores a $autor y $autor2 a partír de $autor_directo para buscar con Scopus
+
+          $pos_punto = strrpos($autor_directo, ".");
+          if ($pos_punto === false) { 
+              //Si no tiene ningún punto no podemos distinguir entre su nombre y apellido, por lo que tomamos nombre la primera palabra (y de ella su inicial) y apellidos el resto
+              $name = split (" ", $autor_directo);
+              $autor=$name[0][0];
+
+              $autor2="";
+              for ($i = 1; $i < count($name); $i++) { 
+                  $autor2= $autor2." ".$name[$i];
+              }
+          }
+          else{
+            // Si el string tiene un punto quiere decir que el autor coge su primer nombre y el resto pone sólo su inicial con un punto.
+            $nombre = strstr($autor_directo, '.', true); 
+            $name = split (" ", $nombre);
+            $autor="";
+            for ($i = 0; $i < count($name); $i++) { 
+                $autor= $autor.$name[$i][0].". ";   // Almacenamos la iniciales, en caso de que tenga varios nombres
+            }
+
+            $autor2 = strstr($autor_directo, '.');
+            $autor2 = str_replace(".","", $autor2); //Quita el punto
+
+          }
+
+          $autor_limpio = $autor;
+          $autor_limpio2 = $autor2;
+        }
+
+
         // Formateamos de ASCII a UTF para trabajar con él
         $autor = str_replace(" ", "%20", $autor);
         $autor = str_replace("á", "%C3%A1", $autor);
@@ -154,6 +195,16 @@
         $autor2 = str_replace("ú", "%C3%BA", $autor2);
         $autor2 = str_replace("-", "%2D", $autor2);
 
+        // Formateamos de UTF a ASCII para mostrarlo
+        $autor_limpio = str_replace("%20", " ", $autor_limpio);
+        $autor_limpio = str_replace("%C3%A1", "á", $autor_limpio);
+        $autor_limpio = str_replace("%C3%A9", "é", $autor_limpio);
+        $autor_limpio = str_replace("%C3%AD", "í", $autor_limpio);
+        $autor_limpio = str_replace("%C3%B3", "ó", $autor_limpio);
+        $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
+        $autor_limpio = str_replace("%2D", "-", $autor_limpio);
+
+        $autor_limpio = strtoupper($autor_limpio);
 
 
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
@@ -351,7 +402,7 @@ if(count($coautores)!=0){
               $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
               $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
 
-               echo " <form> <input type=\"text\" name=\"busqueda_autor\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
+               echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
             } 
         echo "</div>";
 
