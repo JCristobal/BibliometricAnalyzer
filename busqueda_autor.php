@@ -77,6 +77,8 @@
  
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
+        include'conexion.php'; 
+
         $autor_limpio = $_POST['busqueda_autor'];
         $autor = $_POST['busqueda_autor'];
 
@@ -208,9 +210,6 @@
 
 
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
-
-
-        $apikey = "c0dee35412af407a9c07b4fabc7bc447";
 
 
         //include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
@@ -448,7 +447,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
         $idConsulta = mt_rand();
 
-      include'conexion.php'; 
+
 
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
 
