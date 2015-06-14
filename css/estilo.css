@@ -13,11 +13,12 @@ body {
   margin: 0 auto;
 }
 
-#conjunto_entradas{
+#lista_entradas{
 	height:1500px;
 	overflow:auto;
 	overflow-x:hidden;
 }
+
 .entrada{
 	border-style: solid; 
 	margin-bottom: 2px;

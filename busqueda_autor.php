@@ -98,6 +98,45 @@
 
         $autor_limpio = strtoupper($autor_limpio);
 
+
+
+        //$busqueda_directa=false;
+        $autor_directo = $_POST['busqueda_directa'];
+        if(strlen($autor_directo)){
+
+          //$busqueda_directa=true; 
+          echo "DIRECTA";
+          $enlace_autor = $autor_directo;
+          $enlace_autor = str_replace(" ", "%20", $enlace_autor);
+          $enlace_autor = str_replace("á", "%C3%A1", $enlace_autor);
+          $enlace_autor = str_replace("é", "%C3%A9", $enlace_autor);
+          $enlace_autor = str_replace("í", "%C3%AD", $enlace_autor);
+          $enlace_autor = str_replace("ó", "%C3%B3", $enlace_autor);
+          $enlace_autor = str_replace("ú", "%C3%BA", $enlace_autor);
+          $enlace_autor = str_replace("-", "%2D", $enlace_autor);
+
+          $enlace_autor = array('https://scholar.google.es/citations?hl=en&oe=ASCII&view_op=search_authors&mauthors=',$enlace_autor);
+          $enlace_autor=implode("", $enlace_autor); 
+
+          include_once('simple_html_dom.php');          
+
+          $aux= array(); 
+          $html = file_get_html($enlace_autor);
+          foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
+                 $aux[]= $elemento->href;          
+          }
+
+          $enlace_autor= array('http://scholar.google.com',$aux[0]);
+          $enlace_autor=implode("", $enlace_autor); 
+
+          $pos = strripos($autor_directo, " ");
+          $autor = substr($autor_directo, $pos);
+          $autor2 = substr($autor_directo,0, $pos);
+
+          $autor_limpio = $autor;
+          $autor_limpio2 = $autor2;
+        }
+
         // Formateamos de ASCII a UTF para trabajar con él
         $autor = str_replace(" ", "%20", $autor);
         $autor = str_replace("á", "%C3%A1", $autor);
@@ -117,10 +156,7 @@
 
 
 
-
-
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
-
 
 
         $apikey = "c0dee35412af407a9c07b4fabc7bc447";
@@ -130,6 +166,7 @@
 
         // Create DOM from URL or file
         $html = file_get_html($enlace_autor);
+
 
         $nombreGS = "";
         foreach($html->find('#gsc_prf_in') as $element){
@@ -170,7 +207,7 @@
         }
 
 
-        echo "<h1>Consulta  bibliométrica del autor ".$autor_limpio." ".$autor_limpio2."</h1>";
+        echo "<h1>Consulta  bibliométrica del autor ".$nombreGS."</h1>";
 
         echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 
@@ -216,12 +253,12 @@ if(count($coautores)!=0){
             {text: "'.$nombreGS.'", count: "1"},';
 
           if(count($coautores)>=11){
-            for ($i = 0; $i <11; $i++) { //foreach ($coautores as $v) {
+            for ($i = 0; $i <11; $i++) { 
                 echo '{text: "'.$coautores[$i].'", count: "0"},';
             }
           }
           else{
-              for ($i = 0; $i < count($coautores); $i++) { //foreach ($coautores as $v) {
+              for ($i = 0; $i < count($coautores); $i++) { 
                   echo '{text: "'.$coautores[$i].'", count: "0"},';
               } 
           }
@@ -327,7 +364,9 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 
-        echo "<p> ---------- CONSULTA A SCOPUS del autor ".$autor_limpio." ".$autor_limpio2."----------  </p>";
+        echo "<p> ---------- CONSULTA A SCOPUS con ".$autor_limpio." ".$autor_limpio2."----------  </p>";
+
+
 /*
         //$consulta_0 = array('http://api.elsevier.com/content/search/scopus?query=FIRSTAUTH(', $autor, ')&apiKey=',$apikey,'&httpAccept=application/json'); 
         $consulta_0 = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');     
@@ -354,6 +393,7 @@ echo "<p style='clear: left;'> ----- </p>";
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=affil(',$phpafiliacion[0],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');   
 */
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+
 
         $idConsulta = mt_rand();
 
