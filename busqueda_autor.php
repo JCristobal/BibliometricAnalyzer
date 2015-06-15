@@ -109,6 +109,7 @@
           $enlace_autor = str_replace("ó", "%C3%B3", $enlace_autor);
           $enlace_autor = str_replace("ú", "%C3%BA", $enlace_autor);
           $enlace_autor = str_replace("-", "%2D", $enlace_autor);
+          $enlace_autor = str_replace("ö", "%C3%B6", $enlace_autor);
 
           $enlace_autor = array('https://scholar.google.es/citations?hl=en&oe=ASCII&view_op=search_authors&mauthors=',$enlace_autor);
           $enlace_autor=implode("", $enlace_autor); 
@@ -189,6 +190,11 @@
         $autor = str_replace("ú", "%C3%BA", $autor);
         $autor = str_replace("-", "%2D", $autor);
         $autor = str_replace("'", "%27", $autor);
+        $autor = str_replace("ä", "%C3%A4", $autor);
+        $autor = str_replace("ë", "%C3%AB", $autor);
+        $autor = str_replace("ï", "%C3%AF", $autor);
+        $autor = str_replace("ö", "%C3%B6", $autor);
+        $autor = str_replace("ü", "%C3%BC", $autor);
 
         $autor2 = str_replace(" ", "%20", $autor2);
         $autor2 = str_replace("á", "%C3%A1", $autor2);
@@ -198,6 +204,11 @@
         $autor2 = str_replace("ú", "%C3%BA", $autor2);
         $autor2 = str_replace("-", "%2D", $autor2);
         $autor2 = str_replace("'", "%27", $autor2);
+        $autor2 = str_replace("ä", "%C3%A4", $autor2);
+        $autor2 = str_replace("ë", "%C3%AB", $autor2);
+        $autor2 = str_replace("ï", "%C3%AF", $autor2);
+        $autor2 = str_replace("ö", "%C3%B6", $autor2);
+        $autor2 = str_replace("ü", "%C3%BC", $autor2);
 
         // Formateamos de UTF a ASCII para mostrarlo
         $autor_limpio = str_replace("%20", " ", $autor_limpio);
@@ -208,6 +219,11 @@
         $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
         $autor_limpio = str_replace("%2D", "-", $autor_limpio);
         $autor_limpio = str_replace("%27", "'", $autor_limpio);
+        $autor_limpio = str_replace("%C3%A4","ä", $autor_limpio);
+        $autor_limpio = str_replace("%C3%AB","ë", $autor_limpio);
+        $autor_limpio = str_replace("%C3%AF","ï", $autor_limpio);
+        $autor_limpio = str_replace("%C3%B6","ö", $autor_limpio);
+        $autor_limpio = str_replace("%C3%BC","ü", $autor_limpio);
         $autor_limpio = strtoupper($autor_limpio);
 
         $autor_limpio2 = str_replace("%20", " ", $autor_limpio2);
@@ -218,6 +234,11 @@
         $autor_limpio2 = str_replace("%C3%BA", "ú", $autor_limpio2);
         $autor_limpio2 = str_replace("%2D", "-", $autor_limpio2);
         $autor_limpio2 = str_replace("%27", "'", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%A4","ä", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%AB","ë", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%AF","ï", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%B6","ö", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%BC","ü", $autor_limpio2);
 
 
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
@@ -266,27 +287,39 @@
           $enlace_coautores[] = $element->href;
         }
 
-
-        echo "<h1>Consulta  bibliométrica del autor ".$nombreGS."</h1>";
-
-        echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
-
-
-        echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
-
-        echo '<div style="float: left; margin: 15px 2px 2px 15px;">'.$email;
-        echo "AFILIATION: ".$phpafiliacion[0]."</div>";
-
-        echo "<p style='clear: left;'> ------- </p> ";
+        
+        if($nombreGS==""){
+          echo "<h1> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</h1>";
 
 
-        echo "<p> ".$datos[0]." citas </p> ";
-        echo "<p> Desde 2010: ".$datos[1]." citas </p> ";
-        echo "<p> indice H: ".$datos[2]." </p> ";
-        echo "<p> indice H desde 2010: ".$datos[3]." </p> ";
-        echo "<p> indice H10: ".$datos[4]." </p> ";
-        echo "<p> indice H10 desde 2010: ".$datos[5]." </p> ";
+          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="https://scholar.google.es/citations/images/avatar_scholar_150.jpg" height="150" width="150" /><br> </div>'; 
 
+          echo '<div style="float: left; margin: 15px 2px 2px 15px;"> No mail or affiliation verified </div>';
+
+          echo "<p style='clear: left;'> ------- </p> ";
+
+        }else{
+
+          echo "<h1> Bibliometric analysis of the author ".$nombreGS."</h1>";
+
+          echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
+
+
+          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
+
+          echo '<div style="float: left; margin: 15px 2px 2px 15px;">'.$email;
+          echo "AFILIATION: ".$phpafiliacion[0]."</div>";
+
+          echo "<p style='clear: left;'> ------- </p> ";
+
+
+          echo "<p> ".$datos[0]." citas </p> ";
+          echo "<p> Desde 2010: ".$datos[1]." citas </p> ";
+          echo "<p> indice H: ".$datos[2]." </p> ";
+          echo "<p> indice H desde 2010: ".$datos[3]." </p> ";
+          echo "<p> indice H10: ".$datos[4]." </p> ";
+          echo "<p> indice H10 desde 2010: ".$datos[5]." </p> ";
+        }
         echo "<p> ------- </p> ";
 
 
@@ -411,6 +444,11 @@ if(count($coautores)!=0){
               $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
               $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
               $coautores[$i] = str_replace("'", "%27", $coautores[$i]);
+              $coautores[$i] = str_replace("ä", "%C3%A4", $coautores[$i]);
+              $coautores[$i] = str_replace("ë", "%C3%AB", $coautores[$i]);
+              $coautores[$i] = str_replace("ï", "%C3%AF", $coautores[$i]);
+              $coautores[$i] = str_replace("ö", "%C3%B6", $coautores[$i]);
+              $coautores[$i] = str_replace("ü", "%C3%BC", $coautores[$i]);
 
                echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
             } 
@@ -451,6 +489,11 @@ echo "<p style='clear: left;'> ----- </p>";
           $phpafiliacion[0] = str_replace("ú", "%C3%BA", $phpafiliacion[0]);
           $phpafiliacion[0] = str_replace("-", "%2D", $phpafiliacion[0]);
           $phpafiliacion[0] = str_replace("'", "%27", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ä", "%C3%A4", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ë", "%C3%AB", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ï", "%C3%AF", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ö", "%C3%B6", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("ü", "%C3%BC", $phpafiliacion[0]);
 
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=affil(',$phpafiliacion[0],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');   
 */
@@ -529,6 +572,12 @@ echo "<p style='clear: left;'> ----- </p>";
           $tema = str_replace("ó", "%C3%B3", $tema);
           $tema = str_replace("ú", "%C3%BA", $tema);
           $tema = str_replace("-", "%2D", $tema);
+          $tema = str_replace("ä", "%C3%A4", $tema);
+          $tema = str_replace("ë", "%C3%AB", $tema);
+          $tema = str_replace("ï", "%C3%AF", $tema);
+          $tema = str_replace("ö", "%C3%B6", $tema);
+          $tema = str_replace("ü", "%C3%BC", $tema);
+
 
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$tema,')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
 
@@ -549,7 +598,7 @@ echo "<p style='clear: left;'> ----- </p>";
       else{
         echo "No tiene almacenado los temas que trata";
       }
-    
+   
 
 
 

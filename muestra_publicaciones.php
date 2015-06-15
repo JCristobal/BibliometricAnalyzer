@@ -48,22 +48,27 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
             echo "<img class=\"img_portada\" src=\"img/Sin_imagen_disponible.jpg\" height=\"200\" width=\"150\"></img>";
           }
 
-          echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p>"; 
+          echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p> <p>"; 
 
-          echo"<p> <form style =\"float: left;margin: 0px;\"> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$muestracreador\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">by $muestracreador </button></form>";
-          //echo "<p>By $muestracreador";
           // Consultamos lo que tiene almacenado como "coautores". Son los demás autores, pero en el apartado de "creator" sólo muestra el primero de la lista
           $arraycoautores= array($muestracoautores,"&httpAccept=application/json&apikey=",$apikey);
           $json_string=implode("", $arraycoautores); 
           $datos_coautores = json_decode(file_get_contents($json_string),true);
           $contador_coautores=1;
+          $contectado=false;   // En caso de no estar conectado a una red asociada a Scopus sólo se puede mostrar el primero de la lista, apartado "creator"
+
+          $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][0]["ce:indexed-name"];
+          if(!empty($coautor)){
+            echo "<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";      
+            $contectado=true;
+          }
           while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
-            //echo " and ".$datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
             $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
-            echo "<form style =\"float: left; margin: 0px;\"> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> and  $coautor </button></form>";
+            echo "<form style =\"float: left; margin: 0px;\">,<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";
             $contador_coautores++;
           }
-          echo "</p><p style=\"clear: left\">";
+          if($contectado){echo "</p><p style=\"clear: left\">";}
+          else{echo "<p>By $muestracreador (to see all authors have to be registered in Scopus)";}
 
           if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
           else{echo "(No associated affiliation)  </p> ";}  

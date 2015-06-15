@@ -85,13 +85,11 @@
         // TILDES
         // TILDES
 
-?>
 
 
+	       echo '<p>Did not you want to search this? <a href="index.html"> Go back </a> </p>';
 
-	   <p>Did not you want to search this? <a href="index.html"> Go back </a> </p>
 
-     <?php
  
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
@@ -101,15 +99,15 @@
 
         include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
                                                                                   //  &mauthors=autor:', $autor, '&hl=es&oi=ao');
-        if($hay_nombre){
+        /*if($hay_nombre){
           $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor, '&hl=en&oi=ao');     
         }
         if($hay_nombre2){
           $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor2, '&hl=en&oi=ao');     
-        }
-        if($hay_nombre && $hay_nombre2){
+        }*/
+        //if($hay_nombre && $hay_nombre2){
           $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor,'%20',$autor2,'&hl=en&oi=ao');     
-        }
+        //}
 
         $string2=implode("", $consulta2); 
         
@@ -135,7 +133,6 @@
         foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
                $author = array('http://scholar.google.es',$elemento->href);
                $author=implode("", $author); 
-               //echo "<p> <a href='".$author."'> Enlace al autor </a></p>";
                $listaAutores[]= $author;
                
         }

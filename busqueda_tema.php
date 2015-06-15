@@ -85,11 +85,11 @@
 
         //echo "<h1>Consulta  bibliométrica sobre ".$tema." </h1>";
 
-        echo "<h1>Consulta  bibliométrica";
+        echo "<h1> Bibliometric analysis";
 
         if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
         if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
-        if(strlen($titulo)){ echo " with title: ".$titulo; $hay_titulo=true;}
+        if(strlen($titulo)){ echo " with '".$titulo."' in the title."; $hay_titulo=true;}
         echo "</h1>";
 
 
@@ -189,6 +189,13 @@
         $palabra = str_replace("í", "%C3%AD", $palabra);
         $palabra = str_replace("ó", "%C3%B3", $palabra);
         $palabra = str_replace("ú", "%C3%BA", $palabra);
+        $palabra = str_replace("-", "%2D", $palabra);
+        $palabra = str_replace("'", "%27", $palabra);
+        $palabra = str_replace("ä", "%C3%A4", $palabra);
+        $palabra = str_replace("ë", "%C3%AB", $palabra);
+        $palabra = str_replace("ï", "%C3%AF", $palabra);
+        $palabra = str_replace("ö", "%C3%B6", $palabra);
+        $palabra = str_replace("ü", "%C3%BC", $palabra);
 
         $titulo = str_replace(" ", "%20", $titulo);
         $titulo = str_replace("á", "%%C3%A1", $titulo);
@@ -196,6 +203,13 @@
         $titulo = str_replace("í", "%C3%AD", $titulo);
         $titulo = str_replace("ó", "%C3%B3", $titulo);
         $titulo = str_replace("ú", "%C3%BA", $titulo);
+        $titulo = str_replace("-", "%2D", $titulo);
+        $titulo = str_replace("'", "%27", $titulo);
+        $titulo = str_replace("ä", "%C3%A4", $titulo);
+        $titulo = str_replace("ë", "%C3%AB", $titulo);
+        $titulo = str_replace("ï", "%C3%AF", $titulo);
+        $titulo = str_replace("ö", "%C3%B6", $titulo);
+        $titulo = str_replace("ü", "%C3%BC", $titulo);
 
 
         
