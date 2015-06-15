@@ -77,7 +77,7 @@
  
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
-        include'conexion.php'; 
+        include'generaApiKey.php'; 
 
         $autor_limpio = $_POST['busqueda_autor'];
         $autor = $_POST['busqueda_autor'];
@@ -188,6 +188,7 @@
         $autor = str_replace("ó", "%C3%B3", $autor);
         $autor = str_replace("ú", "%C3%BA", $autor);
         $autor = str_replace("-", "%2D", $autor);
+        $autor = str_replace("'", "%27", $autor);
 
         $autor2 = str_replace(" ", "%20", $autor2);
         $autor2 = str_replace("á", "%C3%A1", $autor2);
@@ -196,6 +197,7 @@
         $autor2 = str_replace("ó", "%C3%B3", $autor2);
         $autor2 = str_replace("ú", "%C3%BA", $autor2);
         $autor2 = str_replace("-", "%2D", $autor2);
+        $autor2 = str_replace("'", "%27", $autor2);
 
         // Formateamos de UTF a ASCII para mostrarlo
         $autor_limpio = str_replace("%20", " ", $autor_limpio);
@@ -205,8 +207,17 @@
         $autor_limpio = str_replace("%C3%B3", "ó", $autor_limpio);
         $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
         $autor_limpio = str_replace("%2D", "-", $autor_limpio);
-
+        $autor_limpio = str_replace("%27", "'", $autor_limpio);
         $autor_limpio = strtoupper($autor_limpio);
+
+        $autor_limpio2 = str_replace("%20", " ", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%A1", "á", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%A9", "é", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%AD", "í", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%B3", "ó", $autor_limpio2);
+        $autor_limpio2 = str_replace("%C3%BA", "ú", $autor_limpio2);
+        $autor_limpio2 = str_replace("%2D", "-", $autor_limpio2);
+        $autor_limpio2 = str_replace("%27", "'", $autor_limpio2);
 
 
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
@@ -233,7 +244,6 @@
         $email = "";
         foreach($html->find('#gsc_prf_ivh') as $element){
                $email = $element;
-               //echo $element."<br>";
         }
 
         $phpafiliacion= array(); 
@@ -400,6 +410,7 @@ if(count($coautores)!=0){
               $coautores[$i] = str_replace("í", "%C3%AD", $coautores[$i]);
               $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
               $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
+              $coautores[$i] = str_replace("'", "%27", $coautores[$i]);
 
                echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
             } 
@@ -439,6 +450,7 @@ echo "<p style='clear: left;'> ----- </p>";
           $phpafiliacion[0] = str_replace("ó", "%C3%B3", $phpafiliacion[0]);
           $phpafiliacion[0] = str_replace("ú", "%C3%BA", $phpafiliacion[0]);
           $phpafiliacion[0] = str_replace("-", "%2D", $phpafiliacion[0]);
+          $phpafiliacion[0] = str_replace("'", "%27", $phpafiliacion[0]);
 
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=affil(',$phpafiliacion[0],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');   
 */
@@ -447,7 +459,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
         $idConsulta = mt_rand();
 
-
+      include'conexion.php'; 
 
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
 
@@ -460,16 +472,18 @@ echo "<p style='clear: left;'> ----- </p>";
               
       }
 
+           $autor_limpio2 = str_replace("'", "\'", $autor_limpio2);
 
-           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio." ".$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
+           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio.$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
            echo "Autor almacenado<br>";
 
-
+      if($hay_entradas){ 
 
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
-
+      }
+      
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
@@ -480,11 +494,64 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 
-    
-
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
       echo "<p> Borrados los datos de la BD </p>";
+
+
+
+      if($phpafiliacion[1]!=""){      // Si tiene temas asociados:
+
+          $pos_coma = strrpos($phpafiliacion[1], ",");
+          if ($pos_coma === false) { 
+            $tema = $phpafiliacion[1];
+          } else {
+         
+            $temas = $phpafiliacion[1];
+            $temas = split (",", $phpafiliacion[1]);
+
+            $clave_aleatoria = array_rand($temas, 1); // hay mas de un tema, escogemos uno al azar
+            $tema = $temas[$clave_aleatoria];
+            //$tema = $temas[0]; // hay mas de un tema, escogemos el primero
+
+            echo "Temas que trata: ";
+            for ($i = 0; $i < count($temas); $i++) { 
+                  echo $temas[$i].", ";
+            } 
+          }
+
+        echo "<p> Y algunas publicaciones de tema <b>".$tema."</b>, del autor: </p>";
+
+          $tema = str_replace(" ", "%20", $tema);
+          $tema = str_replace("á", "%C3%A1", $tema);
+          $tema = str_replace("é", "%C3%A9", $tema);
+          $tema = str_replace("í", "%C3%AD", $tema);
+          $tema = str_replace("ó", "%C3%B3", $tema);
+          $tema = str_replace("ú", "%C3%BA", $tema);
+          $tema = str_replace("-", "%2D", $tema);
+
+        $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$tema,')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+
+
+        $idConsulta = mt_rand();
+
+        include 'almacena_publicaciones.php';    
+     
+        if($hay_entradas){ 
+          include 'muestra_publicaciones.php';    
+        }
+
+        $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+        mysql_query($borratodo) or die(mysql_error()); 
+        echo "<p> Borrados los datos de la BD </p>";
+
+      }
+      else{
+        echo "No tiene almacenado los temas que trata";
+      }
+    
+
+
 
 
 

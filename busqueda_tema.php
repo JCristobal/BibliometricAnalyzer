@@ -73,7 +73,7 @@
       
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP      
         
-        include'conexion.php';
+        include'generaApiKey.php';
 
         $tema = $_POST['busqueda_tema'];
         $palabra = $_POST['busqueda_basica'];
@@ -223,7 +223,7 @@
 
       $idConsulta = mt_rand();
 
-
+      include'conexion.php'; 
 
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
 
