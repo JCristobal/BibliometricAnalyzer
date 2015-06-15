@@ -28,6 +28,7 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
           $muestracitedby=$row['enlace_citedby'];
           $muestraeid=$row['eid'];
           $muestraissn=$row['issn'];
+          $muestracoautores=$row['enlace_coautores'];
 
         echo "<div class='entrada'>";
 
@@ -47,8 +48,23 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
             echo "<img class=\"img_portada\" src=\"img/Sin_imagen_disponible.jpg\" height=\"200\" width=\"150\"></img>";
           }
 
-          echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p> 
-          <p> <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$muestracreador\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">by $muestracreador </button></form>";
+          echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p>"; 
+
+          echo"<p> <form style =\"float: left;margin: 0px;\"> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$muestracreador\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">by $muestracreador </button></form>";
+          //echo "<p>By $muestracreador";
+          // Consultamos lo que tiene almacenado como "coautores". Son los demás autores, pero en el apartado de "creator" sólo muestra el primero de la lista
+          $arraycoautores= array($muestracoautores,"&httpAccept=application/json&apikey=",$apikey);
+          $json_string=implode("", $arraycoautores); 
+          $datos_coautores = json_decode(file_get_contents($json_string),true);
+          $contador_coautores=1;
+          while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+            //echo " and ".$datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+            $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+            echo "<form style =\"float: left; margin: 0px;\"> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> and  $coautor </button></form>";
+            $contador_coautores++;
+          }
+          echo "</p><p style=\"clear: left\">";
+
           if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
           else{echo "(No associated affiliation)  </p> ";}  
           echo "<p> Published in $muestrapublicacion ";
@@ -68,18 +84,7 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
           echo '</div>  <div style="clear: left"></div> ';
 
         echo "</div><br>";
-      
-//http://api.elsevier.com/documentation/AbstractCitationCountAPI.wadl
-//http://api.elsevier.com/documentation/metadata/abstractCitationCountMeta.json
-//http://www.scopus.com/results/citedbyresults.url?sort=plf-f&cite=2-s2.0-49549114022&src=s&imp=t&sid=EC4E03F932C14A3FE555B99C71AB440B.aXczxbyuHHiXgaIW6Ho7g%3a780&sot=cite&sdt=a&sl=0&origin=inward&editSaveSearch=&txGid=EC4E03F932C14A3FE555B99C71AB440B.aXczxbyuHHiXgaIW6Ho7g%3a77
-//http://api.elsevier.com/content/search/scopus?query=refeid%282-s2.0-49549114022%29&apiKey=c0dee35412af407a9c07b4fabc7bc447          
-
-
-        /*$html = file_get_html($muestraenlace);
-        foreach($html->find('hr p.marginB3') as $elemento){
-               echo $elemento->plaintext."<br>";           
-        } */       
-
+   
 
           echo "<br>";      
         }

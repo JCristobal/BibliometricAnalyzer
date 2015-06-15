@@ -561,37 +561,6 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 <script>
-/*  var listaAnios_publi_propia = <?php echo json_encode($phpanios_publi_propia); ?>;
-  var soloAnios_publi_propia = {};
-  var soloAnios_publi_propia = new Array();
-
-  //Cogemos sólo el año de la fecha
-  for(index = 0; index < listaAnios_publi_propia.length; index++) {
-    var ss = listaAnios_publi_propia[index].split("-");
-    soloAnios_publi_propia[index]=ss[0];
-  }
-  //Contamos las veces que se repite cada año
-  var counts_publi_propia = {};
-  var counts_publi_propia = new Array();
-  for(var i=0;i< soloAnios_publi_propia.length;i++){
-    var key = soloAnios_publi_propia[i];
-    counts_publi_propia[key] = (counts_publi_propia[key])? counts_publi_propia[key] + 1 : 1 ;       
-  }
-
-  // la función "unique" eliminará los elementos repetidos del array
-  Array.prototype.unique=function(a){
-    return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-  });
-  soloAnios_publi_propia=soloAnios_publi_propia.unique()
-
-  //mostramos los años
-  document.write("<p>Años y número de publicaciones recientes (PROPIAS): </p>");
-  for(index = 0; index < soloAnios_publi_propia.length; index++) {
-    document.write("Año "+soloAnios_publi_propia[index]+": "+counts_publi_propia[soloAnios_publi_propia[index]]+" publicaciones<br>");
-  }
-  document.write("<br><br>");
-*/
-
 
   var listaAnios = <?php echo json_encode($phpanios); ?>;
   var soloAnios = {};

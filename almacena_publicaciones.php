@@ -45,10 +45,11 @@ if($entradasTotales > 0){
             $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
             $afil_pais = $data["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
             $doi = $data["search-results"]["entry"][$i]["prism:doi"];
+            $enlace_coautores = $data["search-results"]["entry"][$i]["link"][1]["@href"];
             $enlace_preview = $data["search-results"]["entry"][$i]["link"][2]["@href"];
             $enlace_citedby = $data["search-results"]["entry"][$i]["link"][3]["@href"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                                                                                   
            mysql_query($insert) or die(mysql_error()); 
 
@@ -94,10 +95,11 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
                   $afil_pais = $data_2_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
                   $doi = $data_2_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_coautores = $data_2_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_2_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_2_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
-                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                  
                  mysql_query($insert) or die(mysql_error()); 
 
@@ -141,10 +143,11 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
                   $afil_pais = $data_3_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
                   $doi = $data_3_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_coautores = $data_3_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_3_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_3_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
-                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -187,10 +190,11 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
                   $afil_pais = $data_4_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
                   $doi = $data_4_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_coautores = $data_4_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_4_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_4_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
-                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -233,10 +237,11 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $afil_ciudad = str_replace("'", "\'", $afil_ciudad);
                   $afil_pais = $data_5_pag["search-results"]["entry"][$i]["affiliation"][0]["affiliation-country"];
                   $doi = $data_5_pag["search-results"]["entry"][$i]["prism:doi"];
+                  $enlace_coautores = $data_5_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_5_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_5_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
-                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')';                                                                                  
+                  $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 

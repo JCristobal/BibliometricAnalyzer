@@ -142,14 +142,18 @@
 
           <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%;" placeholder="Search by title" ></p>
 
-          <br><input type="submit" value="Find" class="btn btn-default">
+          <input type="submit" value="Find" class="btn btn-default">
 
         </div>
 
       </form>
-
-
-    
+<div >
+<form style ="float: left; ">
+<input type="text" name="busqueda_directa" style ="visibility: hidden; width:1px; display: inline;" value ="$coautor"> <button type=\"submit\" formmethod=\"post\" formaction="busqueda_autor.php" class="btn btn-link"> and $coautor </button>
+</form>
+<form style ="float: left; ">
+<input type="text" name="busqueda_directa" style ="visibility: hidden; width:1px; display: inline;" value ="$coautor"> <button type=\"submit\" formmethod=\"post\" formaction="busqueda_autor.php" class="btn btn-link"> and $coautor </button></form>
+  </div>  
       </div>
 
 
