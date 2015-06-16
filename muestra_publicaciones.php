@@ -32,7 +32,7 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
 
         echo "<div class='entrada'>";
 
-          echo "<p> Entry number ".$i."</p>"; 
+          //echo "<p> Entry number ".$i."</p>"; 
           $i++;
 
           // Comprobamos que tiene portada. Primero creamos el enlace a la portada
@@ -70,7 +70,7 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
           if($contectado){echo "</p><p style=\"clear: left\">";}
           else{echo "<p>By $muestracreador (to see all authors have to be registered in Scopus)";}
 
-          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) </p>";}
+          if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) ";}
           else{echo "(No associated affiliation)  </p> ";}  
           echo "<p> Published in $muestrapublicacion ";
           if($muestravolumen!=0){echo"(volume $muestravolumen) ";}

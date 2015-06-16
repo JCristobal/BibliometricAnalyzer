@@ -14,7 +14,7 @@ body {
 }
 
 #lista_entradas{
-	height:1500px;
+	height:600px;
 	overflow:auto;
 	overflow-x:hidden;
 }
@@ -27,12 +27,13 @@ body {
 .img_portada{
 	min-width: 149px;
 	float: left;
-	margin: 4% 10px 5px 5px;
+	margin: 30px 10px 15px 10px;
 }
 
 .cuerpo_entrada{
 	float: left;
-		margin: 3% 0px 5px 0px;
+	margin: 20px 0px 5px 10px;
+	max-width: 70%; 
 }
 .bubbleChart {
     min-width: 60px;
