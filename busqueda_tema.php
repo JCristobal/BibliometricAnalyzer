@@ -8,7 +8,7 @@
     <meta name="author" content="JCristobal">
     
 
-    <title>Consulta de tema</title>
+    <title>BibliometricAnalyzer: topics analysis</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Bibliometric consultant by JCristobal</a>
+          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
         </div>  
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -444,7 +444,7 @@ if(hay_entradas){
                 }
             },
             title: {
-                text: 'Número de publicaciones por año'
+                text: 'Number of publications each year'
             },
             plotOptions: {
                 column: {
@@ -455,17 +455,17 @@ if(hay_entradas){
                 //categories: Highcharts.getOptions().lang.shortMonths
                 categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
                 title: {
-                    text: 'Años'
+                    text: 'Years'
                 }
 
             },
             yAxis: {
                 title: {
-                    text: 'Publicaciones'
+                    text: 'Publications'
                 }
             },
             series: [{
-                name: 'Número de publicaciones',
+                name: 'Number of publications',
                 data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
                 
             }

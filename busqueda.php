@@ -8,7 +8,7 @@
     <meta name="author" content="JCristobal">
     
 
-    <title>Consulta</title>
+    <title>BibliometricAnalyzer: authors</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Bibliometric consultant by JCristobal</a>
+          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
         </div>  
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -67,15 +67,9 @@
         $autor = $_POST['busqueda_basica_autor'];
         $autor2 = $_POST['busqueda_basica_autor2'];
 
-//        $hay_nombre=false;
-//       $hay_nombre2=false;
 
-        echo "<h1>Consulta  bibliométrica del autor ";
+        echo "<h1> Looking for authors ".$autor." ".$autor2."</h1>";
 
-        if(strlen($autor)){ echo $autor." "; $hay_nombre=true;}
-        if(strlen($autor2)){ echo $autor2; $hay_nombre2=true;}
-
-        echo "</h1>";
 
         $autor = str_replace(" ", "%20", $autor);
         $autor2 = str_replace(" ", "%20", $autor2);

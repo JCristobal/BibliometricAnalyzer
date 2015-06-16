@@ -8,7 +8,7 @@
     <meta name="author" content="JCristobal">
     
 
-    <title>Consulta</title>
+    <title>BibliometricAnalyzer: author analysis</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -54,7 +54,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Bibliometric consultant by JCristobal</a>
+          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
         </div>  
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -258,7 +258,7 @@
 
         $foto = "";
         foreach($html->find('img') as $element){
-               $foto = array('<img src="http://scholar.google.es',$element->src,'" />');
+               $foto = array('<img src="http://scholar.google.es',$element->src,'"/>');
                $foto=implode("", $foto); 
         }
 
@@ -292,7 +292,7 @@
           echo "<h1> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</h1>";
 
 
-          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="https://scholar.google.es/citations/images/avatar_scholar_150.jpg" height="150" width="150" /><br> </div>'; 
+          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="img/user.png" height="150" width="150" /><br> </div>'; 
 
           echo '<div style="float: left; margin: 15px 2px 2px 15px;"> No mail or affiliation verified </div>';
 
@@ -305,6 +305,10 @@
           echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 
 
+          if($foto=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"/>'){
+            $foto='<img src="img/user.png" height="150" width="150"/>';
+          }
+
           echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
 
           echo '<div style="float: left; margin: 15px 2px 2px 15px;">'.$email;
@@ -313,12 +317,12 @@
           echo "<p style='clear: left;'> ------- </p> ";
 
 
-          echo "<p> ".$datos[0]." citas </p> ";
-          echo "<p> Desde 2010: ".$datos[1]." citas </p> ";
-          echo "<p> indice H: ".$datos[2]." </p> ";
-          echo "<p> indice H desde 2010: ".$datos[3]." </p> ";
-          echo "<p> indice H10: ".$datos[4]." </p> ";
-          echo "<p> indice H10 desde 2010: ".$datos[5]." </p> ";
+          echo "<p> ".$datos[0]." citations </p> ";
+          echo "<p> Since 2010: ".$datos[1]." citations </p> ";
+          echo "<p> H-index: ".$datos[2]." </p> ";
+          echo "<p> H-index since 2010: ".$datos[3]." </p> ";
+          echo "<p> i10-index: ".$datos[4]." </p> ";
+          echo "<p> i10-index since 2010: ".$datos[5]." </p> ";
         }
         echo "<p> ------- </p> ";
 
@@ -548,6 +552,7 @@ echo "<p style='clear: left;'> ----- </p>";
           $pos_coma = strrpos($phpafiliacion[1], ",");
           if ($pos_coma === false) { 
             $tema = $phpafiliacion[1];
+            echo "The author works with the subtopic: ".$tema;
           } else {
          
             $temas = $phpafiliacion[1];
@@ -557,13 +562,13 @@ echo "<p style='clear: left;'> ----- </p>";
             $tema = $temas[$clave_aleatoria];
             //$tema = $temas[0]; // hay mas de un tema, escogemos el primero
 
-            echo "Temas que trata: ";
+            echo "The author works with the subtopics: ";
             for ($i = 0; $i < count($temas); $i++) { 
                   echo $temas[$i].", ";
             } 
           }
 
-        echo "<p> Y algunas publicaciones de tema <b>".$tema."</b>, del autor: </p>";
+        echo "<p> And some publications of the subtopic <b>".$tema."</b>: </p>";
 
           $tema = str_replace(" ", "%20", $tema);
           $tema = str_replace("á", "%C3%A1", $tema);
