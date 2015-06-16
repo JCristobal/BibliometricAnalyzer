@@ -116,7 +116,7 @@
 
         $listaFotos = array();
         foreach($html->find('img') as $element){
-               $foto = array('<img src="http://scholar.google.es',$element->src,'" </img>');
+               $foto = array('<img src="http://scholar.google.es',$element->src,'"</img>');
                $foto=implode("", $foto); 
                //echo $foto."<br>";
                $listaFotos[]= $foto ;
@@ -168,6 +168,10 @@
           document.write("<div style='border-style: solid; margin-bottom: 2px'>");
           //document.write("<img src=\"http://scholar.google.es"+listaFot[index]+"\" </img> " );
           //document.write("<p><a href='http://scholar.google.es"+listaAut[indice]+"\'> Enlace al autor</a></p>");
+          if(listaFot[index]=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"</img>'){
+            listaFot[index]='<img src="img/user.png" height="150" width="150"/>';
+          }
+
           document.write(listaFot[index]);
           document.write(listaNom[index]+"<br>");
           document.write("Affiliation: "+listaAfil[index]+"<br>");

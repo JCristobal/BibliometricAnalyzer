@@ -546,11 +546,14 @@ echo "<p style='clear: left;'> ----- </p>";
       echo "<p> Borrados los datos de la BD </p>";
 
 
+      $tema="";
+      $temas="";
 
       if($phpafiliacion[1]!=""){      // Si tiene temas asociados:
 
           $pos_coma = strrpos($phpafiliacion[1], ",");
           if ($pos_coma === false) { 
+            //$tema_aux = $phpafiliacion[1];
             $tema = $phpafiliacion[1];
             echo "The author works with the subtopic: ".$tema;
           } else {
@@ -558,17 +561,30 @@ echo "<p style='clear: left;'> ----- </p>";
             $temas = $phpafiliacion[1];
             $temas = split (",", $phpafiliacion[1]);
 
-            $clave_aleatoria = array_rand($temas, 1); // hay mas de un tema, escogemos uno al azar
-            $tema = $temas[$clave_aleatoria];
+            //$clave_aleatoria = array_rand($temas, 1); // hay mas de un tema, escogemos uno al azar
+            //$tema = $temas[$clave_aleatoria];
             //$tema = $temas[0]; // hay mas de un tema, escogemos el primero
 
             echo "The author works with the subtopics: ";
             for ($i = 0; $i < count($temas); $i++) { 
                   echo $temas[$i].", ";
+
+                  $temas[$i] = str_replace(" ", "%20", $temas[$i]);
+                  $temas[$i] = str_replace("á", "%C3%A1", $temas[$i]);
+                  $temas[$i] = str_replace("é", "%C3%A9", $temas[$i]);
+                  $temas[$i] = str_replace("í", "%C3%AD", $temas[$i]);
+                  $temas[$i] = str_replace("ó", "%C3%B3", $temas[$i]);
+                  $temas[$i] = str_replace("ú", "%C3%BA", $temas[$i]);
+                  $temas[$i] = str_replace("-", "%2D", $temas[$i]);
+                  $temas[$i] = str_replace("ä", "%C3%A4", $temas[$i]);
+                  $temas[$i] = str_replace("ë", "%C3%AB", $temas[$i]);
+                  $temas[$i] = str_replace("ï", "%C3%AF", $temas[$i]);
+                  $temas[$i] = str_replace("ö", "%C3%B6", $temas[$i]);
+                  $temas[$i] = str_replace("ü", "%C3%BC", $temas[$i]);
             } 
           }
 
-        echo "<p> And some publications of the subtopic <b>".$tema."</b>: </p>";
+//        echo "<p> And some publications of the subtopic <b>".$tema."</b>: </p>";
 
           $tema = str_replace(" ", "%20", $tema);
           $tema = str_replace("á", "%C3%A1", $tema);
@@ -583,21 +599,83 @@ echo "<p style='clear: left;'> ----- </p>";
           $tema = str_replace("ö", "%C3%B6", $tema);
           $tema = str_replace("ü", "%C3%BC", $tema);
 
+        $phpanios_tema = array("");
+        $phpanios_tema0 = array(""); 
+        $phpanios_tema1 = array("");
+        $phpanios_tema2 = array("");
+        $phpanios_tema3 = array("");
 
-        $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$tema,')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+        if($tema!=""){
+
+            $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$tema,')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+
+            $idConsulta = mt_rand();
+            include 'almacena_publicaciones.php';   
 
 
-        $idConsulta = mt_rand();
+            //$phpanios_tema = array(); 
+            $consulta_anios_tema= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
+            $resultados_anios_tema=mysql_query($consulta_anios_tema,$conexion);
+            while ($row=mysql_fetch_array($resultados_anios_tema)) {  
+              $phpanios_tema[]=$row['fecha_portada_0'];
+            }
 
-        include 'almacena_publicaciones.php';    
-     
-        if($hay_entradas){ 
-          include 'muestra_publicaciones.php';    
+            if($hay_entradas){ 
+
+              $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+              mysql_query($borratodo) or die(mysql_error()); 
+              echo "<p> Borrados los datos de la BD </p>";
+            }
+
         }
+        else{
+          $tope=4;
+          if(count($temas)<4){$tope=count($temas);}
+          for ($indice = 0; $indice < $tope; $indice++) { 
+            $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$temas[$indice],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+            $idConsulta = mt_rand();
+            include 'almacena_publicaciones.php';   
 
-        $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
-        mysql_query($borratodo) or die(mysql_error()); 
-        echo "<p> Borrados los datos de la BD </p>";
+            $consulta_anios_tema= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
+            $resultados_anios_tema=mysql_query($consulta_anios_tema,$conexion);
+
+            if($indice==0){
+              //$phpanios_tema0 = array(); 
+              while ($row=mysql_fetch_array($resultados_anios_tema)) {  
+                $phpanios_tema0[]=$row['fecha_portada_0'];
+              }
+            }
+              
+            if($indice==1){
+              //$phpanios_tema1 = array(); 
+              while ($row=mysql_fetch_array($resultados_anios_tema)) {  
+                $phpanios_tema1[]=$row['fecha_portada_0'];
+              }
+            }
+            
+            if($indice==2){
+              //$phpanios_tema2 = array(); 
+              while ($row=mysql_fetch_array($resultados_anios_tema)) {  
+                $phpanios_tema2[]=$row['fecha_portada_0'];
+              }
+            }
+            if($indice==3){
+              //$phpanios_tema3 = array(); 
+              while ($row=mysql_fetch_array($resultados_anios_tema)) {  
+                $phpanios_tema3[]=$row['fecha_portada_0'];
+              }
+            }
+
+            $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+            mysql_query($borratodo) or die(mysql_error()); 
+            echo "<p> Borrados los datos de la BD </p>";
+        
+          } // fin for
+          
+        }// fin else
+
+
+      echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 0 auto"></div>';
 
       }
       else{
@@ -648,19 +726,26 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 $(function () {
+
     $('#container_columns').highcharts({
         chart: {
             type: 'column',
             margin: 75,
             options3d: {
-                enabled: true,
+                enabled: true/*,
                 alpha: 10,
                 beta: 25,
-                depth: 70
-            }
+                depth: 70*/
+            },
+            zoomType: 'x' // Para ampliar al pinchar y arrastrar en el área
         },
         title: {
             text: 'Publicaciones en los últimos años'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' :
+                    ''
         },
         plotOptions: {
             column: {
@@ -668,7 +753,6 @@ $(function () {
             }
         },
         xAxis: {
-            //categories: Highcharts.getOptions().lang.shortMonths
             categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12]],
             title: {
                 text: 'Años'
@@ -676,21 +760,217 @@ $(function () {
 
         },
         yAxis: {
+            allowDecimals: false,
             title: {
                 text: 'Publicaciones'
             }
         },
         series: [{
+            //type: 'area',   // Barras pasan a tener forma de area
             name: 'Número de publicaciones',
             data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]]]
             
         }
         ]
 
-    });
-});
-</script>
+    }); // acaba #container_columns
 
+
+  //Calculamos los años y apariciones de un tema (SOLO HAY UN TEMA)
+  var listaAnios_tema = <?php echo json_encode($phpanios_tema); ?>;
+  var soloAnios_tema = {};
+  var soloAnios_tema = new Array();
+
+  //Cogemos sólo el año de la fecha
+  for(index = 0; index < listaAnios_tema.length; index++) {
+    var ss = listaAnios_tema[index].split("-");
+    soloAnios_tema[index]=ss[0];
+  }
+  //Contamos las veces que se repite cada año
+  var counts_tema = {};
+  var counts_tema = new Array();
+  for(var i=0;i< soloAnios_tema.length;i++){
+    var key = soloAnios_tema[i];
+    counts_tema[key] = (counts_tema[key])? counts_tema[key] + 1 : 1 ;       
+  }
+
+  // la función "unique" eliminará los elementos repetidos del array
+  //soloAnios_tema=soloAnios_tema.unique()
+
+
+  //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 1)
+  var listaAnios_tema0 = <?php echo json_encode($phpanios_tema0); ?>;
+  var soloAnios_tema0 = {};
+  var soloAnios_tema0 = new Array();
+  //Cogemos sólo el año de la fecha
+  for(index = 0; index < listaAnios_tema0.length; index++) {
+    var ss = listaAnios_tema0[index].split("-");
+    soloAnios_tema0[index]=ss[0];
+  }
+  //Contamos las veces que se repite cada año
+  var counts_tema0 = {};
+  var counts_tema0 = new Array();
+  for(var i=0;i< soloAnios_tema0.length;i++){
+    var key = soloAnios_tema0[i];
+    counts_tema0[key] = (counts_tema0[key])? counts_tema0[key] + 1 : 1 ;       
+  }
+  // la función "unique" eliminará los elementos repetidos del array
+  //soloAnios_tema0=soloAnios_tema0.unique()
+  //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 2)
+  var listaAnios_tema1 = <?php echo json_encode($phpanios_tema1); ?>;
+  var soloAnios_tema1 = {};
+  var soloAnios_tema1 = new Array();
+  //Cogemos sólo el año de la fecha
+  for(index = 0; index < listaAnios_tema1.length; index++) {
+    var ss = listaAnios_tema1[index].split("-");
+    soloAnios_tema1[index]=ss[0];
+  }
+  //Contamos las veces que se repite cada año
+  var counts_tema1 = {};
+  var counts_tema1 = new Array();
+  for(var i=0;i< soloAnios_tema1.length;i++){
+    var key = soloAnios_tema1[i];
+    counts_tema1[key] = (counts_tema1[key])? counts_tema1[key] + 1 : 1 ;       
+  }
+  // la función "unique" eliminará los elementos repetidos del array
+  //soloAnios_tema1=soloAnios_tema1.unique()
+  //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 3)
+  var listaAnios_tema2 = <?php echo json_encode($phpanios_tema2); ?>;
+  var soloAnios_tema2 = {};
+  var soloAnios_tema2 = new Array();
+  //Cogemos sólo el año de la fecha
+  for(index = 0; index < listaAnios_tema2.length; index++) {
+    var ss = listaAnios_tema2[index].split("-");
+    soloAnios_tema2[index]=ss[0];
+  }
+  //Contamos las veces que se repite cada año
+  var counts_tema2 = {};
+  var counts_tema2 = new Array();
+  for(var i=0;i< soloAnios_tema2.length;i++){
+    var key = soloAnios_tema2[i];
+    counts_tema2[key] = (counts_tema2[key])? counts_tema2[key] + 1 : 1 ;       
+  }
+  // la función "unique" eliminará los elementos repetidos del array
+  //soloAnios_tema2=soloAnios_tema2.unique()
+  //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 4)
+  var listaAnios_tema3 = <?php echo json_encode($phpanios_tema3); ?>;
+  var soloAnios_tema3 = {};
+  var soloAnios_tema3 = new Array();
+  //Cogemos sólo el año de la fecha
+  for(index = 0; index < listaAnios_tema3.length; index++) {
+    var ss = listaAnios_tema3[index].split("-");
+    soloAnios_tema3[index]=ss[0];
+  }
+  //Contamos las veces que se repite cada año
+  var counts_tema3 = {};
+  var counts_tema3 = new Array();
+  for(var i=0;i< soloAnios_tema3.length;i++){
+    var key = soloAnios_tema3[i];
+    counts_tema3[key] = (counts_tema3[key])? counts_tema3[key] + 1 : 1 ;       
+  }
+  // la función "unique" eliminará los elementos repetidos del array
+  //soloAnios_tema3=soloAnios_tema3.unique()
+
+
+
+  for(var aux =2003; aux <=2015; aux++){
+    if( typeof counts_tema0[aux]=="undefined"){counts_tema0[aux]=0;}
+    if( typeof counts_tema1[aux]=="undefined"){counts_tema1[aux]=0;}
+    if( typeof counts_tema2[aux]=="undefined"){counts_tema2[aux]=0;}
+    if( typeof counts_tema3[aux]=="undefined"){counts_tema3[aux]=0;}
+  }
+
+
+
+  var series_temas ="";
+  var tema_autor = <?php echo json_encode($tema); ?>;
+  var lista_temas_autor = <?php echo json_encode($temas); ?>;
+
+  if(tema_autor != ""){
+      series_temas = [{
+                  name: tema_autor,
+                  data: [counts_tema[2003], counts_tema[2004], counts_tema[2005], counts_tema[2006], counts_tema[2007], counts_tema[2008], counts_tema[2009], counts_tema[2010], counts_tema[2011], counts_tema[2012], counts_tema[2013], counts_tema[2014], counts_tema[2015]]
+              }];
+  }
+  else{  
+      if(lista_temas_autor.length == 2){
+        series_temas =[
+            {
+                name: lista_temas_autor[0],
+                data: [counts_tema0[2003], counts_tema0[2004], counts_tema0[2005], counts_tema0[2006], counts_tema0[2007], counts_tema0[2008], counts_tema0[2009], counts_tema0[2010], counts_tema0[2011], counts_tema0[2012], counts_tema0[2013], counts_tema0[2014], counts_tema0[2015]]
+            }, {
+                name: lista_temas_autor[1],
+                data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
+            }];
+
+      }
+      else{ 
+        if(lista_temas_autor.length == 3){
+          series_temas =[
+              {
+                  name: lista_temas_autor[0],
+                  data: [counts_tema0[2003], counts_tema0[2004], counts_tema0[2005], counts_tema0[2006], counts_tema0[2007], counts_tema0[2008], counts_tema0[2009], counts_tema0[2010], counts_tema0[2011], counts_tema0[2012], counts_tema0[2013], counts_tema0[2014], counts_tema0[2015]]
+              }, {
+                  name: lista_temas_autor[1],
+                  data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
+              }, {
+                  name: lista_temas_autor[2],
+                  data: [counts_tema2[2003], counts_tema2[2004], counts_tema2[2005], counts_tema2[2006], counts_tema2[2007], counts_tema2[2008], counts_tema2[2009], counts_tema2[2010], counts_tema2[2011], counts_tema2[2012], counts_tema2[2013], counts_tema2[2014], counts_tema2[2015]]
+              }];
+        } 
+        else{ 
+
+          series_temas =[
+              {
+                  name: lista_temas_autor[0],
+                  data: [counts_tema0[2003], counts_tema0[2004], counts_tema0[2005], counts_tema0[2006], counts_tema0[2007], counts_tema0[2008], counts_tema0[2009], counts_tema0[2010], counts_tema0[2011], counts_tema0[2012], counts_tema0[2013], counts_tema0[2014], counts_tema0[2015]]
+              }, {
+                  name: lista_temas_autor[1],
+                  data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
+              }, {
+                  name: lista_temas_autor[2],
+                  data: [counts_tema2[2003], counts_tema2[2004], counts_tema2[2005], counts_tema2[2006], counts_tema2[2007], counts_tema2[2008], counts_tema2[2009], counts_tema2[2010], counts_tema2[2011], counts_tema2[2012], counts_tema2[2013], counts_tema2[2014], counts_tema2[2015]]
+              }, {
+                  name: lista_temas_autor[3],
+                  data: [counts_tema3[2003], counts_tema3[2004], counts_tema3[2005], counts_tema3[2006], counts_tema3[2007], counts_tema3[2008], counts_tema3[2009], counts_tema3[2010], counts_tema3[2011], counts_tema3[2012], counts_tema3[2013], counts_tema3[2014], counts_tema3[2015]]
+              }];
+
+        }    
+      }         
+  }//fin else
+
+
+
+    $('#container_varios').highcharts({
+
+        chart: {
+            type: 'column'
+        },
+
+        title: {
+            text: 'Publications in the different (since 4) subtopics of the author'
+        },
+
+        xAxis: {
+            categories: [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+        },
+
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: 'Number of publications'
+            }
+        },
+        series: series_temas
+
+    }); // acaba #container_varios
+
+
+
+});// fin function
+
+</script>
 
 
 
