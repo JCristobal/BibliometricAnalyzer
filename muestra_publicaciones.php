@@ -1,16 +1,17 @@
 <?php
 /*
-Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
+Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
 
 */
-        $i=1;
-        $consulta_publicaciones= "SELECT * FROM publicaciones WHERE id=".$idConsulta ;
-                    
-        $resultados=mysql_query($consulta_publicaciones,$conexion);   
+        $i=0;
+
+        $consulta_publicaciones= "SELECT * FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` DESC";
+      
+        $resultados=mysql_query($consulta_publicaciones,$conexion); 
 
         echo "<div id='lista_entradas'>";
 
-        while ($row=mysql_fetch_array($resultados)) {   
+        while (($row=mysql_fetch_array($resultados)) && ($i<50)) {   
           $muestratitulo=$row['titulo']; 
           $muestracreador=$row['creador']; 
           $muestrapublicacion=$row['nombre_publi']; 
@@ -32,7 +33,7 @@ Mostraremos las entradas de las publicaciones que se ajusten a la consulta dada 
 
         echo "<div class='entrada'>";
 
-          //echo "<p> Entry number ".$i."</p>"; 
+          echo "<p> Entry number ".$i."</p>"; 
           $i++;
 
           // Comprobamos que tiene portada. Primero creamos el enlace a la portada
