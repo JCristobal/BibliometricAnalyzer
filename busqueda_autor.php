@@ -530,7 +530,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
       }
-      
+     
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
@@ -548,6 +548,9 @@ echo "<p style='clear: left;'> ----- </p>";
 
       $tema="";
       $temas="";
+      $muestra_temas_asociados=false;
+      $tema_aux ="";  // Guardaremos estas variable "auxiliares" con el mismo valor para trabajar con ella una vez modificada para trabajar
+      $temas_aux = array("");
 
       if($phpafiliacion[1]!=""){      // Si tiene temas asociados:
 
@@ -555,7 +558,21 @@ echo "<p style='clear: left;'> ----- </p>";
           if ($pos_coma === false) { 
             //$tema_aux = $phpafiliacion[1];
             $tema = $phpafiliacion[1];
-            echo "The author works with the subtopic: ".$tema;
+            $tema_aux=$tema; //echo "The author works with the subtopic: ".$tema;
+
+            $tema = str_replace(" ", "%20", $tema);
+            $tema = str_replace("á", "%C3%A1", $tema);
+            $tema = str_replace("é", "%C3%A9", $tema);
+            $tema = str_replace("í", "%C3%AD", $tema);
+            $tema = str_replace("ó", "%C3%B3", $tema);
+            $tema = str_replace("ú", "%C3%BA", $tema);
+            $tema = str_replace("-", "%2D", $tema);
+            $tema = str_replace("ä", "%C3%A4", $tema);
+            $tema = str_replace("ë", "%C3%AB", $tema);
+            $tema = str_replace("ï", "%C3%AF", $tema);
+            $tema = str_replace("ö", "%C3%B6", $tema);
+            $tema = str_replace("ü", "%C3%BC", $tema);
+
           } else {
          
             $temas = $phpafiliacion[1];
@@ -565,9 +582,9 @@ echo "<p style='clear: left;'> ----- </p>";
             //$tema = $temas[$clave_aleatoria];
             //$tema = $temas[0]; // hay mas de un tema, escogemos el primero
 
-            echo "The author works with the subtopics: ";
+            //echo "The author works with the subtopics: ";
             for ($i = 0; $i < count($temas); $i++) { 
-                  echo $temas[$i].", ";
+                  $temas_aux[$i] = $temas[$i]; //echo $temas[$i].", ";
 
                   $temas[$i] = str_replace(" ", "%20", $temas[$i]);
                   $temas[$i] = str_replace("á", "%C3%A1", $temas[$i]);
@@ -586,24 +603,14 @@ echo "<p style='clear: left;'> ----- </p>";
 
 //        echo "<p> And some publications of the subtopic <b>".$tema."</b>: </p>";
 
-          $tema = str_replace(" ", "%20", $tema);
-          $tema = str_replace("á", "%C3%A1", $tema);
-          $tema = str_replace("é", "%C3%A9", $tema);
-          $tema = str_replace("í", "%C3%AD", $tema);
-          $tema = str_replace("ó", "%C3%B3", $tema);
-          $tema = str_replace("ú", "%C3%BA", $tema);
-          $tema = str_replace("-", "%2D", $tema);
-          $tema = str_replace("ä", "%C3%A4", $tema);
-          $tema = str_replace("ë", "%C3%AB", $tema);
-          $tema = str_replace("ï", "%C3%AF", $tema);
-          $tema = str_replace("ö", "%C3%B6", $tema);
-          $tema = str_replace("ü", "%C3%BC", $tema);
+
 
         $phpanios_tema = array("");
         $phpanios_tema0 = array(""); 
         $phpanios_tema1 = array("");
         $phpanios_tema2 = array("");
         $phpanios_tema3 = array("");
+        $numero_publi_tema = array("");
 
         if($tema!=""){
 
@@ -634,7 +641,8 @@ echo "<p style='clear: left;'> ----- </p>";
           for ($indice = 0; $indice < $tope; $indice++) { 
             $consulta = array('http://api.elsevier.com/content/search/scopus?query=KEY(',$temas[$indice],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
             $idConsulta = mt_rand();
-            include 'almacena_publicaciones.php';   
+            include 'almacena_publicaciones.php'; 
+            $numero_publi_tema[$indice] =  $entradasTotales; 
 
             $consulta_anios_tema= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
             $resultados_anios_tema=mysql_query($consulta_anios_tema,$conexion);
@@ -674,17 +682,10 @@ echo "<p style='clear: left;'> ----- </p>";
           
         }// fin else
 
-
-      echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 0 auto"></div>';
+      $muestra_temas_asociados=true;
 
       }
-      else{
-        echo "No tiene almacenado los temas que trata";
-      }
-   
-
-
-
+      
 
 
       ?>
@@ -883,8 +884,8 @@ $(function () {
 
 
   var series_temas ="";
-  var tema_autor = <?php echo json_encode($tema); ?>;
-  var lista_temas_autor = <?php echo json_encode($temas); ?>;
+  var tema_autor = <?php echo json_encode($tema_aux); ?>;
+  var lista_temas_autor = <?php echo json_encode($temas_aux); ?>;
 
   if(tema_autor != ""){
       series_temas = [{
@@ -972,8 +973,27 @@ $(function () {
 
 </script>
 
+<?php
+  if($muestra_temas_asociados){
+
+    if($tema!=""){
+        echo "The author works with the subtopic: <b>".$tema_aux."</b> with ".$entradasTotales." entries. ";
+    }else{
+        echo "The author works with the subtopics: ";
+                for ($i = 0; $i < count($temas); $i++) { 
+                      echo "<b>".$temas_aux[$i]."</b> with ".$numero_publi_tema[$i]." entries, ";
+        }
+
+    }
 
 
+    echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 0 auto"></div>';
+
+  }else{
+    echo "<p>Topics aren't registered </p>";  
+  }
+   
+?>
 <!--  <div id="container_columns" style="height: 400px"></div>  -->
 
 
