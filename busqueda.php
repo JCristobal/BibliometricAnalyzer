@@ -70,14 +70,11 @@
 
         echo "<h1> Looking for authors ".$autor." ".$autor2."</h1>";
 
+        include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
+
 
         $autor = str_replace(" ", "%20", $autor);
         $autor2 = str_replace(" ", "%20", $autor2);
-        // TILDES
-        // TILDES
-        // TILDES
-        // TILDES
-        // TILDES
 
 
 
@@ -91,7 +88,7 @@
 
         echo "<p> ---------- CONSULTA A GOOGLE ACADEM.----------  </p>";
 
-        include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
+
                                                                                   //  &mauthors=autor:', $autor, '&hl=es&oi=ao');
         /*if($hay_nombre){
           $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor, '&hl=en&oi=ao');     

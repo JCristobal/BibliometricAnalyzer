@@ -75,6 +75,9 @@
         
         include'generaApiKey.php';
 
+        include_once('funciones.php');
+
+
         $tema = $_POST['busqueda_tema'];
         $palabra = $_POST['busqueda_basica'];
         $titulo = $_POST['busqueda_titulo'];
@@ -181,9 +184,9 @@
 
         echo"<p>Did not you want to search this? <a href='index.html'> Go home </a> </p>";
 
-
+        $palabra = iso2utf($palabra);
         //Traducimos los caracteres especiales dados a UTF-8
-        $palabra = str_replace(" ", "%20", $palabra);
+        /*$palabra = str_replace(" ", "%20", $palabra);
         $palabra = str_replace("á", "%%C3%A1", $palabra);
         $palabra = str_replace("é", "%C3%A9", $palabra);
         $palabra = str_replace("í", "%C3%AD", $palabra);
@@ -195,9 +198,10 @@
         $palabra = str_replace("ë", "%C3%AB", $palabra);
         $palabra = str_replace("ï", "%C3%AF", $palabra);
         $palabra = str_replace("ö", "%C3%B6", $palabra);
-        $palabra = str_replace("ü", "%C3%BC", $palabra);
+        $palabra = str_replace("ü", "%C3%BC", $palabra);*/
 
-        $titulo = str_replace(" ", "%20", $titulo);
+        $titulo = iso2utf($titulo);
+        /*$titulo = str_replace(" ", "%20", $titulo);
         $titulo = str_replace("á", "%%C3%A1", $titulo);
         $titulo = str_replace("é", "%C3%A9", $titulo);
         $titulo = str_replace("í", "%C3%AD", $titulo);
@@ -209,7 +213,7 @@
         $titulo = str_replace("ë", "%C3%AB", $titulo);
         $titulo = str_replace("ï", "%C3%AF", $titulo);
         $titulo = str_replace("ö", "%C3%B6", $titulo);
-        $titulo = str_replace("ü", "%C3%BC", $titulo);
+        $titulo = str_replace("ü", "%C3%BC", $titulo);*/
 
 
         
@@ -217,22 +221,22 @@
           $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=',$palabra,'&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_titulo){
           $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=',$palabra,'%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_titulo){
           $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=',$palabra,'%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=',$palabra,'%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
 
       $idConsulta = mt_rand();
@@ -404,7 +408,6 @@
         // Wait for the chart to finish drawing before calling the getImageURI() method.   // Para pintar
         google.visualization.events.addListener(chart_regions, 'ready', function () {
           png_regions.innerHTML = '<a href="' + chart.getImageURI() + '">Link to .png version</a>';
-          //console.log(regions_div.innerHTML);
         });
 
         chart.draw(data, options);
@@ -432,7 +435,6 @@
         // Wait for the chart to finish drawing before calling the getImageURI() method.   // Para pintar
         google.visualization.events.addListener(chart_donut, 'ready', function () {
           png_donut.innerHTML = '<img src="' + chart.getImageURI() + '">';
-          //console.log(donutchart.innerHTML);
         });
 
 
@@ -456,19 +458,26 @@ if(hay_entradas){
             chart: {
                 type: 'column',
                 margin: 75,
-                options3d: {
+                zoomType: 'x', 
+                /*options3d: {
                     enabled: true,
                     alpha: 10,
                     beta: 25,
                     depth: 70
-                }
+                }*/
             },
             title: {
                 text: 'Number of publications each year'
             },
+            subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' :
+                    ''
+            },
             plotOptions: {
                 column: {
-                    depth: 25
+                    //depth: 25
+                    //color: "#00FF00"
                 }
             },
             xAxis: {
@@ -480,11 +489,13 @@ if(hay_entradas){
 
             },
             yAxis: {
+                allowDecimals: false,
                 title: {
                     text: 'Publications'
                 }
             },
             series: [{
+                //type: 'area',
                 name: 'Number of publications',
                 data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
                 

@@ -96,25 +96,20 @@
         $enlace_aux = $enlace_autor;
         $nombre_aux = $autor_directo;  
         
+        include_once('funciones.php');
+
 
         if(strlen($autor_directo)){
 
           //echo "DIRECTA";
 
           $enlace_autor = $autor_directo;
-          $enlace_autor = str_replace(" ", "%20", $enlace_autor);
-          $enlace_autor = str_replace("á", "%C3%A1", $enlace_autor);
-          $enlace_autor = str_replace("é", "%C3%A9", $enlace_autor);
-          $enlace_autor = str_replace("í", "%C3%AD", $enlace_autor);
-          $enlace_autor = str_replace("ó", "%C3%B3", $enlace_autor);
-          $enlace_autor = str_replace("ú", "%C3%BA", $enlace_autor);
-          $enlace_autor = str_replace("-", "%2D", $enlace_autor);
-          $enlace_autor = str_replace("ö", "%C3%B6", $enlace_autor);
+          $enlace_autor = iso2utf($enlace_autor);
+
 
           $enlace_autor = array('https://scholar.google.es/citations?hl=en&oe=ASCII&view_op=search_authors&mauthors=',$enlace_autor);
           $enlace_autor=implode("", $enlace_autor); 
-
-          //include_once('simple_html_dom.php');          
+       
 
           $aux= array(); 
           $html = file_get_html($enlace_autor);
@@ -140,14 +135,8 @@
           $enlace_autor = $enlace_aux; // Recuperamos el enlace del autor
           $autor_directo = $nombre_aux ; // y el nombre
           
-          // Formateamos de UTF a ASCII 
-          $autor_directo = str_replace("%20", " ", $autor_directo);
-          $autor_directo = str_replace("%C3%A1", "á", $autor_directo);
-          $autor_directo = str_replace("%C3%A9", "é", $autor_directo);
-          $autor_directo = str_replace("%C3%AD", "í", $autor_directo);
-          $autor_directo = str_replace("%C3%B3", "ó", $autor_directo);
-          $autor_directo = str_replace("%C3%BA", "ú", $autor_directo);
-          $autor_directo = str_replace("%2D", "-", $autor_directo);
+          $autor_directo = utf2iso($autor_directo);
+
                      
           //Asigno valores a $autor y $autor2 a partír de $autor_directo para buscar con Scopus
 
@@ -181,64 +170,14 @@
         }
 
 
-        // Formateamos de ASCII a UTF para trabajar con él
-        $autor = str_replace(" ", "%20", $autor);
-        $autor = str_replace("á", "%C3%A1", $autor);
-        $autor = str_replace("é", "%C3%A9", $autor);
-        $autor = str_replace("í", "%C3%AD", $autor);
-        $autor = str_replace("ó", "%C3%B3", $autor);
-        $autor = str_replace("ú", "%C3%BA", $autor);
-        $autor = str_replace("-", "%2D", $autor);
-        $autor = str_replace("'", "%27", $autor);
-        $autor = str_replace("ä", "%C3%A4", $autor);
-        $autor = str_replace("ë", "%C3%AB", $autor);
-        $autor = str_replace("ï", "%C3%AF", $autor);
-        $autor = str_replace("ö", "%C3%B6", $autor);
-        $autor = str_replace("ü", "%C3%BC", $autor);
+        $autor = iso2utf($autor);
+        $autor2 = iso2utf($autor2);
 
-        $autor2 = str_replace(" ", "%20", $autor2);
-        $autor2 = str_replace("á", "%C3%A1", $autor2);
-        $autor2 = str_replace("é", "%C3%A9", $autor2);
-        $autor2 = str_replace("í", "%C3%AD", $autor2);
-        $autor2 = str_replace("ó", "%C3%B3", $autor2);
-        $autor2 = str_replace("ú", "%C3%BA", $autor2);
-        $autor2 = str_replace("-", "%2D", $autor2);
-        $autor2 = str_replace("'", "%27", $autor2);
-        $autor2 = str_replace("ä", "%C3%A4", $autor2);
-        $autor2 = str_replace("ë", "%C3%AB", $autor2);
-        $autor2 = str_replace("ï", "%C3%AF", $autor2);
-        $autor2 = str_replace("ö", "%C3%B6", $autor2);
-        $autor2 = str_replace("ü", "%C3%BC", $autor2);
 
-        // Formateamos de UTF a ASCII para mostrarlo
-        $autor_limpio = str_replace("%20", " ", $autor_limpio);
-        $autor_limpio = str_replace("%C3%A1", "á", $autor_limpio);
-        $autor_limpio = str_replace("%C3%A9", "é", $autor_limpio);
-        $autor_limpio = str_replace("%C3%AD", "í", $autor_limpio);
-        $autor_limpio = str_replace("%C3%B3", "ó", $autor_limpio);
-        $autor_limpio = str_replace("%C3%BA", "ú", $autor_limpio);
-        $autor_limpio = str_replace("%2D", "-", $autor_limpio);
-        $autor_limpio = str_replace("%27", "'", $autor_limpio);
-        $autor_limpio = str_replace("%C3%A4","ä", $autor_limpio);
-        $autor_limpio = str_replace("%C3%AB","ë", $autor_limpio);
-        $autor_limpio = str_replace("%C3%AF","ï", $autor_limpio);
-        $autor_limpio = str_replace("%C3%B6","ö", $autor_limpio);
-        $autor_limpio = str_replace("%C3%BC","ü", $autor_limpio);
+        $autor_limpio = utf2iso($autor_limpio);
         $autor_limpio = strtoupper($autor_limpio);
+        $autor_limpio2 = utf2iso($autor_limpio2);
 
-        $autor_limpio2 = str_replace("%20", " ", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%A1", "á", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%A9", "é", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%AD", "í", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%B3", "ó", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%BA", "ú", $autor_limpio2);
-        $autor_limpio2 = str_replace("%2D", "-", $autor_limpio2);
-        $autor_limpio2 = str_replace("%27", "'", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%A4","ä", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%AB","ë", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%AF","ï", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%B6","ö", $autor_limpio2);
-        $autor_limpio2 = str_replace("%C3%BC","ü", $autor_limpio2);
 
 
         echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
@@ -441,18 +380,8 @@ if(count($coautores)!=0){
           
               echo $coautores[$i]." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; 
 
-              $coautores[$i] = str_replace(" ", "%20", $coautores[$i]);
-              $coautores[$i] = str_replace("á", "%C3%A1", $coautores[$i]);
-              $coautores[$i] = str_replace("é", "%C3%A9", $coautores[$i]);
-              $coautores[$i] = str_replace("í", "%C3%AD", $coautores[$i]);
-              $coautores[$i] = str_replace("ó", "%C3%B3", $coautores[$i]);
-              $coautores[$i] = str_replace("ú", "%C3%BA", $coautores[$i]);
-              $coautores[$i] = str_replace("'", "%27", $coautores[$i]);
-              $coautores[$i] = str_replace("ä", "%C3%A4", $coautores[$i]);
-              $coautores[$i] = str_replace("ë", "%C3%AB", $coautores[$i]);
-              $coautores[$i] = str_replace("ï", "%C3%AF", $coautores[$i]);
-              $coautores[$i] = str_replace("ö", "%C3%B6", $coautores[$i]);
-              $coautores[$i] = str_replace("ü", "%C3%BC", $coautores[$i]);
+               $coautores[$i] = iso2utf($coautores[$i]);
+
 
                echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
             } 
@@ -485,19 +414,8 @@ echo "<p style='clear: left;'> ----- </p>";
 
 /*    
         // Consulta añadiendo la afiliacion (demasiado restritiva o la afiliación que proporciona G Scholar no se ajusta bien)
-          $phpafiliacion[0] = str_replace(" ", "%20", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("á", "%C3%A1", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("é", "%C3%A9", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("í", "%C3%AD", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ó", "%C3%B3", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ú", "%C3%BA", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("-", "%2D", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("'", "%27", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ä", "%C3%A4", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ë", "%C3%AB", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ï", "%C3%AF", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ö", "%C3%B6", $phpafiliacion[0]);
-          $phpafiliacion[0] = str_replace("ü", "%C3%BC", $phpafiliacion[0]);
+          $phpafiliacion[0] = iso2utf($phpafiliacion[0]);
+          
 
         $consulta = array('http://api.elsevier.com/content/search/scopus?query=affil(',$phpafiliacion[0],')%20and%20AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json');   
 */
@@ -560,18 +478,8 @@ echo "<p style='clear: left;'> ----- </p>";
             $tema = $phpafiliacion[1];
             $tema_aux=$tema; //echo "The author works with the subtopic: ".$tema;
 
-            $tema = str_replace(" ", "%20", $tema);
-            $tema = str_replace("á", "%C3%A1", $tema);
-            $tema = str_replace("é", "%C3%A9", $tema);
-            $tema = str_replace("í", "%C3%AD", $tema);
-            $tema = str_replace("ó", "%C3%B3", $tema);
-            $tema = str_replace("ú", "%C3%BA", $tema);
-            $tema = str_replace("-", "%2D", $tema);
-            $tema = str_replace("ä", "%C3%A4", $tema);
-            $tema = str_replace("ë", "%C3%AB", $tema);
-            $tema = str_replace("ï", "%C3%AF", $tema);
-            $tema = str_replace("ö", "%C3%B6", $tema);
-            $tema = str_replace("ü", "%C3%BC", $tema);
+            $tema = iso2utf($tema);
+
 
           } else {
          
@@ -586,18 +494,8 @@ echo "<p style='clear: left;'> ----- </p>";
             for ($i = 0; $i < count($temas); $i++) { 
                   $temas_aux[$i] = $temas[$i]; //echo $temas[$i].", ";
 
-                  $temas[$i] = str_replace(" ", "%20", $temas[$i]);
-                  $temas[$i] = str_replace("á", "%C3%A1", $temas[$i]);
-                  $temas[$i] = str_replace("é", "%C3%A9", $temas[$i]);
-                  $temas[$i] = str_replace("í", "%C3%AD", $temas[$i]);
-                  $temas[$i] = str_replace("ó", "%C3%B3", $temas[$i]);
-                  $temas[$i] = str_replace("ú", "%C3%BA", $temas[$i]);
-                  $temas[$i] = str_replace("-", "%2D", $temas[$i]);
-                  $temas[$i] = str_replace("ä", "%C3%A4", $temas[$i]);
-                  $temas[$i] = str_replace("ë", "%C3%AB", $temas[$i]);
-                  $temas[$i] = str_replace("ï", "%C3%AF", $temas[$i]);
-                  $temas[$i] = str_replace("ö", "%C3%B6", $temas[$i]);
-                  $temas[$i] = str_replace("ü", "%C3%BC", $temas[$i]);
+                  $temas[$i] = iso2utf($temas[$i]);
+
             } 
           }
 
@@ -741,7 +639,7 @@ $(function () {
             zoomType: 'x' // Para ampliar al pinchar y arrastrar en el área
         },
         title: {
-            text: 'Publicaciones en los últimos años'
+            text: 'Publications in the last years'
         },
         subtitle: {
             text: document.ontouchstart === undefined ?
@@ -750,26 +648,26 @@ $(function () {
         },
         plotOptions: {
             column: {
-                depth: 25
+                //depth: 25
             }
         },
         xAxis: {
-            categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19]],
+            categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
             title: {
-                text: 'Años'
+                text: 'Years'
             }
 
         },
         yAxis: {
             allowDecimals: false,
             title: {
-                text: 'Publicaciones'
+                text: 'Publications'
             }
         },
         series: [{
             //type: 'area',   // Barras pasan a tener forma de area
-            name: 'Número de publicaciones',
-            data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]]]
+            name: 'Number of publications',
+            data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]], counts[soloAnios[20]], counts[soloAnios[21]], counts[soloAnios[22]], counts[soloAnios[23]], counts[soloAnios[24]], counts[soloAnios[25]]]
             
         }
         ]
@@ -884,6 +782,7 @@ $(function () {
 
 
   var series_temas ="";
+  var title_temas ="Publications about ";
   var tema_autor = <?php echo json_encode($tema_aux); ?>;
   var lista_temas_autor = <?php echo json_encode($temas_aux); ?>;
 
@@ -892,6 +791,7 @@ $(function () {
                   name: tema_autor,
                   data: [counts_tema[2003], counts_tema[2004], counts_tema[2005], counts_tema[2006], counts_tema[2007], counts_tema[2008], counts_tema[2009], counts_tema[2010], counts_tema[2011], counts_tema[2012], counts_tema[2013], counts_tema[2014], counts_tema[2015]]
               }];
+      title_temas = title_temas.concat(tema_autor,' of the author.');      
   }
   else{  
       if(lista_temas_autor.length == 2){
@@ -903,7 +803,7 @@ $(function () {
                 name: lista_temas_autor[1],
                 data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
             }];
-
+        title_temas = title_temas.concat(lista_temas_autor[0],' and ',lista_temas_autor[1]);  
       }
       else{ 
         if(lista_temas_autor.length == 3){
@@ -918,6 +818,7 @@ $(function () {
                   name: lista_temas_autor[2],
                   data: [counts_tema2[2003], counts_tema2[2004], counts_tema2[2005], counts_tema2[2006], counts_tema2[2007], counts_tema2[2008], counts_tema2[2009], counts_tema2[2010], counts_tema2[2011], counts_tema2[2012], counts_tema2[2013], counts_tema2[2014], counts_tema2[2015]]
               }];
+          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],' and ',lista_temas_autor[2]); 
         } 
         else{ 
 
@@ -935,6 +836,7 @@ $(function () {
                   name: lista_temas_autor[3],
                   data: [counts_tema3[2003], counts_tema3[2004], counts_tema3[2005], counts_tema3[2006], counts_tema3[2007], counts_tema3[2008], counts_tema3[2009], counts_tema3[2010], counts_tema3[2011], counts_tema3[2012], counts_tema3[2013], counts_tema3[2014], counts_tema3[2015]]
               }];
+          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],', ',lista_temas_autor[2],' and ',lista_temas_autor[3]);
 
         }    
       }         
@@ -945,13 +847,18 @@ $(function () {
     $('#container_varios').highcharts({
 
         chart: {
-            type: 'column'
+            type: 'column',
+            zoomType: 'x'
         },
 
         title: {
-            text: 'Publications in the different (since 4) subtopics of the author'
+            text: title_temas //'Publications in the different (since 4) subtopics of the author'
         },
-
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' :
+                    ''
+        },
         xAxis: {
             categories: [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
         },
