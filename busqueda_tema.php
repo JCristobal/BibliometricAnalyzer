@@ -397,10 +397,19 @@
         data_paises = data;
 
         var options = {colorAxis: {colors: ['#aacd9f', '#299f2e']}, keepAspectRatio: 'true',width: '100%'};
-
+        
+        var chart_regions = new google.visualization.GeoChart(document.getElementById('regions_div')); // Para pintar
         var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
 
+        // Wait for the chart to finish drawing before calling the getImageURI() method.   // Para pintar
+        google.visualization.events.addListener(chart_regions, 'ready', function () {
+          png_regions.innerHTML = '<a href="' + chart.getImageURI() + '">Link to .png version</a>';
+          //console.log(regions_div.innerHTML);
+        });
+
         chart.draw(data, options);
+        chart_regions.draw(data, options);    // Para pintar
+
       }
 
 
@@ -417,10 +426,21 @@
           keepAspectRatio: 'true', width: '100%'
         };
 
+        var chart_donut = new google.visualization.PieChart(document.getElementById('donutchart'));  // Para pintar
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
 
+        // Wait for the chart to finish drawing before calling the getImageURI() method.   // Para pintar
+        google.visualization.events.addListener(chart_donut, 'ready', function () {
+          png_donut.innerHTML = '<img src="' + chart.getImageURI() + '">';
+          //console.log(donutchart.innerHTML);
+        });
+
+
+        chart.draw(data, options);
+        chart_donut.draw(data, options);    // Para pintar
+        document.getElementById('png_donut').outerHTML = '<a href="' + chart_donut.getImageURI() + '">Link to .png version</a>';  // Para pintar
+
+      }
 
 
 if(hay_entradas){ 
@@ -484,8 +504,10 @@ if(hay_entradas){
       if($hay_entradas){ 
 
          echo'<div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
+         echo"<div id='png_donut'></div>";
 
          echo'<div id="regions_div" style="clear: left; max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
+         echo"<div id='png_regions'></div>";
 
          echo'<div id="container_columns" style="height: 400px;"></div><br>';
 

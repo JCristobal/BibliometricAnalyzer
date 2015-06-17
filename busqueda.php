@@ -169,7 +169,7 @@
           //document.write("<img src=\"http://scholar.google.es"+listaFot[index]+"\" </img> " );
           //document.write("<p><a href='http://scholar.google.es"+listaAut[indice]+"\'> Enlace al autor</a></p>");
           if(listaFot[index]=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"</img>'){
-            listaFot[index]='<img src="img/user.png" height="150" width="150"/>';
+            listaFot[index]='<img src="img/user.jpg" height="150" width="150"/>';
           }
 
           document.write(listaFot[index]);

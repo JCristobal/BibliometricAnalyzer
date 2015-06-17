@@ -292,7 +292,7 @@
           echo "<h1> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</h1>";
 
 
-          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="img/user.png" height="150" width="150" /><br> </div>'; 
+          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="img/user.jpg" height="150" width="150"/><br> </div>'; 
 
           echo '<div style="float: left; margin: 15px 2px 2px 15px;"> No mail or affiliation verified </div>';
 
@@ -306,7 +306,7 @@
 
 
           if($foto=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"/>'){
-            $foto='<img src="img/user.png" height="150" width="150"/>';
+            $foto='<img src="img/user.jpg" height="150" width="150"/>';
           }
 
           echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
@@ -437,8 +437,8 @@ if(count($coautores)!=0){
         echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
-              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";
-
+              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";          
+          
               echo $coautores[$i]." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; 
 
               $coautores[$i] = str_replace(" ", "%20", $coautores[$i]);
@@ -732,12 +732,12 @@ $(function () {
         chart: {
             type: 'column',
             margin: 75,
-            options3d: {
-                enabled: true/*,
+            /*options3d: {
+                enabled: true,
                 alpha: 10,
                 beta: 25,
-                depth: 70*/
-            },
+                depth: 70
+            },*/
             zoomType: 'x' // Para ampliar al pinchar y arrastrar en el área
         },
         title: {
@@ -754,7 +754,7 @@ $(function () {
             }
         },
         xAxis: {
-            categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12]],
+            categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19]],
             title: {
                 text: 'Años'
             }
@@ -769,7 +769,7 @@ $(function () {
         series: [{
             //type: 'area',   // Barras pasan a tener forma de area
             name: 'Número de publicaciones',
-            data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]]]
+            data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]]]
             
         }
         ]
@@ -981,7 +981,13 @@ $(function () {
     }else{
         echo "The author works with the subtopics: ";
                 for ($i = 0; $i < count($temas); $i++) { 
-                      echo "<b>".$temas_aux[$i]."</b> with ".$numero_publi_tema[$i]." entries, ";
+                      if($numero_publi_tema[$i] == 0){
+                        echo "<b>".$temas_aux[$i]."</b> (without entries registred with this subtopic), ";
+                      }
+                      else{
+                        echo "<b>".$temas_aux[$i]."</b> with ".$numero_publi_tema[$i]." entries, ";
+                      }
+
         }
 
     }
