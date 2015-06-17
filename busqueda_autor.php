@@ -37,6 +37,8 @@
     <script src="js/bubble-chart_lines.js"></script> 
     <script src="js/bubble-chart_central-click.js"></script> 
 
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 
     <script src="js/pace.min.js"></script>
     <link href="css/pace_style.css" rel="stylesheet" />
@@ -256,12 +258,53 @@
           echo "<p style='clear: left;'> ------- </p> ";
 
 
+echo "
+<script>
+      google.load('visualization', '1', {packages:['table']});
+      google.setOnLoadCallback(drawTable);
+
+      var cssClassNames = {
+        'headerRow': 'italic-darkblue-font large-font celda-datos',
+        'tableRow': 'celda-datos',
+        'oddTableRow': 'celda-datos',
+        'selectedTableRow': 'large-font celda-datos',
+        'hoverTableRow': 'celda-datos',
+        'headerCell': 'celda-datos',
+        'tableCell': 'celda-datos',
+        'rowNumberCell': ' celda-datos'
+      };
+
+      var options = {'allowHtml': true, 'cssClassNames': cssClassNames, keepAspectRatio: 'true', width: '80%'};
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '');
+        data.addColumn('number', 'All');
+        data.addColumn('number', 'Since 2010');
+        data.addRows([
+          ['Citations',  ".$datos[0].", ".$datos[1]."],
+          ['h-index',   ".$datos[2].",  ".$datos[3]."],
+          ['i10-index', ".$datos[4].", ".$datos[5]."]
+        ]);
+
+        var table = new google.visualization.Table(document.getElementById('tabla_datos'));
+
+        table.draw(data, options);
+
+      }
+</script>
+";
+
+          echo '<div id="tabla_datos"></div>';
+
+/*
           echo "<p> ".$datos[0]." citations </p> ";
           echo "<p> Since 2010: ".$datos[1]." citations </p> ";
           echo "<p> H-index: ".$datos[2]." </p> ";
           echo "<p> H-index since 2010: ".$datos[3]." </p> ";
           echo "<p> i10-index: ".$datos[4]." </p> ";
           echo "<p> i10-index since 2010: ".$datos[5]." </p> ";
+*/
         }
         echo "<p> ------- </p> ";
 
@@ -590,8 +633,18 @@ echo "<p style='clear: left;'> ----- </p>";
 
       </div>
 
+<style>
+  .celda-datos {
+    text-align: center;
+    border-bottom-color: #008000;
+    border-bottom-style: solid;
+    border-width: 1px;
+  }
+</style>
 
 <script>
+
+
 
   var listaAnios = <?php echo json_encode($phpanios); ?>;
   var soloAnios = {};
@@ -786,12 +839,15 @@ $(function () {
   var tema_autor = <?php echo json_encode($tema_aux); ?>;
   var lista_temas_autor = <?php echo json_encode($temas_aux); ?>;
 
+  var nombre_autor = <?php echo json_encode($autor_limpio); ?>;
+  var apellidos_autor = <?php echo json_encode($autor_limpio2); ?>;
+
   if(tema_autor != ""){
       series_temas = [{
                   name: tema_autor,
                   data: [counts_tema[2003], counts_tema[2004], counts_tema[2005], counts_tema[2006], counts_tema[2007], counts_tema[2008], counts_tema[2009], counts_tema[2010], counts_tema[2011], counts_tema[2012], counts_tema[2013], counts_tema[2014], counts_tema[2015]]
               }];
-      title_temas = title_temas.concat(tema_autor,' of the author.');      
+      title_temas = title_temas.concat(tema_autor,' of the author ',nombre_autor,apellidos_autor);      
   }
   else{  
       if(lista_temas_autor.length == 2){
@@ -803,7 +859,7 @@ $(function () {
                 name: lista_temas_autor[1],
                 data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
             }];
-        title_temas = title_temas.concat(lista_temas_autor[0],' and ',lista_temas_autor[1]);  
+        title_temas = title_temas.concat(lista_temas_autor[0],' and ',lista_temas_autor[1],' of ',nombre_autor,apellidos_autor);  
       }
       else{ 
         if(lista_temas_autor.length == 3){
@@ -818,7 +874,7 @@ $(function () {
                   name: lista_temas_autor[2],
                   data: [counts_tema2[2003], counts_tema2[2004], counts_tema2[2005], counts_tema2[2006], counts_tema2[2007], counts_tema2[2008], counts_tema2[2009], counts_tema2[2010], counts_tema2[2011], counts_tema2[2012], counts_tema2[2013], counts_tema2[2014], counts_tema2[2015]]
               }];
-          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],' and ',lista_temas_autor[2]); 
+          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],' and ',lista_temas_autor[2],' of ',nombre_autor,apellidos_autor); 
         } 
         else{ 
 
@@ -836,7 +892,7 @@ $(function () {
                   name: lista_temas_autor[3],
                   data: [counts_tema3[2003], counts_tema3[2004], counts_tema3[2005], counts_tema3[2006], counts_tema3[2007], counts_tema3[2008], counts_tema3[2009], counts_tema3[2010], counts_tema3[2011], counts_tema3[2012], counts_tema3[2013], counts_tema3[2014], counts_tema3[2015]]
               }];
-          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],', ',lista_temas_autor[2],' and ',lista_temas_autor[3]);
+          title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],', ',lista_temas_autor[2],' and ',lista_temas_autor[3],' of ',nombre_autor,apellidos_autor);
 
         }    
       }         

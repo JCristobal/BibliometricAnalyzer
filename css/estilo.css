@@ -54,3 +54,21 @@ body {
 	overflow-x:hidden;
 	
 }
+
+/* Estilo para celda de datos de autor*/
+  .bold-font {
+    font-weight: bold;
+  }
+
+/*celda-datos se define en línea, definido aquí las pisan las cargadas de Google Charts*/
+
+  .large-font {
+    font-size: 15px;
+  }
+
+  .italic-darkblue-font {
+    font-style: italic;
+    color: #FFFFFF;
+    background-color: #008000;
+  }
+
