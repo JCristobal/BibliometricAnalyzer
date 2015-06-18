@@ -404,7 +404,17 @@ if(count($coautores)!=0){
 
         sys.graft(data);
 
-    </script> ";
+        window.onload = function() {
+          var canvas = document.getElementById('grafo_autores');
+          var img    = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');;
+
+          img_grafo.innerHTML = '<a href=\"'+img+'\"> Link to img </a>';
+        }
+
+
+    </script>   
+
+    <div id='img_grafo'></div> ";
 
 
         echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
