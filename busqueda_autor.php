@@ -32,13 +32,17 @@
     <script src="http://code.highcharts.com/highcharts-3d.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-
+<!--
     <script src="js/bubble-chart-utils.js"></script> 
     <script src="js/bubble-chart_lines.js"></script> 
     <script src="js/bubble-chart_central-click.js"></script> 
-
+-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
+    <script language="javascript" type="text/javascript" src="js/arbor.js"></script>
+    <script language="javascript" type="text/javascript" src="js/arbor-tween.js"></script>
+    <script language="javascript" type="text/javascript" src="js/arbor-graphics.js"></script>
+    <script language="javascript" type="text/javascript" src="js/arbor-renderer.js"></script>
 
     <script src="js/pace.min.js"></script>
     <link href="css/pace_style.css" rel="stylesheet" />
@@ -293,24 +297,25 @@ echo "
 
       }
 </script>
+<style>
+  .celda-datos {
+    text-align: center;
+    border-bottom-color: #008000;
+    border-bottom-style: solid;
+    border-width: 1px;
+  }
+</style>
 ";
 
           echo '<div id="tabla_datos"></div>';
 
-/*
-          echo "<p> ".$datos[0]." citations </p> ";
-          echo "<p> Since 2010: ".$datos[1]." citations </p> ";
-          echo "<p> H-index: ".$datos[2]." </p> ";
-          echo "<p> H-index since 2010: ".$datos[3]." </p> ";
-          echo "<p> i10-index: ".$datos[4]." </p> ";
-          echo "<p> i10-index since 2010: ".$datos[5]." </p> ";
-*/
+
         }
         echo "<p> ------- </p> ";
 
 
 if(count($coautores)!=0){
-
+/*
     //http://bl.ocks.org/phuonghuynh/54a2f97950feadb45b07
     echo '  
     <script>
@@ -358,10 +363,7 @@ if(count($coautores)!=0){
                     "text-anchor": "middle",
                     "fill": "white"
                   },
-                  attr: {dy: "65px"}/*,
-                  centralClick: function() {
-                    alert("Here is more details!!");
-                  }*/
+                  attr: {dy: "65px"}
                 }
             },
           {
@@ -413,20 +415,69 @@ if(count($coautores)!=0){
     </script>
      ';
 
-
       echo '<div class="bubbleChart" style=" float: left;"> </div> ';
+*/
+
+
+    echo "<canvas id='grafo_autores' style='float: left; border-style: solid; border-width: 1px;' width='800' height='600'></canvas>
+
+    <script language='javascript' type='text/javascript'>
+
+        var sys = arbor.ParticleSystem(100, 400,0.5);
+        sys.parameters({gravity:false});
+        sys.renderer = Renderer('#grafo_autores') ;
+
+        var data = {
+          nodes:{
+            autor_principal:{'color':'#000000','shape':'rectangle','label':'".$nombreGS."'},";
+            $tamanio_aux=0;
+          if(count($coautores)>=11){
+            for ($i = 0; $i <11; $i++) { 
+                echo "autor".$i.":{'color':'grey','label':'".$coautores[$i]."'},";
+                $tamanio_aux++;
+            }
+          }
+          else{
+              for ($i = 0; $i < count($coautores); $i++) { 
+                  echo "autor".$i.":{'color':'grey','shape':'dot','label':'".$coautores[$i]."'},";
+                  $tamanio_aux++;
+              } 
+          }
+
+
+
+
+ echo"    
+          },
+          edges:{
+            autor_principal:{ ";
+
+              for ($i = 0; $i < $tamanio_aux; $i++) { 
+                  echo "autor".$i.":{}, ";
+              } 
+
+
+ echo "     }, 
+          }
+        };
+
+        sys.graft(data);
+
+    </script> ";
+
 
         echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
-              echo "<img src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";          
-          
-              echo $coautores[$i]." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; 
+              echo "<img style='float: left;' src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";          
+              
+              echo "<div style='float: left; max-width: 85%;' >".$coautores[$i]." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; 
 
                $coautores[$i] = iso2utf($coautores[$i]);
 
 
                echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
+               echo "</div> <p style='clear: left;'>  </p>";
             } 
         echo "</div>";
 
@@ -491,7 +542,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
       }
-     
+   
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
@@ -633,14 +684,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
       </div>
 
-<style>
-  .celda-datos {
-    text-align: center;
-    border-bottom-color: #008000;
-    border-bottom-style: solid;
-    border-width: 1px;
-  }
-</style>
+
 
 <script>
 
