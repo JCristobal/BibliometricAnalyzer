@@ -77,7 +77,6 @@
         $autor2 = str_replace(" ", "%20", $autor2);
 
 
-
 	       echo '<p>Did not you want to search this? <a href="index.html"> Go back </a> </p>';
 
 

@@ -32,11 +32,6 @@
     <script src="http://code.highcharts.com/highcharts-3d.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<!--
-    <script src="js/bubble-chart-utils.js"></script> 
-    <script src="js/bubble-chart_lines.js"></script> 
-    <script src="js/bubble-chart_central-click.js"></script> 
--->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script language="javascript" type="text/javascript" src="js/arbor.js"></script>
@@ -315,109 +310,6 @@ echo "
 
 
 if(count($coautores)!=0){
-/*
-    //http://bl.ocks.org/phuonghuynh/54a2f97950feadb45b07
-    echo '  
-    <script>
-    $(document).ready(function () {
-      var bubbleChart = new d3.svg.BubbleChart({
-        supportResponsive: true,
-        //container: => use @default
-        size: 600,
-        //viewBoxSize: => use @default
-        innerRadius: 600 / 3.5,
-        //outerRadius: => use @default
-        radiusMin: 50,
-        //radiusMax: use @default
-        //intersectDelta: use @default
-        //intersectInc: use @default
-        //circleColor: use @default
-        data: {
-          items: [
-            {text: "'.$nombreGS.'", count: "1"},';
-
-          if(count($coautores)>=11){
-            for ($i = 0; $i <11; $i++) { 
-                echo '{text: "'.$coautores[$i].'", count: "0"},';
-            }
-          }
-          else{
-              for ($i = 0; $i < count($coautores); $i++) { 
-                  echo '{text: "'.$coautores[$i].'", count: "0"},';
-              } 
-          }
-
-     echo ' ],
-          eval: function (item) {return item.count;},
-          classed: function (item) {return item.text.split(" ").join("");}
-        },
-        plugins: [
-            {
-                name: "central-click",
-                options: {
-                  style: {
-                    "font-size": "12px",
-                    "font-style": "italic",
-                    "font-family": "Source Sans Pro, sans-serif",
-                    //"font-weight": "700",
-                    "text-anchor": "middle",
-                    "fill": "white"
-                  },
-                  attr: {dy: "65px"}
-                }
-            },
-          {
-            name: "lines",
-            options: {
-              format: [
-                {// Line #0
-                  textField: "count",
-                  classed: {count: true},
-                  style: {
-                    visibility: "hidden"
-                  },
-                  attr: {
-                    dy: "0px",
-                    x: function (d) {return d.cx;},
-                    y: function (d) {return d.cy;}
-                  }
-                },
-                {// Line #1
-                  textField: "text",
-                  classed: {text: true},
-                  style: {
-                    "font-size": "14px",
-                    "font-family": "Source Sans Pro, sans-serif",
-                    "text-anchor": "middle",
-                    fill: "black"
-                  },
-                  attr: {
-                    dy: "20px",
-                    x: function (d) {return d.cx;},
-                    y: function (d) {return d.cy;}
-                  }
-                }
-              ],
-              centralFormat: [
-                {// Line #0
-                  style: {"font-size": "3px"},
-                  attr: {visibility: "hidden"}
-                },
-                {// Line #1
-                  style: {"font-size": "50px"},
-                  attr: {dy: "40px"}
-                }
-              ]
-            }
-          }]
-      });
-    });
-    </script>
-     ';
-
-      echo '<div class="bubbleChart" style=" float: left;"> </div> ';
-*/
-
 
     echo "<canvas id='grafo_autores' style='float: left; border-style: solid; border-width: 1px;' width='800' height='600'></canvas>
 
@@ -430,35 +322,84 @@ if(count($coautores)!=0){
         var data = {
           nodes:{
             autor_principal:{'color':'#000000','shape':'rectangle','label':'".$nombreGS."'},";
-            $tamanio_aux=0;
+
+          $autores_vacios= array();
+
+          $tamanio_aux=0;         
           if(count($coautores)>=11){
             for ($i = 0; $i <11; $i++) { 
-                echo "autor".$i.":{'color':'grey','label':'".$coautores[$i]."'},";
+                echo "autor".$i.":{'color':'#707070 ','label':'".$coautores[$i]."'},";
                 $tamanio_aux++;
-            }
+
+              $coautores_2_nivel= array();          
+              $enlace_autor_relacionado= array('http://scholar.google.com',$enlace_coautores[$i]);
+              $enlace_autor_relacionado=implode("", $enlace_autor_relacionado);
+
+              $html = file_get_html($enlace_autor_relacionado);
+              foreach($html->find('.gsc_rsb_aa') as $element){
+                $coautores_2_nivel[]=$element->plaintext;
+              }
+
+              $vacio0=false;  $vacio1=false; $vacio2=false;
+
+              // Mostramos sólo los 3 primeros autores relacionados (a 2º nivel)
+              if($coautores_2_nivel[0] != ""){echo "autor0_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[0]."'},"; $vacio0=true;}
+              if($coautores_2_nivel[1] != ""){echo "autor1_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[1]."'},"; $vacio1=true;}
+              if($coautores_2_nivel[2] != ""){echo "autor2_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[2]."'},"; $vacio2=true;}
+
+              $autores_vacios[]=array($vacio0,$vacio1,$vacio2); // Registramos si a encontrado algún autor (a segundo nivel) para después no mostrar un nodo vacío
+
+            } // fin for
           }
           else{
               for ($i = 0; $i < count($coautores); $i++) { 
-                  echo "autor".$i.":{'color':'grey','shape':'dot','label':'".$coautores[$i]."'},";
-                  $tamanio_aux++;
+                echo "autor".$i.":{'color':'#707070 ','label':'".$coautores[$i]."'},";
+                $tamanio_aux++;
+
+              $coautores_2_nivel= array();          
+              $enlace_autor_relacionado= array('http://scholar.google.com',$enlace_coautores[$i]);
+              $enlace_autor_relacionado=implode("", $enlace_autor_relacionado);
+
+              $html = file_get_html($enlace_autor_relacionado);
+              foreach($html->find('.gsc_rsb_aa') as $element){
+                $coautores_2_nivel[]=$element->plaintext;
+              }
+
+              $vacio0=false;  $vacio1=false; $vacio2=false;
+
+              // Mostramos sólo los 3 primeros autores relacionados (a 2º nivel)
+              if($coautores_2_nivel[0] != ""){echo "autor0_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[0]."'},"; $vacio0=true;}
+              if($coautores_2_nivel[1] != ""){echo "autor1_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[1]."'},"; $vacio1=true;}
+              if($coautores_2_nivel[2] != ""){echo "autor2_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[2]."'},"; $vacio2=true;}
+
+              $autores_vacios[]=array($vacio0,$vacio1,$vacio2); // Registramos si no ha encontrado algún autor (a segundo nivel) para después no mostrar un nodo vacío
+
+
               } 
           }
 
 
-
-
- echo"    
+ echo"     
           },
           edges:{
-            autor_principal:{ ";
-
+            autor_principal:{  ";
+              // Añadimos los nodos de autores relacionados a primer nivel
               for ($i = 0; $i < $tamanio_aux; $i++) { 
                   echo "autor".$i.":{}, ";
               } 
 
 
- echo "     }, 
-          }
+ echo "     }, ";                                             
+              // Completamos cada nodo de autores relacionado (a primer nivel) con  hasta 3 autores relacionados con este
+              for ($i = 0; $i < $tamanio_aux; $i++) { 
+                  echo "autor".$i.":{ ";
+                  if($autores_vacios[$i][0]){ echo "autor0_".$i.":{}, ";}
+                  if($autores_vacios[$i][1]){ echo "autor1_".$i.":{}, ";}
+                  if($autores_vacios[$i][2]){ echo "autor2_".$i.":{}  ";}
+                  echo "}, ";   
+              } 
+
+ echo"   }
         };
 
         sys.graft(data);
@@ -475,11 +416,10 @@ if(count($coautores)!=0){
 
                $coautores[$i] = iso2utf($coautores[$i]);
 
-
                echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\">Info sobre el autor con este buscador</button></form><br>";
                echo "</div> <p style='clear: left;'>  </p>";
             } 
-        echo "</div>";
+        echo "</div>";  // fin #lista_coautores
 
 
 }

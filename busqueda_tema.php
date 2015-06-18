@@ -185,35 +185,8 @@
         echo"<p>Did not you want to search this? <a href='index.html'> Go home </a> </p>";
 
         $palabra = iso2utf($palabra);
-        //Traducimos los caracteres especiales dados a UTF-8
-        /*$palabra = str_replace(" ", "%20", $palabra);
-        $palabra = str_replace("á", "%%C3%A1", $palabra);
-        $palabra = str_replace("é", "%C3%A9", $palabra);
-        $palabra = str_replace("í", "%C3%AD", $palabra);
-        $palabra = str_replace("ó", "%C3%B3", $palabra);
-        $palabra = str_replace("ú", "%C3%BA", $palabra);
-        $palabra = str_replace("-", "%2D", $palabra);
-        $palabra = str_replace("'", "%27", $palabra);
-        $palabra = str_replace("ä", "%C3%A4", $palabra);
-        $palabra = str_replace("ë", "%C3%AB", $palabra);
-        $palabra = str_replace("ï", "%C3%AF", $palabra);
-        $palabra = str_replace("ö", "%C3%B6", $palabra);
-        $palabra = str_replace("ü", "%C3%BC", $palabra);*/
-
         $titulo = iso2utf($titulo);
-        /*$titulo = str_replace(" ", "%20", $titulo);
-        $titulo = str_replace("á", "%%C3%A1", $titulo);
-        $titulo = str_replace("é", "%C3%A9", $titulo);
-        $titulo = str_replace("í", "%C3%AD", $titulo);
-        $titulo = str_replace("ó", "%C3%B3", $titulo);
-        $titulo = str_replace("ú", "%C3%BA", $titulo);
-        $titulo = str_replace("-", "%2D", $titulo);
-        $titulo = str_replace("'", "%27", $titulo);
-        $titulo = str_replace("ä", "%C3%A4", $titulo);
-        $titulo = str_replace("ë", "%C3%AB", $titulo);
-        $titulo = str_replace("ï", "%C3%AF", $titulo);
-        $titulo = str_replace("ö", "%C3%B6", $titulo);
-        $titulo = str_replace("ü", "%C3%BC", $titulo);*/
+
 
 
         
