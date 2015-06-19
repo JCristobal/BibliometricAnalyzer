@@ -55,12 +55,6 @@ if($entradasTotales > 0){
           $contador_coautores=0;
           $lista_autores=array("");
 
-          /*$coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][0]["ce:indexed-name"];
-          if(!empty($coautor)){
-            //echo "<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";      
-            //$contectado=true;
-            $lista_autores[]= $coautor;
-          }*/
           while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
             $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
             //echo "<form style =\"float: left; margin: 0px;\">,<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";

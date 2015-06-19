@@ -492,7 +492,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
       }
-   
+  
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
@@ -902,7 +902,7 @@ $(function () {
         },
 
         title: {
-            text: title_temas //'Publications in the different (since 4) subtopics of the author'
+            text: title_temas 
         },
         subtitle: {
             text: document.ontouchstart === undefined ?

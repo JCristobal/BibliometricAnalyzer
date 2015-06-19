@@ -241,12 +241,22 @@
         }
 
         $phpautor = array(); 
-        $consulta_autor= "SELECT nombre_publi FROM publicaciones WHERE id=".$idConsulta;
+        $consulta_autor= "SELECT enlace_coautores FROM publicaciones WHERE id=".$idConsulta;
         $resultados_autor=mysql_query($consulta_autor,$conexion);
         while ($row=mysql_fetch_array($resultados_autor)) {  
-          $phpautor[]=$row['nombre_publi'];
+          $phpautor[]=$row['enlace_coautores'];
         }
 
+        $aux = implode("",$phpautor);  // Si no estamos conectados a una red de Scopus la variable estará vacia. Trabajaremos con sólo el campo "creator", aunque sea menos preciso
+        if($aux == ""){
+          $phpautor = array(); 
+          $consulta_autor= "SELECT creador FROM publicaciones WHERE id=".$idConsulta;
+          $resultados_autor=mysql_query($consulta_autor,$conexion);
+          while ($row=mysql_fetch_array($resultados_autor)) {  
+            $phpautor[]=$row['creador'];
+          }
+
+        }
 
 ?>
 
@@ -255,6 +265,43 @@
   var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
      
   if(hay_entradas){ 
+
+
+
+    var listaAutores = <?php echo json_encode($phpautor); ?>;
+    var soloAutores = {};
+    var soloAutores = new Array();
+    var contador_autores=0;
+    // De cada entrada cogemos tódos los autores, separados por comas
+    for(index = 0; index < listaAutores.length; index++) {
+      var ss = listaAutores[index].split(",");
+      if(ss[0]!= ""){soloAutores[contador_autores]=ss[0]; contador_autores++;}
+      for(aux=1; aux< ss.length; aux++){
+        soloAutores[contador_autores]=ss[aux];
+        contador_autores++;
+      }
+    }
+
+    //Contamos las veces que se repite cada año
+    var counts_Autores = {};
+    var counts_Autores = new Array();
+    for(var i=0;i< soloAutores.length;i++){
+      var key = soloAutores[i];
+      counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;       
+    }
+
+    // la función "unique" eliminará los elementos repetidos del array
+    Array.prototype.unique=function(a){
+      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+    });
+    soloAutores=soloAutores.unique()
+
+
+
+        // Pintamos el gráfico por años primero
+        document.write('<div id="container_columns" style="height: 400px;"></div><br>');
+
+
         //Copiamos el vector de paises que hemos calculado con php
         var listaPaises = <?php echo json_encode($phpaises); ?>; 
 
@@ -268,9 +315,9 @@
 
 
         // la función "unique" eliminará los elementos repetidos del array
-        Array.prototype.unique=function(a){
+        /*Array.prototype.unique=function(a){
           return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-        });
+        });*/
         listaPaises=listaPaises.unique()
 
         //mostramos los paises
@@ -429,7 +476,7 @@ if(hay_entradas){
     $(function () {
         $('#container_columns').highcharts({
             chart: {
-                type: 'column',
+                type: 'bar',
                 margin: 75,
                 zoomType: 'x', 
                 /*options3d: {
@@ -444,7 +491,7 @@ if(hay_entradas){
             },
             subtitle: {
             text: document.ontouchstart === undefined ?
-                    'Click and drag in the plot area to zoom in' :
+                    'Click and drag in an area to zoom in' :
                     ''
             },
             plotOptions: {
@@ -476,7 +523,64 @@ if(hay_entradas){
             ]
 
         });
+
+
+
+    $('#container_autores').highcharts({
+        chart: {
+            type: 'column',
+            zoomType: 'x'
+        },
+        title: {
+            text: 'Number of last publications per author'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in an area to zoom in' :
+                    ''
+        },
+         xAxis: {
+            categories: [soloAutores[0], soloAutores[1], soloAutores[2], soloAutores[3], soloAutores[4], soloAutores[5], soloAutores[6], soloAutores[7], soloAutores[8], soloAutores[9], soloAutores[10], soloAutores[11], soloAutores[12], soloAutores[13], soloAutores[14], soloAutores[15], soloAutores[16], soloAutores[17], soloAutores[18], soloAutores[19], soloAutores[20], soloAutores[21], soloAutores[22], soloAutores[23], soloAutores[24], soloAutores[25], soloAutores[26], soloAutores[27], soloAutores[28], soloAutores[29]],
+            title: {
+                text: 'Publications'
+            }
+
+        },
+
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Author'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'with <b>{point.y}</b> publications'
+        },
+        series: [{
+            name: 'Numer of publications',
+                data: [counts_Autores[soloAutores[0]], counts_Autores[soloAutores[1]], counts_Autores[soloAutores[2]], counts_Autores[soloAutores[3]], counts_Autores[soloAutores[4]], counts_Autores[soloAutores[5]], counts_Autores[soloAutores[6]], counts_Autores[soloAutores[7]], counts_Autores[soloAutores[8]], counts_Autores[soloAutores[9]], counts_Autores[soloAutores[10]], counts_Autores[soloAutores[11]], counts_Autores[soloAutores[12]], counts_Autores[soloAutores[13]], counts_Autores[soloAutores[14]], counts_Autores[soloAutores[15]], counts_Autores[soloAutores[16]], counts_Autores[soloAutores[17]], counts_Autores[soloAutores[18]], counts_Autores[soloAutores[19]], counts_Autores[soloAutores[20]], counts_Autores[soloAutores[21]], counts_Autores[soloAutores[22]], counts_Autores[soloAutores[23]], counts_Autores[soloAutores[24]], counts_Autores[soloAutores[25]], counts_Autores[soloAutores[26]], counts_Autores[soloAutores[27]], counts_Autores[soloAutores[28]], counts_Autores[soloAutores[29]]],
+   
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                align: 'right',
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
     });
+
+
+
+
+
+    }); // fin function
 
 }
 
@@ -493,7 +597,9 @@ if(hay_entradas){
          echo'<div id="regions_div" style="clear: left; max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
          echo"<div id='png_regions'></div>";
 
-         echo'<div id="container_columns" style="height: 400px;"></div><br>';
+         echo'<div id="container_autores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>';
+
+
 
       }  
 
