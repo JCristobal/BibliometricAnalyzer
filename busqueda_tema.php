@@ -501,6 +501,7 @@ if(hay_entradas){
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
 
+
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
       echo "<p> Borrados los datos de la BD </p>";

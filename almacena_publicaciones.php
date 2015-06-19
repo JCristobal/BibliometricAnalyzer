@@ -49,6 +49,29 @@ if($entradasTotales > 0){
             $enlace_preview = $data["search-results"]["entry"][$i]["link"][2]["@href"];
             $enlace_citedby = $data["search-results"]["entry"][$i]["link"][3]["@href"];
 
+          $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+          $array_aux=implode("", $arraycoautores); 
+          $datos_coautores = json_decode(file_get_contents($array_aux),true);
+          $contador_coautores=0;
+          $lista_autores=array("");
+
+          /*$coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][0]["ce:indexed-name"];
+          if(!empty($coautor)){
+            //echo "<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";      
+            //$contectado=true;
+            $lista_autores[]= $coautor;
+          }*/
+          while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+            $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+            //echo "<form style =\"float: left; margin: 0px;\">,<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";
+            $lista_autores[]= $coautor;
+            $contador_coautores++;
+          }
+
+          $enlace_coautores=implode(",", $lista_autores); 
+          $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
+
+
            $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                                                                                   
            mysql_query($insert) or die(mysql_error()); 
@@ -99,6 +122,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_preview = $data_2_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_2_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array("");
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
+
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                  
                  mysql_query($insert) or die(mysql_error()); 
@@ -147,6 +185,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_preview = $data_3_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_3_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
+
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
@@ -193,6 +246,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_coautores = $data_4_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_4_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_4_pag["search-results"]["entry"][$i]["link"][3]["@href"];
+
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
 
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
@@ -241,6 +309,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_preview = $data_5_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_5_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
+
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
@@ -286,6 +369,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_coautores = $data_6_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_6_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_6_pag["search-results"]["entry"][$i]["link"][3]["@href"];
+
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
 
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
@@ -333,6 +431,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_preview = $data_7_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_7_pag["search-results"]["entry"][$i]["link"][3]["@href"];
 
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
+
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
@@ -378,6 +491,21 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
                   $enlace_coautores = $data_8_pag["search-results"]["entry"][$i]["link"][1]["@href"];
                   $enlace_preview = $data_8_pag["search-results"]["entry"][$i]["link"][2]["@href"];
                   $enlace_citedby = $data_8_pag["search-results"]["entry"][$i]["link"][3]["@href"];
+
+            $arraycoautores= array($enlace_coautores,"&httpAccept=application/json&apikey=",$apikey);
+            $array_aux=implode("", $arraycoautores); 
+            $datos_coautores = json_decode(file_get_contents($array_aux),true);
+            $contador_coautores=0;
+            $lista_autores=array();
+
+            while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
+              $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
+              $lista_autores[]= $coautor;
+              $contador_coautores++;
+            }
+
+            $enlace_coautores=implode(",", $lista_autores); 
+            $enlace_coautores = str_replace("'", "\'", $enlace_coautores);
 
                   $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\')'; 
                   

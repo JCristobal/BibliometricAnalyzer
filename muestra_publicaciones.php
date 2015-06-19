@@ -9,6 +9,7 @@ Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la con
       
         $resultados=mysql_query($consulta_publicaciones,$conexion); 
 
+
         echo "<div id='lista_entradas'>";
 
         while (($row=mysql_fetch_array($resultados)) && ($i<50)) {   
@@ -51,25 +52,21 @@ Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la con
 
           echo " <div class=\"cuerpo_entrada\">  <p style='font-weight: bold;'> $muestratitulo </p> <p>"; 
 
-          // Consultamos lo que tiene almacenado como "coautores". Son los demás autores, pero en el apartado de "creator" sólo muestra el primero de la lista
-          $arraycoautores= array($muestracoautores,"&httpAccept=application/json&apikey=",$apikey);
-          $json_string=implode("", $arraycoautores); 
-          $datos_coautores = json_decode(file_get_contents($json_string),true);
-          $contador_coautores=1;
-          $contectado=false;   // En caso de no estar conectado a una red asociada a Scopus sólo se puede mostrar el primero de la lista, apartado "creator"
 
-          $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][0]["ce:indexed-name"];
-          if(!empty($coautor)){
-            echo "<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";      
-            $contectado=true;
+          $contectado=false;              // Esta variable nos dirá si estamos conectados a una red asociada a Scopus
+          if($muestracoautores != ""){
+            $contectado=true;             // Si la lista de autores está rellena es que ha podido consultar el enlace de la publicación que sólo está disponible en redes asociadas a Scopus
+            $coautores = explode(",", $muestracoautores);
+
+            echo $coautores[0]."<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[0]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautores[0]</button></form>";
+
+            for($cont=1; $cont<count($coautores); $cont++){
+              echo "<form style =\"float: left; margin: 0px;\"><input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[$cont]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautores[$cont]</button></form>";
+            }
           }
-          while(!empty($datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"])){
-            $coautor = $datos_coautores["abstracts-retrieval-response"]["authors"]["author"][$contador_coautores]["ce:indexed-name"];
-            echo "<form style =\"float: left; margin: 0px;\">,<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautor\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautor</button></form>";
-            $contador_coautores++;
-          }
+          
           if($contectado){echo "</p><p style=\"clear: left\">";}
-          else{echo "<p>By $muestracreador (to see all authors have to be registered in Scopus)";}
+          else{echo "<p>By $muestracreador (to see all authors have to be registered in Scopus)";} //Si no estamos en una red de Scopus sólo podemos consultar el primer autor de la publicación (campo "creator")
 
           if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) ";}
           else{echo "(No associated affiliation)  </p> ";}  
