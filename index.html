@@ -79,7 +79,7 @@
 
 
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top"> <!-- navbar-static-top -->
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -142,6 +142,9 @@
 
           <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%;" placeholder="Search by title" ></p>
 
+          <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%;" placeholder="Since" >
+          <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%;" placeholder="to" ></p>
+
           <input type="submit" value="Find" class="btn btn-default">
 
         </div>
@@ -168,11 +171,21 @@
         busqueda_titulo: {
           require_from_group: [1, ".a"]
         }
+        ,
+        busqueda_fecha0: {
+          require_from_group: [1, ".a"]
+        }
+        ,
+        busqueda_fecha1: {
+          require_from_group: [1, ".a"]
+        }
       },
        messages: {
           busqueda_basica: "Enter some keyword",
           busqueda_tema: "Complete with a theme available",
-          busqueda_titulo: "Enter a word to search by title"
+          busqueda_titulo: "Enter a word to search by title",
+          busqueda_fecha0: "Since the year",
+          busqueda_fecha1: "To the year"
       }
     });
 

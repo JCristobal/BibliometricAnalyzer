@@ -81,19 +81,27 @@
         $tema = $_POST['busqueda_tema'];
         $palabra = $_POST['busqueda_basica'];
         $titulo = $_POST['busqueda_titulo'];
+        $fecha0 = $_POST['busqueda_fecha0'];
+        $fecha1 = $_POST['busqueda_fecha1'];
 
         $hay_tema=false;
         $hay_palabra=false;
         $hay_titulo=false;
-
-        //echo "<h1>Consulta  bibliométrica sobre ".$tema." </h1>";
+        $hay_fecha0=false;
+        $hay_fecha1=false;
 
         echo "<h1> Bibliometric analysis";
 
         if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
         if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
-        if(strlen($titulo)){ echo " with '".$titulo."' in the title."; $hay_titulo=true;}
-        echo "</h1>";
+        if(strlen($titulo)){ echo " with '".$titulo."' in the title"; $hay_titulo=true;}
+        if(strlen($fecha0)){ echo " since ".$fecha0; $hay_fecha0=true;}
+        if(strlen($fecha1)){ echo " to ".$fecha1; $hay_fecha1=true;}
+        echo ".</h1>";
+
+        // Se ajustan las fechas  para que coincidan con las introducidas. Si no se han introducido toman valores predefinidos
+        if($hay_fecha0==false){$fecha0=1800;}else{$fecha0--;} // La fecha no incluye la fecha de comienzo (es restrictivo), restándole uno hacemos que aparezcan publicaciones publicadas desde el año que se indica
+        if($hay_fecha1==false){$fecha1=2050;}else{$fecha1++;}
 
 
         switch ($tema) {
@@ -188,28 +196,28 @@
         $titulo = iso2utf($titulo);
 
 
-
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
         
         if($hay_tema){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
 
       $idConsulta = mt_rand();
