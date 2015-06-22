@@ -33,7 +33,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -68,7 +68,7 @@
         $autor2 = $_POST['busqueda_basica_autor2'];
 
 
-        echo "<h1> Looking for authors ".$autor." ".$autor2."</h1>";
+        ///echo "<h1> Looking for authors ".$autor." ".$autor2."</h1>";
 
         include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
 
@@ -85,7 +85,7 @@
 
 
 
-        echo "<p> ---------- CONSULTA A GOOGLE ACADEM.----------  </p>";
+        ///echo "<p> ---------- CONSULTA A GOOGLE ACADEM.----------  </p>";
 
 
                                                                                   //  &mauthors=autor:', $autor, '&hl=es&oi=ao');
@@ -101,7 +101,7 @@
 
         $string2=implode("", $consulta2); 
         
-        echo "( <a href='",$string2,"'> URL de consulta  </a> )";
+        ///echo "( <a href='",$string2,"'> URL de consulta  </a> )";
 
         // Create DOM from URL or file
         $html = file_get_html($string2);
@@ -129,7 +129,7 @@
 
         $listaNombres = array(); 
         foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
-               echo $elemento->plaintext."<br>";
+               ///echo $elemento->plaintext."<br>";
                $listaNombres[]= $elemento->plaintext;
                
         }
@@ -143,7 +143,8 @@
             
 
       ?>
-    <h2> Authors that match whith that name </h2>
+    <h1> Authors that match whith that name </h1>
+
     <script>
       //Copiamos los vectores  que hemos calculado con php
       var listaAut = <?php echo json_encode($listaAutores); ?>; 
@@ -161,15 +162,17 @@
           var autor = <?php echo json_encode($autor_limpio); ?>;
           var autor2 = <?php echo json_encode($autor2_limpio); ?>;
 
-          document.write("<div style='border-style: solid; margin-bottom: 2px'>");
-          //document.write("<img src=\"http://scholar.google.es"+listaFot[index]+"\" </img> " );
-          //document.write("<p><a href='http://scholar.google.es"+listaAut[indice]+"\'> Enlace al autor</a></p>");
+          if((index%2)==0){document.write("<div class='content-section-a'>");} // Alternamos la clase según las entradas
+          else{document.write("<div class='content-section-b'>");}  
+
+          document.write("<div class='entrada'>");
+
           if(listaFot[index]=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"</img>'){
             listaFot[index]='<img src="img/user.jpg" height="150" width="150"/>';
           }
 
-          document.write(listaFot[index]);
-          document.write(listaNom[index]+"<br>");
+          document.write("<div class='img_portada'>"+listaFot[index]+"</div>");
+          document.write("<div class='cuerpo_entrada'> <b>"+listaNom[index]+"</b> <br>");
           document.write("Affiliation: "+listaAfil[index]+"<br>");
           
           var nombreCompleto = listaNom[index].split(" ");
@@ -182,7 +185,7 @@
             }
             nombreCompleto.splice(0,autor.length);    // borramos solo el nombre orientandonos en el nombre introducido
             nombreCompleto = nombreCompleto.join(" ");
-            document.write("<b> buscaremos por: "+inicial+" "+nombreCompleto+"</b>");
+            document.write("(buscaremos por: "+inicial+" "+nombreCompleto+")");
 /*          }else{
             if(hay_nombre){
               autor = autor.split(" ");
@@ -202,12 +205,12 @@
           }
 */
           //document.write('<form> <input type="text" name="busqueda_autor_afil" style ="visibility: hidden; display: inline;" value ="'+listaAfil[index]+'"> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor </button></form>');
-          document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor</button></form>');
-          
-          //document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+listaNom[index]+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+listaNom[index]+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor</button></form>');
-          
-          document.write("<p> <a href='"+listaAut[index]+"'> Enlace (a G Scholar) del autor </a></p>");
-          document.write("</div>");
+          document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default"> Analysis of the author </button></form>');
+          //document.write("<p> <a href='"+listaAut[index]+"'> Enlace (a G Scholar) del autor </a></p>");         
+          document.write('</div> <div style="clear: left"> </div> ')          
+
+          document.write("</div>"); // acaba .entrada
+          document.write("</div>"); // acaba .content-section-a o .content-section-b
       }  
 
     </script>

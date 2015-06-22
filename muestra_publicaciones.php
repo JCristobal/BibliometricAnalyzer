@@ -32,9 +32,12 @@ Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la con
           $muestraissn=$row['issn'];
           $muestracoautores=$row['enlace_coautores'];
 
+          if(($i%2)==0){echo "<div class='content-section-a'>";} // Alternamos la clase según las entradas
+          else{echo"<div class='content-section-b'>";}  
+
         echo "<div class='entrada'>";
 
-          echo "<p> Entry number ".$i."</p>"; 
+          //echo "<p> Entry number ".$i."</p>"; 
           $i++;
 
           // Comprobamos que tiene portada. Primero creamos el enlace a la portada
@@ -86,10 +89,9 @@ Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la con
 
           echo '</div>  <div style="clear: left"></div> ';
 
-        echo "</div><br>";
+        echo "</div>  </div>"; // final de entrada y content-section-a/b
    
-
-          echo "<br>";      
+    
         }
 
         echo "</div>"; //fin id='conjunto_entradas'

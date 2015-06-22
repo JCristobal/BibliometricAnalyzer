@@ -42,7 +42,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -306,8 +306,6 @@
 
 
 
-        // Pintamos el gráfico por años primero
-        document.write('<div id="container_columns" style="height: 400px;"></div><br>');
 
 
         //Copiamos el vector de paises que hemos calculado con php
@@ -328,14 +326,7 @@
         });*/
         listaPaises=listaPaises.unique()
 
-        //mostramos los paises
-        document.write('<div style="width: 20%; margin: 100px 0px 0px 0px; float: left;"><p>Paises y número de publicaciones: </p>');
-        for(index = 0; index < listaPaises.length; index++) {
 
-            document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
-
-        }
-        document.write('</div>');
 
 
     var listaAnios = <?php echo json_encode($phpanios); ?>;
@@ -360,6 +351,25 @@
       return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
     });*/
     soloAnios=soloAnios.unique()
+
+
+        if(soloAnios.length == 1){
+          document.write(counts_anios[soloAnios[0]]+" publications in the year "+soloAnios[0]+'<hr>');}
+        else{
+          // Pintamos el gráfico por años primero
+          document.write('<div id="container_columns" style="height: 400px;"></div> <hr> ');
+        }
+        //mostramos los paises
+        document.write(' <div style="width: 20%; margin: 60px 0px 0px 0px; float: left;"><p>Paises y número de publicaciones: </p>');
+        for(index = 0; index < listaPaises.length; index++) {
+          if(listaPaises[index]!= ""){
+            document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
+          }
+
+        }
+        document.write('</div>');
+
+
     
 }// fin if(hay_entradas)
 
@@ -557,6 +567,7 @@ if(hay_entradas){
 
         yAxis: {
             min: 0,
+            allowDecimals: false,
             title: {
                 text: 'Author'
             }
@@ -599,14 +610,16 @@ if(hay_entradas){
 
       if($hay_entradas){ 
 
-         echo'<div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
-         echo"<div id='png_donut'></div>";
+          if($entradasTotales>1){
+            echo' <div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
+            echo"<div id='png_donut'></div>";
+          }
+          else{echo' <p  style="width: 80%; margin: 60px 0px 0px 0px; float: left;"> 100% in '.$phpaises[0].'</p>';}
 
-         echo'<div id="regions_div" style="clear: left; max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
+         echo'<hr style="clear: left;"> <div id="regions_div" style="max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
          echo"<div id='png_regions'></div>";
 
-         echo'<div id="container_autores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>';
-
+         echo'<hr> <div id="container_autores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>';
 
 
       }  

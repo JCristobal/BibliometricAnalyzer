@@ -46,7 +46,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -475,24 +475,7 @@ echo "<p style='clear: left;'> ----- </p>";
       
       echo " Total number of results: " .$entradasTotales,"<br><br>";
 
-      if($hay_entradas){ 
 
-        echo '<div id="container_columns" style="height: 400px"></div><br>';
-              
-      }
-
-           $autor_limpio2 = str_replace("'", "\'", $autor_limpio2);
-
-           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio.$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
-                                                                                  
-           mysql_query($insert_autor) or die(mysql_error()); 
-           echo "Autor almacenado<br>";
-
-      if($hay_entradas){ 
-
-        include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
-      }
-  
 
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC ";
@@ -503,9 +486,6 @@ echo "<p style='clear: left;'> ----- </p>";
 
 
 
-      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
-      mysql_query($borratodo) or die(mysql_error()); 
-      echo "<p> Borrados los datos de la BD </p>";
 
 
       $tema="";
@@ -931,6 +911,31 @@ $(function () {
 </script>
 
 <?php
+
+           $autor_limpio2 = str_replace("'", "\'", $autor_limpio2);
+
+           $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio.$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
+                                                                                  
+           mysql_query($insert_autor) or die(mysql_error()); 
+           echo "Autor almacenado<br>";
+
+
+      if($hay_entradas){ 
+
+        echo '<div id="container_columns" style="height: 400px"></div><br>';
+
+        include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
+
+      }
+  
+
+      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+      mysql_query($borratodo) or die(mysql_error()); 
+      echo "<p> Borrados los datos de la BD </p>";
+
+
+
+
   if($muestra_temas_asociados){
 
     if($tema!=""){
