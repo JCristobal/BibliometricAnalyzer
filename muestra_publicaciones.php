@@ -1,6 +1,6 @@
 <?php
 /*
-Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
+Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
 
 */
         $i=0;
@@ -94,7 +94,7 @@ Mostraremos las entradas (hasta 50) de las publicaciones que se ajusten a la con
     
         }
 
-        echo "</div>"; //fin id='conjunto_entradas'
+        echo "</div>"; //fin id='lista_entradas'
 
 
 

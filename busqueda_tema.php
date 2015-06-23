@@ -445,7 +445,7 @@
 
         // Wait for the chart to finish drawing before calling the getImageURI() method.   // Para pintar
         google.visualization.events.addListener(chart_regions, 'ready', function () {
-          png_regions.innerHTML = '<a href="' + chart.getImageURI() + '">Link to .png version</a>';
+          png_regions.innerHTML = '<a href="' + chart.getImageURI() + '"><img src="img/print_button.png"></img> Print map</a>';
         });
 
         chart.draw(data, options);
@@ -478,7 +478,7 @@
 
         chart.draw(data, options);
         chart_donut.draw(data, options);    // Para pintar
-        document.getElementById('png_donut').outerHTML = '<a href="' + chart_donut.getImageURI() + '">Link to .png version</a>';  // Para pintar
+        document.getElementById('png_donut').outerHTML = '<p class="boton_impresion"> <a href="' + chart_donut.getImageURI() + '"><img src="img/print_button.png"></img> Print chart</a></p>';  // Para pintar
 
       }
 
@@ -537,8 +537,29 @@ if(hay_entradas){
                 name: 'Number of publications',
                 data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
                 
+            }],
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: 10, x: -15
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
             }
-            ]
+
+
 
         });
 
@@ -592,7 +613,28 @@ if(hay_entradas){
                     fontFamily: 'Verdana, sans-serif'
                 }
             }
-        }]
+        }],
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: 10, x: -15
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
+            }
+
     });
 
 
@@ -612,12 +654,12 @@ if(hay_entradas){
 
           if($entradasTotales>1){
             echo' <div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
-            echo"<div id='png_donut'></div>";
+            echo"<div style='clear: left;'></div>  <div id='png_donut'  ></div> <br>";
           }
           else{echo' <p  style="width: 80%; margin: 60px 0px 0px 0px; float: left;"> 100% in '.$phpaises[0].'</p>';}
 
          echo'<hr style="clear: left;"> <div id="regions_div" style="max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
-         echo"<div id='png_regions'></div>";
+         echo"<div id='png_regions' class='boton_impresion'></div> <br>";
 
          echo'<hr> <div id="container_autores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>';
 
@@ -655,6 +697,7 @@ if(hay_entradas){
       </div>
 
     </div><!-- /.container -->
+
 
 
     <!-- Bootstrap core JavaScript

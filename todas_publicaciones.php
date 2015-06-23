@@ -172,7 +172,7 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
 
         $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
         mysql_query($borratodo) or die(mysql_error()); 
-        echo "<p> Borrados los datos de la BD </p>";
+        ///echo "<p> Borrados los datos de la BD </p>";
 
 
 

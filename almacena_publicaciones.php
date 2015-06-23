@@ -18,7 +18,7 @@ $entradasTotales será el número de entradas que contiene la consulta. Si no ha
 
 if($entradasTotales > 0){
 
-    echo " <a href='",$json_string,"'> URL de la 1ª pagina de resultados </a> <br>";
+    ///echo " <a href='",$json_string,"'> URL de la 1ª pagina de resultados </a> <br>";
 
       for($i = 0; $i < $data["search-results"]["opensearch:itemsPerPage"]; $i++){
             
@@ -83,7 +83,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
             //$consulta_2_pag = array($data["search-results"]["link"][2]["@href"]);  // link a la segunda pagina de 
             $consulta_2_pag = array($json_string,'&start=25&count=',$cuenta);
             $json_string_2_pag=implode("", $consulta_2_pag); 
-            echo " <a href='",$json_string_2_pag,"'> URL de la 2ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_2_pag,"'> URL de la 2ª pagina de resultados </a> <br>";
             $data_2_pag = json_decode(file_get_contents($json_string_2_pag),true);
 
 
@@ -147,7 +147,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_3_pag = array($json_string,'&start=50&count=',$cuenta);
             $json_string_3_pag=implode("", $consulta_3_pag);      
-            echo " <a href='",$json_string_3_pag,"'> URL de la 3ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_3_pag,"'> URL de la 3ª pagina de resultados </a> <br>";
             $data_3_pag = json_decode(file_get_contents($json_string_3_pag),true);
 
             for($i = 0; $i < $data_3_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
@@ -209,7 +209,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_4_pag = array($json_string,'&start=75&count=',$cuenta);
             $json_string_4_pag=implode("", $consulta_4_pag);        
-            echo " <a href='",$json_string_4_pag,"'> URL de la 4ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_4_pag,"'> URL de la 4ª pagina de resultados </a> <br>";
             $data_4_pag = json_decode(file_get_contents($json_string_4_pag),true);
 
             for($i = 0; $i < $data_4_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
@@ -271,7 +271,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_5_pag = array($json_string,'&start=100&count=',$cuenta);
             $json_string_5_pag=implode("", $consulta_5_pag);        
-            echo " <a href='",$json_string_5_pag,"'> URL de la 5ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_5_pag,"'> URL de la 5ª pagina de resultados </a> <br>";
             $data_5_pag = json_decode(file_get_contents($json_string_5_pag),true);
 
             for($i = 0; $i < $data_5_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
@@ -332,7 +332,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_6_pag = array($json_string,'&start=125&count=',$cuenta);
             $json_string_6_pag=implode("", $consulta_6_pag);        
-            echo " <a href='",$json_string_6_pag,"'> URL de la 6ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_6_pag,"'> URL de la 6ª pagina de resultados </a> <br>";
             $data_6_pag = json_decode(file_get_contents($json_string_6_pag),true);
 
             for($i = 0; $i < $data_6_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
@@ -393,7 +393,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_7_pag = array($json_string,'&start=150&count=',$cuenta);
             $json_string_7_pag=implode("", $consulta_7_pag);        
-            echo " <a href='",$json_string_7_pag,"'> URL de la 7ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_7_pag,"'> URL de la 7ª pagina de resultados </a> <br>";
             $data_7_pag = json_decode(file_get_contents($json_string_7_pag),true);
 
             for($i = 0; $i < $data_7_pag["search-results"]["opensearch:itemsPerPage"]; $i++){
@@ -454,7 +454,7 @@ else{ echo "NO ENTRIES"; $hay_entradas=false;}
 
             $consulta_8_pag = array($json_string,'&start=175&count=',$cuenta);
             $json_string_8_pag=implode("", $consulta_8_pag);        
-            echo " <a href='",$json_string_8_pag,"'> URL de la 8ª pagina de resultados </a> <br>";
+            ///echo " <a href='",$json_string_8_pag,"'> URL de la 8ª pagina de resultados </a> <br>";
             $data_8_pag = json_decode(file_get_contents($json_string_8_pag),true);
 
             for($i = 0; $i < $data_8_pag["search-results"]["opensearch:itemsPerPage"]; $i++){

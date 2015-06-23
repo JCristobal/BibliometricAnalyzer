@@ -408,7 +408,7 @@ if(count($coautores)!=0){
           var canvas = document.getElementById('grafo_autores');
           var img    = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');;
 
-          img_grafo.innerHTML = '<a href=\"'+img+'\"> Link to img </a>';
+          img_grafo.innerHTML = '<p class=\"boton_impresion\"> <a href=\"'+img+'\"> <img src=\"img/print_button.png\"></img> Print tree </a></p>';
         }
 
 
@@ -554,7 +554,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
               $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
               mysql_query($borratodo) or die(mysql_error()); 
-              echo "<p> Borrados los datos del tema de la BD </p>";
+              ///echo "<p> Borrados los datos del tema de la BD </p>";
             }
 
         }
@@ -599,7 +599,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
             $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
             mysql_query($borratodo) or die(mysql_error()); 
-            echo "<p> Borrados los datos del tema de la BD </p>";
+            ///echo "<p> Borrados los datos del tema de la BD </p>";
         
           } // fin for
           
@@ -650,7 +650,11 @@ echo "<p style='clear: left;'> ----- </p>";
     document.write("Año "+soloAnios[index]+": "+counts[soloAnios[index]]+" publicaciones<br>");
   }*/
 
+  var nombre_autor = <?php echo json_encode($autor_limpio); ?>;
+  var apellidos_autor = <?php echo json_encode($autor_limpio2); ?>;
 
+  var titulo = 'Publications in the last years of ';
+  titulo = titulo.concat(nombre_autor,apellidos_autor);
 
 $(function () {
 
@@ -667,7 +671,7 @@ $(function () {
             zoomType: 'x' // Para ampliar al pinchar y arrastrar en el área
         },
         title: {
-            text: 'Publications in the last years'
+            text: titulo
         },
         subtitle: {
             text: document.ontouchstart === undefined ?
@@ -697,8 +701,29 @@ $(function () {
             name: 'Number of publications',
             data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]], counts[soloAnios[20]], counts[soloAnios[21]], counts[soloAnios[22]], counts[soloAnios[23]], counts[soloAnios[24]], counts[soloAnios[25]]]
             
-        }
-        ]
+        }],
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: 10, x: -15
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
+            }
+
+
 
     }); // acaba #container_columns
 
@@ -814,8 +839,7 @@ $(function () {
   var tema_autor = <?php echo json_encode($tema_aux); ?>;
   var lista_temas_autor = <?php echo json_encode($temas_aux); ?>;
 
-  var nombre_autor = <?php echo json_encode($autor_limpio); ?>;
-  var apellidos_autor = <?php echo json_encode($autor_limpio2); ?>;
+
 
   if(tema_autor != ""){
       series_temas = [{
@@ -901,7 +925,28 @@ $(function () {
                 text: 'Number of publications'
             }
         },
-        series: series_temas
+        series: series_temas,
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: 10, x: -15
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
+            }
+
 
     }); // acaba #container_varios
 
@@ -918,7 +963,7 @@ $(function () {
            $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio.$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
-           echo "Autor almacenado<br>";
+           ///echo "Autor almacenado<br>";
 
 
       $hay_entradas = $aux_entradas; // recuperamos el valor, ya que al consultar con los distintos temas del autor se a machacado
@@ -988,6 +1033,7 @@ $(function () {
 
 
     </div><!-- /.container -->
+
 
 
     <!-- Bootstrap core JavaScript

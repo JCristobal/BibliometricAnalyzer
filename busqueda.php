@@ -185,7 +185,7 @@
             }
             nombreCompleto.splice(0,autor.length);    // borramos solo el nombre orientandonos en el nombre introducido
             nombreCompleto = nombreCompleto.join(" ");
-            document.write("(buscaremos por: "+inicial+" "+nombreCompleto+")");
+            ///document.write("(buscaremos por: "+inicial+" "+nombreCompleto+")");
 /*          }else{
             if(hay_nombre){
               autor = autor.split(" ");
@@ -217,6 +217,7 @@
       </div>
 
     </div><!-- /.container -->
+
 
 
     <!-- Bootstrap core JavaScript
