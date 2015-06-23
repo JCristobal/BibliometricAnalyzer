@@ -311,7 +311,7 @@ echo "
 
 if(count($coautores)!=0){
 
-    echo "<canvas id='grafo_autores' style='float: left; border-style: solid; border-width: 1px;' width='800' height='600'></canvas>
+    echo "<canvas id='grafo_autores' style='display: block; border-style: solid; border-width: 1px; margin: 0px auto;' width='800' height='600' ></canvas>
 
     <script language='javascript' type='text/javascript'>
 
@@ -417,7 +417,7 @@ if(count($coautores)!=0){
     <div id='img_grafo'></div> ";
 
 
-        echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  float: left;">Coautores: <br>';
+        echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  width: 500px;">Coautores: <br>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
               echo "<img style='float: left;' src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='15%' width='15%'> </img>";          
@@ -484,8 +484,9 @@ echo "<p style='clear: left;'> ----- </p>";
           $phpanios[]=$row['fecha_portada_0'];
         }
 
-
-
+        $aux_aleatorio = $idConsulta;
+        $aux_entradas = $hay_entradas;
+        $aux_totales = $entradasTotales;
 
 
       $tema="";
@@ -553,7 +554,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
               $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
               mysql_query($borratodo) or die(mysql_error()); 
-              echo "<p> Borrados los datos de la BD </p>";
+              echo "<p> Borrados los datos del tema de la BD </p>";
             }
 
         }
@@ -598,7 +599,7 @@ echo "<p style='clear: left;'> ----- </p>";
 
             $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
             mysql_query($borratodo) or die(mysql_error()); 
-            echo "<p> Borrados los datos de la BD </p>";
+            echo "<p> Borrados los datos del tema de la BD </p>";
         
           } // fin for
           
@@ -920,20 +921,37 @@ $(function () {
            echo "Autor almacenado<br>";
 
 
+      $hay_entradas = $aux_entradas; // recuperamos el valor, ya que al consultar con los distintos temas del autor se a machacado
+
       if($hay_entradas){ 
+
+        $idConsulta = $aux_aleatorio;
+        $entradasTotales = $aux_totales;
 
         echo '<div id="container_columns" style="height: 400px"></div><br>';
 
+        if($entradasTotales<15){
+          echo '<p id="cabecera_publicaciones"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
+        }
+        else{
+          echo '<p id="cabecera_publicaciones"><b> 15 latests publications: </b></p>';   
+        }
+
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
+        
+        if($entradasTotales>15){
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p> ';   
+        }
+        echo '<hr>';
+
+/*
+        $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
+        mysql_query($borratodo) or die(mysql_error()); 
+        echo "<p> Borrados los datos de la BD </p>";
+*/
 
       }
   
-
-      $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
-      mysql_query($borratodo) or die(mysql_error()); 
-      echo "<p> Borrados los datos de la BD </p>";
-
-
 
 
   if($muestra_temas_asociados){
@@ -955,12 +973,15 @@ $(function () {
     }
 
 
-    echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 0 auto"></div>';
+    echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 10px auto"></div>';
 
   }else{
     echo "<p>Topics aren't registered </p>";  
   }
    
+
+
+
 ?>
 <!--  <div id="container_columns" style="height: 400px"></div>  -->
 

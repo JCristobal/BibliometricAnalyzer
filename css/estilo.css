@@ -35,6 +35,16 @@ hr {
   max-width: 800px;
   margin: 0 auto;
 }
+#cabecera_publicaciones{
+	text-align: center;
+	font-size: 150%;
+	margin: 50px 0px 10px 0px;
+}
+#enlace_publicaciones{
+	font-size: 130%;
+	text-decoration: none;
+}
+
 
 #lista_entradas{
 	height:600px;
@@ -58,7 +68,7 @@ hr {
 	margin: 20px 0px 5px 10px;
 	max-width: 70%; 
 }
-.bubbleChart {
+/*.bubbleChart {
     min-width: 60px;
     max-width: 100%;
     min-height: 60px;
@@ -68,7 +78,7 @@ hr {
 }
 .bubbleChart svg{
     background: #FFFFFF ;
-}
+}*/
 
 #lista_coautores{
 	

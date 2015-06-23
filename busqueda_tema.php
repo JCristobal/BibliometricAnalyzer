@@ -624,14 +624,25 @@ if(hay_entradas){
 
       }  
 
+        if($entradasTotales<15){
+          echo '<p id="cabecera_publicaciones"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
+        }
+        else{
+          echo '<p id="cabecera_publicaciones"><b> 15 latests publications: </b></p>';   
+        }
 
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
+        if($entradasTotales>15){
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p>';   
+        }
+        echo '<hr>';
 
-
+/*
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
       echo "<p> Borrados los datos de la BD </p>";
+*/
 
 ?>
 
