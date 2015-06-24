@@ -266,6 +266,16 @@
 
         }
 
+        $phpcreador = array(); 
+        $phpcitas = array(); 
+        $consulta_citas= "SELECT creador,citas FROM publicaciones WHERE id=".$idConsulta;
+        $resultados_citas=mysql_query($consulta_citas,$conexion);
+        while ($row=mysql_fetch_array($resultados_citas)) {  
+          $phpcreador[]=$row['creador'];
+          $phpcitas[]=$row['citas'];
+        }
+
+
 ?>
 
 
@@ -274,7 +284,11 @@
      
   if(hay_entradas){ 
 
-
+var listaCreadores = <?php echo json_encode($phpcreador); ?>;
+var listaCitas = <?php echo json_encode($phpcitas); ?>;
+for(index = 0; index < listaCreadores.length; index++) {
+  document.write("A "+listaCreadores[index]+" le citan: "+listaCitas[index]+"<br>");
+}
 
     var listaAutores = <?php echo json_encode($phpautor); ?>;
     var soloAutores = {};
@@ -687,11 +701,6 @@ if(hay_entradas){
 */
 
 ?>
-
-
-<form>
-    <input type="submit" value="Borrar BD publicaciones" formaction="borra_publicaciones.php">
-</form>
 
 
       </div>

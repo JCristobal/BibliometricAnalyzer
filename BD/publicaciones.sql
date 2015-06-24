@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 16-06-2015 a las 12:19:50
+-- Tiempo de generación: 25-06-2015 a las 00:12:09
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.5.19
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `publicaciones` (
   `fecha_portada` varchar(20) NOT NULL,
   `fecha_portada_0` varchar(20) NOT NULL,
   `doi` varchar(50) NOT NULL,
-  `publi_propia` tinyint(1) NOT NULL,
+  `citas` varchar(100) NOT NULL,
   `veces_citado` int(11) NOT NULL,
   `afiliacion_nombre` varchar(50) NOT NULL,
   `afiliacion_ciudad` varchar(20) NOT NULL,

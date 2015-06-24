@@ -92,9 +92,12 @@ hr {
 
 #lista_coautores{
 	
-	height:420px;
+	height:650px;
 	overflow:auto;
 	overflow-x:hidden;
+
+	border-color: grey;
+	margin: 30px auto;
 	
 }
 

@@ -82,8 +82,8 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
           echo "<p> Type $muestratipo: $muestrasubtipo </p>";
 
           echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-                                                                                                                                                              //QUOTA_EXCEEDED: Maximum number of 20000 requests exceeded  
-          echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  // 6492f9c867ddf3e84baa10b5971e3e3d
+                                                                                                                                                               
+          echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
           
           echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
 
