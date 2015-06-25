@@ -15,6 +15,13 @@
         $string = str_replace("%C3%AF","ï", $string);
         $string = str_replace("%C3%B6","ö", $string);
         $string = str_replace("%C3%BC","ü", $string);
+        $string = str_replace("%C3%A5","å", $string);
+        $string = str_replace("%C3%A0","à", $string);
+		$string = str_replace("%C3%A8","è", $string);
+		$string = str_replace("%C3%AC","ì", $string);
+		$string = str_replace("%C3%B2","ò", $string);
+		$string = str_replace("%C3%B9","ù", $string);
+
 
   	return $string;
 
@@ -36,6 +43,12 @@
         $string = str_replace("ï", "%C3%AF", $string);
         $string = str_replace("ö", "%C3%B6", $string);
         $string = str_replace("ü", "%C3%BC", $string);
+        $string = str_replace("å", "%C3%A5", $string);
+        $string = str_replace("à", "%C3%A0", $string);
+		$string = str_replace("è", "%C3%A8", $string);
+		$string = str_replace("ì", "%C3%AC", $string);
+		$string = str_replace("ò", "%C3%B2", $string);
+		$string = str_replace("ù", "%C3%B9", $string);
 
   	return $string;
 

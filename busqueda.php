@@ -77,9 +77,6 @@
         $autor2 = str_replace(" ", "%20", $autor2);
 
 
-	       echo '<p>Did not you want to search this? <a href="index.html"> Go back </a> </p>';
-
-
  
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
@@ -107,8 +104,6 @@
         $html = file_get_html($string2);
 
 
-
-        echo "<p> ------- </p> ";
 
         $listaFotos = array();
         foreach($html->find('img') as $element){

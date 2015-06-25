@@ -90,14 +90,15 @@
         $hay_fecha0=false;
         $hay_fecha1=false;
 
-        echo "<h1> Bibliometric analysis";
 
-        if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
-        if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
-        if(strlen($titulo)){ echo " with '".$titulo."' in the title"; $hay_titulo=true;}
-        if(strlen($fecha0)){ echo " since ".$fecha0; $hay_fecha0=true;}
-        if(strlen($fecha1)){ echo " to ".$fecha1; $hay_fecha1=true;}
+        echo "<h1> Bibliometric analysis";
+          if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
+          if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
+          if(strlen($titulo)){ echo " with '".$titulo."' in the title"; $hay_titulo=true;}
+          if(strlen($fecha0)){ echo " since ".$fecha0; $hay_fecha0=true;}
+          if(strlen($fecha1)){ echo " to ".$fecha1; $hay_fecha1=true;}
         echo ".</h1>";
+
 
         // Se ajustan las fechas  para que coincidan con las introducidas. Si no se han introducido toman valores predefinidos
         if($hay_fecha0==false){$fecha0=1800;}else{$fecha0--;} // La fecha no incluye la fecha de comienzo (es restrictivo), restándole uno hacemos que aparezcan publicaciones publicadas desde el año que se indica
@@ -190,8 +191,6 @@
       
 
 
-        echo"<p>Did not you want to search this? <a href='index.html'> Go home </a> </p>";
-
         $palabra = iso2utf($palabra);
         $titulo = iso2utf($titulo);
 
@@ -227,10 +226,14 @@
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
 
 
-      echo " Total number of results: " .$entradasTotales,"<br><br>";
 
 
-      echo "<p> ------- </p>";
+        if($hay_entradas){
+          echo " <p id='cabecera'> Total number of results: " .$entradasTotales."</p>";
+        }else{
+          echo " <p id='cabecera'> NO results </p>";     //////////////////////
+        }
+
 
 
         $phpaises = array(); 
@@ -283,15 +286,52 @@
   var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
      
   if(hay_entradas){ 
-
+/*
 var listaCreadores = <?php echo json_encode($phpcreador); ?>;
 var listaCitas = <?php echo json_encode($phpcitas); ?>;
+
+// Juntamos todas las citas de un autor
+var citas=new Array();
+var autor_cita=new Array();
 for(index = 0; index < listaCreadores.length; index++) {
-  document.write("A "+listaCreadores[index]+" le citan: "+listaCitas[index]+"<br>");
+  autor_cita[index] = listaCreadores[index]; 
+  citas[index] = listaCitas[index]; 
+  for(i = 0; i < listaCreadores.length; i++) {
+    if(i != index){  // para que no coincida con el mismo, si no se repite
+      if(listaCreadores[i]==listaCreadores[index]){  
+        var aux = citas[index].concat(listaCitas[i]);
+        citas[index]=aux;  
+      }
+    }
+  }
+}
+//Eliminamos los repetidos
+var final_citas=new Array();
+var final_autor_cita=new Array();
+var almacenados=new Array("");
+var cont_almacenados=0;
+for(index = 0; index < autor_cita.length; index++) {
+  if(almacenados.indexOf(autor_cita[index]) == -1 ){
+    // si no se encuentra en lista  se almacena
+      var fin = autor_cita.lastIndexOf(autor_cita[index]); 
+      final_autor_cita[index] = autor_cita[fin];
+      final_citas[index] = citas[fin];
+      almacenados[cont_almacenados]=autor_cita[index];
+      cont_almacenados++;
+  }
 }
 
+for(index = 0; index < final_autor_cita.length; index++) {
+  document.write("A <b>"+final_autor_cita[index]+"</b> le citan: "+final_citas[index]+"<br>");
+}
+
+*/
+
+
+
+
     var listaAutores = <?php echo json_encode($phpautor); ?>;
-    var soloAutores = {};
+///var soloAutores = {};
     var soloAutores = new Array();
     var contador_autores=0;
     // De cada entrada cogemos tódos los autores, separados por comas
@@ -305,7 +345,7 @@ for(index = 0; index < listaCreadores.length; index++) {
     }
 
     //Contamos las veces que se repite cada año
-    var counts_Autores = {};
+///var counts_Autores = {};
     var counts_Autores = new Array();
     for(var i=0;i< soloAutores.length;i++){
       var key = soloAutores[i];
@@ -326,7 +366,7 @@ for(index = 0; index < listaCreadores.length; index++) {
         var listaPaises = <?php echo json_encode($phpaises); ?>; 
 
         //Contamos las veces que se repite cada país
-        var counts = {};
+///var counts = {};
         var counts = new Array();
         for(var i=0;i< listaPaises.length;i++){
           var key = listaPaises[i];
@@ -344,7 +384,7 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
     var listaAnios = <?php echo json_encode($phpanios); ?>;
-    var soloAnios = {};
+///var soloAnios = {};
     var soloAnios = new Array();
 
     //Cogemos sólo el año de la fecha
@@ -353,7 +393,7 @@ for(index = 0; index < listaCreadores.length; index++) {
       soloAnios[index]=ss[0];
     }
     //Contamos las veces que se repite cada año
-    var counts_anios = {};
+///var counts_anios = {};
     var counts_anios = new Array();
     for(var i=0;i< soloAnios.length;i++){
       var key = soloAnios[i];
@@ -374,7 +414,7 @@ for(index = 0; index < listaCreadores.length; index++) {
           document.write('<div id="container_columns" style="height: 400px;"></div> <hr> ');
         }
         //mostramos los paises
-        document.write(' <div style="width: 20%; margin: 60px 0px 0px 0px; float: left;"><p>Paises y número de publicaciones: </p>');
+        document.write(' <div style="width: 20%; margin: auto 0px; float: left;  max-height:500px; overflow:auto; overflow-x:hidden;"><p>Paises y número de publicaciones: </p>');
         for(index = 0; index < listaPaises.length; index++) {
           if(listaPaises[index]!= ""){
             document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
@@ -680,19 +720,22 @@ if(hay_entradas){
 
       }  
 
+      if($hay_entradas){ 
         if($entradasTotales<15){
-          echo '<p id="cabecera_publicaciones"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
+          echo '<p id="cabecera"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
         }
         else{
-          echo '<p id="cabecera_publicaciones"><b> 15 latests publications: </b></p>';   
+          echo '<p id="cabecera"><b> 15 latests publications: </b></p>';   
         }
 
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
         if($entradasTotales>15){
-          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p>';   
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p>';   
         }
         echo '<hr>';
+
+      }
 
 /*
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            

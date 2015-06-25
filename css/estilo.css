@@ -3,18 +3,17 @@ body {
 }
 .starter-template {
   padding: 40px 15px;
-  /*text-align: center;*/
 }
 
 
 .content-section-a {
-    padding: 25px 0;
+    padding: 5px 0;
     background-color: #f8f8f8;
 
 }
 
 .content-section-b {
-    padding: 25px 0;
+    padding: 5px 0;
     border-top: 2px solid #e7e7e7;
     border-bottom: 2px solid #e7e7e7;
 }
@@ -35,7 +34,7 @@ hr {
   max-width: 800px;
   margin: 0 auto;
 }
-#cabecera_publicaciones{
+#cabecera{
 	text-align: center;
 	font-size: 150%;
 	margin: 50px 0px 10px 0px;
@@ -68,17 +67,6 @@ hr {
 	margin: 20px 0px 5px 10px;
 	max-width: 70%; 
 }
-/*.bubbleChart {
-    min-width: 60px;
-    max-width: 100%;
-    min-height: 60px;
-    max-height: 100%;
-    height: 420px;
-    margin: 0 auto;
-}
-.bubbleChart svg{
-    background: #FFFFFF ;
-}*/
 
 .boton_impresion{
 	float: right;
@@ -90,16 +78,22 @@ hr {
 	color:black;
 }
 
-#lista_coautores{
-	
-	height:650px;
-	overflow:auto;
-	overflow-x:hidden;
-
-	border-color: grey;
-	margin: 30px auto;
-	
+#datos_autor{
+ float: left;  
+margin: 40px 80px;
+max-width: 35%;
+text-align: center;
 }
+#datos_autor img{
+margin: 10px 20px 0px;
+}
+/*
+#datos_autor2{
+float: left; 
+margin: 70px 10px 50px 10px;
+max-width: 33%;
+}
+*/
 
 /* Estilo para celda de datos de autor*/
   .bold-font {
@@ -117,6 +111,26 @@ hr {
     color: #FFFFFF;
     background-color: #008000;
   }
+
+#tabla_datos {
+	float: left;
+	margin: 90px 50px 0px 50px;
+}
+
+
+
+#lista_coautores{
+	
+	height:650px;
+	overflow:auto;
+	overflow-x:hidden;
+
+	border-color: grey;
+	margin: 30px auto;
+	
+}
+
+
 
 .footer {
   background-color: #222;

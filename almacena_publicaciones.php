@@ -83,7 +83,7 @@ if($entradasTotales > 0){
 
         }
 }
-else{ echo "NO ENTRIES"; $hay_entradas=false;}
+else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
 
 
 

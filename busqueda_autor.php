@@ -181,9 +181,6 @@
 
 
 
-        echo '<p>Did not you want to search this? <a href="index.html"> Go home </a> </p>';
-
-
         //include_once('simple_html_dom.php');           // http://simplehtmldom.sourceforge.net/
 
         // Create DOM from URL or file
@@ -232,11 +229,10 @@
           echo "<h1> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</h1>";
 
 
-          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$autor_limpio.' '.$autor_limpio2.'</b><br><img src="img/user.jpg" height="150" width="150"/><br> </div>'; 
+          echo '<div id="datos_autor" style="width:100%;"> <p><b>'.$autor_limpio.' '.$autor_limpio2.'</b></p><img src="img/user.jpg" height="150" width="150"/><br>'; 
 
-          echo '<div style="float: left; margin: 15px 2px 2px 15px;"> No mail or affiliation verified </div>';
+          echo '<p> No mail or affiliation verified </p> </div>';
 
-          echo "<p style='clear: left;'> ------- </p> ";
 
         }else{
 
@@ -249,12 +245,12 @@
             $foto='<img src="img/user.jpg" height="150" width="150"/>';
           }
 
-          echo '<div style=" float: left;  margin: 2px 2px 2px 2px;"> <b>'.$nombreGS.'</b><br>'.$foto.'<br> </div>'; 
+          echo '<div id="datos_autor" > <p><b>'.$nombreGS.'</b></p> '.$foto.'<br> '; 
 
-          echo '<div style="float: left; margin: 15px 2px 2px 15px;">'.$email;
-          echo "AFILIATION: ".$phpafiliacion[0]."</div>";
+          echo '<p>'.$email.'</p> <p>Afiliation: '.$phpafiliacion[0].'</p> </div>';
 
-          echo "<p style='clear: left;'> ------- </p> ";
+
+         
 
 
 echo "
@@ -273,7 +269,7 @@ echo "
         'rowNumberCell': ' celda-datos'
       };
 
-      var options = {'allowHtml': true, 'cssClassNames': cssClassNames, keepAspectRatio: 'true', width: '80%'};
+      var options = {'allowHtml': true, 'cssClassNames': cssClassNames, keepAspectRatio: 'true', width: '250px'};
 
       function drawTable() {
         var data = new google.visualization.DataTable();
@@ -298,6 +294,7 @@ echo "
     border-bottom-color: #008000;
     border-bottom-style: solid;
     border-width: 1px;
+    margin: 0px auto;
   }
 </style>
 ";
@@ -306,7 +303,7 @@ echo "
 
 
         }
-        echo "<p> ------- </p> ";
+       echo "<p style='clear: left;'>  </p> ";
 
 
 if(count($coautores)!=0){
@@ -418,8 +415,8 @@ if(count($coautores)!=0){
         echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  width: 500px;"><p style="font-weight:bold; text-align:center;"> Co-authors: </p>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
-            if(($i%2)==0){echo "<div class='content-section-a' style='padding: 5px 0;'>";} // Alternamos la clase según las entradas
-            else{echo"<div class='content-section-b' style='padding: 5px 0;'>";}
+            if(($i%2)==0){echo "<div class='content-section-a' >";} // Alternamos la clase según las entradas
+            else{echo"<div class='content-section-b' >";}
 
               echo "<img style='float: left; margin: 10px 0;' src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='70px' width='70px'> </img>";          
               
@@ -442,7 +439,7 @@ echo "<hr style='clear: left;'>";
 
 
 
-        echo "<p> ---------- CONSULTA A SCOPUS con ".$autor_limpio." ".$autor_limpio2."----------  </p>";
+
 
 
 /*
@@ -474,8 +471,14 @@ echo "<hr style='clear: left;'>";
 
       include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
 
-      
-      echo " Total number of results: " .$entradasTotales,"<br><br>";
+      if($hay_entradas){
+        echo "<p id='cabecera'> Data collected from the author ".$autor_limpio." ".$autor_limpio2." (".$entradasTotales." entries)</p>";
+      }else{
+         echo "<p id='cabecera'> No entries found from the author ".$autor_limpio." ".$autor_limpio2." </p>";     
+      }
+
+   
+
 
 
 
@@ -624,7 +627,6 @@ echo "<hr style='clear: left;'>";
 
 
   var listaAnios = <?php echo json_encode($phpanios); ?>;
-  var soloAnios = {};
   var soloAnios = new Array();
 
   //Cogemos sólo el año de la fecha
@@ -633,7 +635,6 @@ echo "<hr style='clear: left;'>";
     soloAnios[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts = {};
   var counts = new Array();
   for(var i=0;i< soloAnios.length;i++){
     var key = soloAnios[i];
@@ -662,7 +663,7 @@ $(function () {
 
     $('#container_columns').highcharts({
         chart: {
-            type: 'column',
+            type: 'bar',
             margin: 75,
             /*options3d: {
                 enabled: true,
@@ -732,7 +733,6 @@ $(function () {
 
   //Calculamos los años y apariciones de un tema (SOLO HAY UN TEMA)
   var listaAnios_tema = <?php echo json_encode($phpanios_tema); ?>;
-  var soloAnios_tema = {};
   var soloAnios_tema = new Array();
 
   //Cogemos sólo el año de la fecha
@@ -741,7 +741,6 @@ $(function () {
     soloAnios_tema[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts_tema = {};
   var counts_tema = new Array();
   for(var i=0;i< soloAnios_tema.length;i++){
     var key = soloAnios_tema[i];
@@ -754,7 +753,6 @@ $(function () {
 
   //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 1)
   var listaAnios_tema0 = <?php echo json_encode($phpanios_tema0); ?>;
-  var soloAnios_tema0 = {};
   var soloAnios_tema0 = new Array();
   //Cogemos sólo el año de la fecha
   for(index = 0; index < listaAnios_tema0.length; index++) {
@@ -762,7 +760,6 @@ $(function () {
     soloAnios_tema0[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts_tema0 = {};
   var counts_tema0 = new Array();
   for(var i=0;i< soloAnios_tema0.length;i++){
     var key = soloAnios_tema0[i];
@@ -772,7 +769,6 @@ $(function () {
   //soloAnios_tema0=soloAnios_tema0.unique()
   //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 2)
   var listaAnios_tema1 = <?php echo json_encode($phpanios_tema1); ?>;
-  var soloAnios_tema1 = {};
   var soloAnios_tema1 = new Array();
   //Cogemos sólo el año de la fecha
   for(index = 0; index < listaAnios_tema1.length; index++) {
@@ -780,7 +776,6 @@ $(function () {
     soloAnios_tema1[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts_tema1 = {};
   var counts_tema1 = new Array();
   for(var i=0;i< soloAnios_tema1.length;i++){
     var key = soloAnios_tema1[i];
@@ -790,7 +785,6 @@ $(function () {
   //soloAnios_tema1=soloAnios_tema1.unique()
   //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 3)
   var listaAnios_tema2 = <?php echo json_encode($phpanios_tema2); ?>;
-  var soloAnios_tema2 = {};
   var soloAnios_tema2 = new Array();
   //Cogemos sólo el año de la fecha
   for(index = 0; index < listaAnios_tema2.length; index++) {
@@ -798,7 +792,6 @@ $(function () {
     soloAnios_tema2[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts_tema2 = {};
   var counts_tema2 = new Array();
   for(var i=0;i< soloAnios_tema2.length;i++){
     var key = soloAnios_tema2[i];
@@ -808,7 +801,6 @@ $(function () {
   //soloAnios_tema2=soloAnios_tema2.unique()
   //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 4)
   var listaAnios_tema3 = <?php echo json_encode($phpanios_tema3); ?>;
-  var soloAnios_tema3 = {};
   var soloAnios_tema3 = new Array();
   //Cogemos sólo el año de la fecha
   for(index = 0; index < listaAnios_tema3.length; index++) {
@@ -816,7 +808,6 @@ $(function () {
     soloAnios_tema3[index]=ss[0];
   }
   //Contamos las veces que se repite cada año
-  var counts_tema3 = {};
   var counts_tema3 = new Array();
   for(var i=0;i< soloAnios_tema3.length;i++){
     var key = soloAnios_tema3[i];
@@ -978,10 +969,10 @@ $(function () {
         echo '<div id="container_columns" style="height: 400px"></div><br>';
 
         if($entradasTotales<15){
-          echo '<p id="cabecera_publicaciones"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
+          echo '<p id="cabecera"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
         }
         else{
-          echo '<p id="cabecera_publicaciones"><b> 15 latests publications: </b></p>';   
+          echo '<p id="cabecera"><b> 15 latests publications: </b></p>';   
         }
 
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
@@ -1002,6 +993,8 @@ $(function () {
 
 
   if($muestra_temas_asociados){
+
+    echo '<p id="cabecera" style="margin:40px 0"><b> Author subtopics</b> </p>'; 
 
     if($tema!=""){
         echo "The author works with the subtopic: <b>".$tema_aux."</b> with ".$entradasTotales." entries. ";
