@@ -56,7 +56,7 @@
 
     <div class="container">
 
-      <div class="starter-template">
+      <div class="template">
 
 
 <?php
@@ -180,6 +180,8 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
 
       </div>
 
+  <p class="footer"> JCristobal </p>
+  
     </div><!-- /.container -->
 
 

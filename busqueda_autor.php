@@ -69,7 +69,7 @@
 
     <div class="container">
 
-      <div class="starter-template">
+      <div class="template">
 
 
 
@@ -259,7 +259,7 @@ echo "
       google.setOnLoadCallback(drawTable);
 
       var cssClassNames = {
-        'headerRow': 'italic-darkblue-font large-font celda-datos',
+        'headerRow': 'italic-color-font large-font celda-datos',
         'tableRow': 'celda-datos',
         'oddTableRow': 'celda-datos',
         'selectedTableRow': 'large-font celda-datos',
@@ -307,14 +307,14 @@ echo "
 
 
 if(count($coautores)!=0){
-
-    echo "<canvas id='grafo_autores' style='display: block; border-style: solid; border-width: 1px; margin: 0px auto;' width='800' height='600' ></canvas>
+    echo "<p id='cabecera'> Authors relations tree </p>";
+    echo "<canvas id='arbol_autores' width='800' height='600' ></canvas>
 
     <script language='javascript' type='text/javascript'>
 
         var sys = arbor.ParticleSystem(100, 400,0.5);
         sys.parameters({gravity:false});
-        sys.renderer = Renderer('#grafo_autores') ;
+        sys.renderer = Renderer('#arbol_autores') ;
 
         var data = {
           nodes:{
@@ -400,7 +400,7 @@ if(count($coautores)!=0){
         sys.graft(data);
 
         window.onload = function() {
-          var canvas = document.getElementById('grafo_autores');
+          var canvas = document.getElementById('arbol_autores');
           var img    = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');;
 
           img_grafo.innerHTML = '<p class=\"boton_impresion\"> <a href=\"'+img+'\"> <img src=\"img/print_button.png\"></img> Print tree </a></p>';
@@ -412,7 +412,7 @@ if(count($coautores)!=0){
     <div id='img_grafo'></div> ";
 
 
-        echo '<div id="lista_coautores" style=" border-style: solid; border-width: 1px;  width: 500px;"><p style="font-weight:bold; text-align:center;"> Co-authors: </p>';
+        echo '<div id="lista_coautores" ><p style="font-weight:bold; text-align:center;"> Co-authors: </p>';
             for ($i = 0; $i < count($coautores); $i++) { 
 
             if(($i%2)==0){echo "<div class='content-section-a' >";} // Alternamos la clase según las entradas
@@ -420,7 +420,7 @@ if(count($coautores)!=0){
 
               echo "<img style='float: left; margin: 10px 0;' src='http://scholar.google.es/citations?view_op=view_photo&amp;".$img_coautores[$i]."&amp;citpid=1'  height='70px' width='70px'> </img>";          
               
-              echo "<div style='float: left; max-width: 85%; margin: 10px 0px 0px 10px;'> <p style='float: left;'>".$coautores[$i]."</p>" ;/*." y  <a href=\"http://scholar.google.es".$enlace_coautores[$i]."\"> enlace a GSCHOLAR </a>  "; */
+              echo "<div style='float: left; max-width: 85%; margin: 10px 0px 0px 10px;'> <p style='float: left;'>".$coautores[$i]."</p>" ;
 
                $coautores[$i] = iso2utf($coautores[$i]);
 
@@ -432,14 +432,12 @@ if(count($coautores)!=0){
 
 
 }
-else{echo "Without coauthors registered";}
+else{
+  echo "<p style='text-align: center;'> Without coauthors registered</p>";
+}
+
 
 echo "<hr style='clear: left;'>";
-
-
-
-
-
 
 
 /*
@@ -966,7 +964,7 @@ $(function () {
         $idConsulta = $aux_aleatorio;
         $entradasTotales = $aux_totales;
 
-        echo '<div id="container_columns" style="height: 400px"></div><br>';
+        echo '<div id="container_columns" ></div><br>';
 
         if($entradasTotales<15){
           echo '<p id="cabecera"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
@@ -996,9 +994,13 @@ $(function () {
 
     echo '<p id="cabecera" style="margin:40px 0"><b> Author subtopics</b> </p>'; 
 
+    $tiene_entradas=true;
+
     if($tema!=""){
         echo "The author works with the subtopic: <b>".$tema_aux."</b> with ".$entradasTotales." entries. ";
+        if($entradasTotales==0){$tiene_entradas=false;}
     }else{
+        $contador_aux=0;;
         echo "The author works with the subtopics: ";
                 for ($i = 0; $i < count($temas); $i++) { 
                       if($numero_publi_tema[$i] == 0){
@@ -1006,25 +1008,28 @@ $(function () {
                       }
                       else{
                         echo "<b>".$temas_aux[$i]."</b> with ".$numero_publi_tema[$i]." entries, ";
+                        $contador_aux=$contador_aux+$numero_publi_tema[$i];
                       }
 
-        }
+                }
+                if($contador_aux==0){$tiene_entradas=false;}
 
     }
 
 
-    echo '<div id="container_varios" style="min-width: 310px; height: 400px; margin: 10px auto"></div>';
+    if($tiene_entradas){echo '<div id="container_varios" ></div>';}
 
   }else{
-    echo "<p>Topics aren't registered </p>";  
+    echo "<p> <p style='text-align: center;'> Author subtopics aren't registered </p></p>";  
   }
    
 
 
 
 ?>
-<!--  <div id="container_columns" style="height: 400px"></div>  -->
 
+
+  <p class="footer"> JCristobal </p>
 
 
     </div><!-- /.container -->

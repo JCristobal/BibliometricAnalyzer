@@ -29,6 +29,7 @@
   <script src="js/pace.min.js"></script>
   <link href="css/pace_style.css" rel="stylesheet" />
 
+
   </head>
 
   <body>
@@ -56,7 +57,7 @@
 
     <div class="container">
 
-      <div class="starter-template">
+      <div class="template">
 
 
 <?php
@@ -75,6 +76,7 @@
 
         $autor = str_replace(" ", "%20", $autor);
         $autor2 = str_replace(" ", "%20", $autor2);
+
 
 
  
@@ -102,7 +104,6 @@
 
         // Create DOM from URL or file
         $html = file_get_html($string2);
-
 
 
         $listaFotos = array();
@@ -211,7 +212,10 @@
     </script>
       </div>
 
+  <p class="footer"> JCristobal </p>
+  
     </div><!-- /.container -->
+
 
 
 

@@ -38,9 +38,10 @@
     <script src="js/pace.min.js"></script>
     <link href="css/pace_style.css" rel="stylesheet" />
 
+
   </head>
 
-  <body>
+  <body >
 
     <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
@@ -65,7 +66,7 @@
 
     <div class="container">
 
-      <div class="starter-template">
+      <div class="template">
 
 
 <?php
@@ -231,7 +232,7 @@
         if($hay_entradas){
           echo " <p id='cabecera'> Total number of results: " .$entradasTotales."</p>";
         }else{
-          echo " <p id='cabecera'> NO results </p>";     //////////////////////
+          echo " <p id='cabecera'>  Your search did not match any entries. </p> <p style='text-align:center;'><a href='index.html'>Go back</a></p>";     
         }
 
 
@@ -411,17 +412,18 @@ for(index = 0; index < final_autor_cita.length; index++) {
           document.write(counts_anios[soloAnios[0]]+" publications in the year "+soloAnios[0]+'<hr>');}
         else{
           // Pintamos el gráfico por años primero
-          document.write('<div id="container_columns" style="height: 400px;"></div> <hr> ');
+          document.write('<div id="container_columns" ></div> <hr> ');
         }
         //mostramos los paises
-        document.write(' <div style="width: 20%; margin: auto 0px; float: left;  max-height:500px; overflow:auto; overflow-x:hidden;"><p>Paises y número de publicaciones: </p>');
+        document.write(' <div id="listado_paises" >');
+        document.write('<table id="paises"> <caption>Countries and his number or publications</caption>');
         for(index = 0; index < listaPaises.length; index++) {
           if(listaPaises[index]!= ""){
-            document.write(""+listaPaises[index]+": "+counts[listaPaises[index]]+"<br>");
+            document.write("<tr> <td>"+listaPaises[index]+"</td> <td>"+counts[listaPaises[index]]+"</td> </tr>");
           }
 
         }
-        document.write('</div>');
+        document.write(' </table> </div>');
 
 
     
@@ -516,7 +518,7 @@ for(index = 0; index < final_autor_cita.length; index++) {
         var data = data_paises;
 
         var options = {
-          title: 'Contribución por pais',
+          title: 'Contributions by countries',
           pieHole: 0.4,
           keepAspectRatio: 'true', width: '100%'
         };
@@ -707,15 +709,15 @@ if(hay_entradas){
       if($hay_entradas){ 
 
           if($entradasTotales>1){
-            echo' <div id="donutchart" style="width: 80%; height: 500px; float: left;"></div> ';
+            echo' <div id="donutchart" ></div> ';
             echo"<div style='clear: left;'></div>  <div id='png_donut'  ></div> <br>";
           }
           else{echo' <p  style="width: 80%; margin: 60px 0px 0px 0px; float: left;"> 100% in '.$phpaises[0].'</p>';}
 
-         echo'<hr style="clear: left;"> <div id="regions_div" style="max-width:100%; height: 500px; margin: 10px 0px 60px 0px;"></div>';
+         echo'<hr style="clear: left;"> <div id="regions_div" ></div>';
          echo"<div id='png_regions' class='boton_impresion'></div> <br>";
 
-         echo'<hr> <div id="container_autores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>';
+         echo'<hr> <div id="container_autores" ></div>';
 
 
       }  
@@ -743,12 +745,16 @@ if(hay_entradas){
       echo "<p> Borrados los datos de la BD </p>";
 */
 
+
 ?>
 
 
       </div>
 
+  <p class="footer"> JCristobal </p>
+
     </div><!-- /.container -->
+
 
 
 

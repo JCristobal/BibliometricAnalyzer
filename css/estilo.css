@@ -1,10 +1,99 @@
 body {
   /*padding-top: 50px;*/
 }
-.starter-template {
+.template {
   padding: 40px 15px;
 }
 
+
+
+.footer {
+	border-top: 2px solid grey;
+	padding-top: 20px;
+	color: black;
+	width: 100%;
+	position: static;
+	margin-top: 60px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+
+
+
+
+/*Reglas para el apartado de AUTOR */
+
+#datos_autor{
+	float: left;  
+	margin: 40px 80px;
+	width: 35%;
+	text-align: center;
+}
+
+#datos_autor img{
+	margin: 10px 20px 0px;
+}
+/*
+#datos_autor2{
+float: left; 
+margin: 70px 10px 50px 10px;
+max-width: 33%;
+}
+*/
+
+/* Estilo para las celdas de datos de autor*/
+.bold-font {
+	font-weight: bold;
+}
+
+/* la clase "celda-datos" se define en línea, 
+definido aquí las pisan las cargadas de Google Charts*/
+
+.large-font {
+	font-size: 15px;
+}
+
+.italic-color-font {
+	font-style: italic;
+	color: #FFFFFF;
+	background-color: #008000;
+}
+
+#tabla_datos {
+	float: left;
+	margin: 90px 50px 0px 50px;
+}
+
+
+#arbol_autores{
+	display: block; 
+	border-style: solid; 
+	border-width: 1px; 
+	margin: 0px auto;
+}
+
+#lista_coautores{
+	height:650px;
+	overflow:auto;
+	overflow-x:hidden;
+
+	width: 500px;
+	margin: 30px auto;	
+
+	border-color: grey;
+	border-style: solid; 
+	border-width: 1px;  
+
+}
+
+#container_varios{
+	min-width: 310px; 
+	height: 400px; 
+	margin: 10px auto;
+}
+
+/* Reglas para ambos análisis*/
 
 .content-section-a {
     padding: 5px 0;
@@ -28,22 +117,37 @@ hr {
     border-width: 1px;
 } 
 
+
+#cabecera{
+	text-align: center;
+	font-size: 150%;
+	margin: 50px 0px 10px 0px;
+}
+
+#enlace_publicaciones{
+	font-size: 130%;
+	text-decoration: none;
+}
+
+
 #container_columns {
   height: 400px; 
   min-width: 310px; 
   max-width: 800px;
   margin: 0 auto;
 }
-#cabecera{
-	text-align: center;
-	font-size: 150%;
-	margin: 50px 0px 10px 0px;
-}
-#enlace_publicaciones{
-	font-size: 130%;
-	text-decoration: none;
+
+.boton_impresion{
+	float: right;
+	margin-right: 30px;
 }
 
+.boton_impresion a{
+	text-decoration: none;
+	color:black;
+}
+
+/* Reglas de estilo de cada entrada*/
 
 #lista_entradas{
 	height:600px;
@@ -68,77 +172,50 @@ hr {
 	max-width: 70%; 
 }
 
-.boton_impresion{
-	float: right;
-	margin-right: 30px;
-}
 
-.boton_impresion a{
-	text-decoration: none;
-	color:black;
-}
+/* Reglas para el apartado de TEMA*/
 
-#datos_autor{
- float: left;  
-margin: 40px 80px;
-max-width: 35%;
-text-align: center;
-}
-#datos_autor img{
-margin: 10px 20px 0px;
-}
-/*
-#datos_autor2{
-float: left; 
-margin: 70px 10px 50px 10px;
-max-width: 33%;
-}
-*/
-
-/* Estilo para celda de datos de autor*/
-  .bold-font {
-    font-weight: bold;
-  }
-
-/*celda-datos se define en línea, definido aquí las pisan las cargadas de Google Charts*/
-
-  .large-font {
-    font-size: 15px;
-  }
-
-  .italic-darkblue-font {
-    font-style: italic;
-    color: #FFFFFF;
-    background-color: #008000;
-  }
-
-#tabla_datos {
-	float: left;
-	margin: 90px 50px 0px 50px;
-}
-
-
-
-#lista_coautores{
-	
-	height:650px;
-	overflow:auto;
+#listado_paises{
+	width: 20%; 
+	margin: auto 0px; 
+	float: left;  
+	max-height:500px; 
+	overflow:auto; 
 	overflow-x:hidden;
+}
 
-	border-color: grey;
-	margin: 30px auto;
-	
+table#paises, th, td {
+    /*border: 1px solid black;*/
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
+}
+table#paises caption{
+	text-align: center;
+	font-size: 90%;
+}
+table#paises tr:nth-child(even) {
+    background-color: #fff;
+}
+table#paises tr:nth-child(odd) {
+   background-color:#eee;
+}
+
+#donutchart{
+	width: 80%; 
+	height: 500px; 
+	float: left;"
+}
+
+#regions_div{
+	max-width:100%; 
+	height: 500px; 
+	margin: 10px 0px 60px 0px;
+}
+#container_autores{
+	min-width: 300px; 
+	height: 400px; 
+	margin: 0 auto;
 }
 
 
-
-.footer {
-  background-color: #222;
-  color: white;
-  width: 100%;
-  height: 70px;
-  padding: 20px 0;
-  
-  position: static;
-  margin-top: 15px;
-}
