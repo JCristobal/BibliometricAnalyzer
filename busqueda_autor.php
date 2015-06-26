@@ -226,7 +226,7 @@
 
         
         if($nombreGS==""){
-          echo "<h1> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</h1>";
+          echo "<h1><p> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</p></h1>";
 
 
           echo '<div id="datos_autor" style="width:100%;"> <p><b>'.$autor_limpio.' '.$autor_limpio2.'</b></p><img src="img/user.jpg" height="150" width="150"/><br>'; 
@@ -236,7 +236,7 @@
 
         }else{
 
-          echo "<h1> Bibliometric analysis of the author ".$nombreGS."</h1>";
+          echo "<h1><p> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
 
           echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 

@@ -139,7 +139,7 @@
             
 
       ?>
-    <h1> Authors that match whith that name </h1>
+    <h1> <p style='text-align: center;'>Authors that match whith that name </p></h1>
 
     <script>
       //Copiamos los vectores  que hemos calculado con php

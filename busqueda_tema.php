@@ -92,13 +92,13 @@
         $hay_fecha1=false;
 
 
-        echo "<h1> Bibliometric analysis";
+        echo "<h1> <p style='text-align: center;'> Bibliometric analysis";
           if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
           if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
           if(strlen($titulo)){ echo " with '".$titulo."' in the title"; $hay_titulo=true;}
           if(strlen($fecha0)){ echo " since ".$fecha0; $hay_fecha0=true;}
           if(strlen($fecha1)){ echo " to ".$fecha1; $hay_fecha1=true;}
-        echo ".</h1>";
+        echo ". </p></h1>";
 
 
         // Se ajustan las fechas  para que coincidan con las introducidas. Si no se han introducido toman valores predefinidos
@@ -287,11 +287,10 @@
   var hay_entradas = <?php echo json_encode($hay_entradas); ?>;
      
   if(hay_entradas){ 
-/*
+
 var listaCreadores = <?php echo json_encode($phpcreador); ?>;
 var listaCitas = <?php echo json_encode($phpcitas); ?>;
-
-// Juntamos todas las citas de un autor
+// Sumamos todas las citas de un autor
 var citas=new Array();
 var autor_cita=new Array();
 for(index = 0; index < listaCreadores.length; index++) {
@@ -300,39 +299,54 @@ for(index = 0; index < listaCreadores.length; index++) {
   for(i = 0; i < listaCreadores.length; i++) {
     if(i != index){  // para que no coincida con el mismo, si no se repite
       if(listaCreadores[i]==listaCreadores[index]){  
-        var aux = citas[index].concat(listaCitas[i]);
+        var aux =  parseInt(citas[index]) +  parseInt(listaCitas[i]);
         citas[index]=aux;  
       }
     }
   }
 }
-//Eliminamos los repetidos
-var final_citas=new Array();
-var final_autor_cita=new Array();
-var almacenados=new Array("");
-var cont_almacenados=0;
-for(index = 0; index < autor_cita.length; index++) {
-  if(almacenados.indexOf(autor_cita[index]) == -1 ){
-    // si no se encuentra en lista  se almacena
-      var fin = autor_cita.lastIndexOf(autor_cita[index]); 
-      final_autor_cita[index] = autor_cita[fin];
-      final_citas[index] = citas[fin];
-      almacenados[cont_almacenados]=autor_cita[index];
-      cont_almacenados++;
-  }
-}
-
-for(index = 0; index < final_autor_cita.length; index++) {
-  document.write("A <b>"+final_autor_cita[index]+"</b> le citan: "+final_citas[index]+"<br>");
-}
-
-*/
 
 
+    var listado_aux=new Array();
+    for(var i=0;i< autor_cita.length;i++){
+      // lo ponemos en este formato para poder ordenarlo
+      listado_aux[i]= citas[i]+":"+autor_cita[i] ; 
+    }
 
+
+    // la función "unique" eliminará los elementos repetidos del array
+    Array.prototype.unique=function(a){
+      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+    });
+    listado_aux=listado_aux.unique();
+
+    // Separamos según ":" 
+    var listado_citas=new Array();
+    for(var i=0;i< autor_cita.length;i++){
+      if( typeof listado_aux[i]=="undefined"){listado_aux[i]="";}
+      var a =0;
+      a = listado_aux[i].indexOf(":");
+      a = a+1;
+      var numero = listado_aux[i].substring(0,(a-1));
+      var autor = listado_aux[i].substring(a);
+      listado_citas[i]= [ numero , autor ];
+    }
+
+    //Y ordenamos de mayor a menor según el número de veces citado
+    listado_citas.sort(function(a,b){
+    return parseInt(a[0]) < parseInt(b[0]); 
+    });
+
+    for(var i=0;i< listado_citas.length;i++){
+       document.write("--> <b>"+listado_citas[i][0]+" "+listado_citas[i][1]+"</b> <br>");
+
+    }
+
+
+
+/*
 
     var listaAutores = <?php echo json_encode($phpautor); ?>;
-///var soloAutores = {};
     var soloAutores = new Array();
     var contador_autores=0;
     // De cada entrada cogemos tódos los autores, separados por comas
@@ -346,18 +360,17 @@ for(index = 0; index < final_autor_cita.length; index++) {
     }
 
     //Contamos las veces que se repite cada año
-///var counts_Autores = {};
     var counts_Autores = new Array();
     for(var i=0;i< soloAutores.length;i++){
       var key = soloAutores[i];
       counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;       
     }
-
+*/
     // la función "unique" eliminará los elementos repetidos del array
     Array.prototype.unique=function(a){
       return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
     });
-    soloAutores=soloAutores.unique()
+//    soloAutores=soloAutores.unique()
 
 
 
@@ -619,7 +632,7 @@ if(hay_entradas){
 
         });
 
-
+/*
 
     $('#container_autores').highcharts({
         chart: {
@@ -693,7 +706,7 @@ if(hay_entradas){
 
     });
 
-
+*/
 
 
 
@@ -717,7 +730,7 @@ if(hay_entradas){
          echo'<hr style="clear: left;"> <div id="regions_div" ></div>';
          echo"<div id='png_regions' class='boton_impresion'></div> <br>";
 
-         echo'<hr> <div id="container_autores" ></div>';
+         //echo'<hr> <div id="container_autores" ></div>';
 
 
       }  
