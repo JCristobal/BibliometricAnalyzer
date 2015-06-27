@@ -337,14 +337,14 @@ for(index = 0; index < listaCreadores.length; index++) {
     return parseInt(a[0]) < parseInt(b[0]); 
     });
 
+/*
     for(var i=0;i< listado_citas.length;i++){
        document.write("--> <b>"+listado_citas[i][0]+" "+listado_citas[i][1]+"</b> <br>");
-
     }
+*/
 
 
 
-/*
 
     var listaAutores = <?php echo json_encode($phpautor); ?>;
     var soloAutores = new Array();
@@ -365,12 +365,12 @@ for(index = 0; index < listaCreadores.length; index++) {
       var key = soloAutores[i];
       counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;       
     }
-*/
+
     // la función "unique" eliminará los elementos repetidos del array
     Array.prototype.unique=function(a){
       return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
     });
-//    soloAutores=soloAutores.unique()
+    soloAutores=soloAutores.unique()
 
 
 
@@ -380,7 +380,6 @@ for(index = 0; index < listaCreadores.length; index++) {
         var listaPaises = <?php echo json_encode($phpaises); ?>; 
 
         //Contamos las veces que se repite cada país
-///var counts = {};
         var counts = new Array();
         for(var i=0;i< listaPaises.length;i++){
           var key = listaPaises[i];
@@ -398,7 +397,6 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
     var listaAnios = <?php echo json_encode($phpanios); ?>;
-///var soloAnios = {};
     var soloAnios = new Array();
 
     //Cogemos sólo el año de la fecha
@@ -407,7 +405,6 @@ for(index = 0; index < listaCreadores.length; index++) {
       soloAnios[index]=ss[0];
     }
     //Contamos las veces que se repite cada año
-///var counts_anios = {};
     var counts_anios = new Array();
     for(var i=0;i< soloAnios.length;i++){
       var key = soloAnios[i];
@@ -441,6 +438,8 @@ for(index = 0; index < listaCreadores.length; index++) {
 
     
 }// fin if(hay_entradas)
+
+
 
 
       google.load("visualization", "1", {packages:["geochart"]});
@@ -553,13 +552,18 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
 if(hay_entradas){ 
-/*
-    //mostramos los años
-    document.write("<p>Años y número de publicaciones : </p>");
-    for(index = 0; index < soloAnios.length; index++) {
-      document.write("Año "+soloAnios[index]+": "+counts_anios[soloAnios[index]]+" publicaciones<br>");
-    }
-*/
+
+
+var anios_publiaciones=[];
+var cuenta_publiaciones=[];
+var contador_anios=0;
+for (var i = 0; i < soloAnios.length; i++) { 
+  if ( (typeof soloAnios[i]!="undefined")&&(soloAnios[i]!="")&&(contador_anios<100)) {
+    anios_publiaciones.push(soloAnios[i]);
+    cuenta_publiaciones.push(parseInt(counts_anios[soloAnios[i]]));
+    contador_anios++;
+  }
+}
     $(function () {
         $('#container_columns').highcharts({
             chart: {
@@ -588,8 +592,8 @@ if(hay_entradas){
                 }
             },
             xAxis: {
-                //categories: Highcharts.getOptions().lang.shortMonths
-                categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
+                categories: anios_publiaciones,
+                //categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
                 title: {
                     text: 'Years'
                 }
@@ -604,7 +608,8 @@ if(hay_entradas){
             series: [{
                 //type: 'area',
                 name: 'Number of publications',
-                data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
+                data: cuenta_publiaciones,
+                //data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
                 
             }],
 
@@ -632,7 +637,7 @@ if(hay_entradas){
 
         });
 
-/*
+
 
     $('#container_autores').highcharts({
         chart: {
@@ -706,8 +711,101 @@ if(hay_entradas){
 
     });
 
-*/
 
+var autores_citados=[];
+var numero_citas=[];
+var contador_citas=0;
+for (var i in listado_citas) {
+  if ( (typeof listado_citas[i]!="undefined")&&(listado_citas[i]!="")&&(contador_citas<30)) {
+    autores_citados.push(listado_citas[i][1]);
+    numero_citas.push(parseInt(listado_citas[i][0]));
+    contador_citas++;
+  }
+}
+
+   $('#container_citas').highcharts({
+        chart: {
+            type: 'bar',
+            zoomType: 'x'
+        },
+
+        plotOptions: {
+            bar: {
+                colorByPoint: true
+            }
+        },
+        colors: [
+            '#ff0000',
+            '#00ff00',
+            '#0000ff'
+        ],
+
+        title: {
+            text: 'Most cited authors '
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in an area to zoom in' :
+                    ''
+        },
+         xAxis: {
+            categories: autores_citados,
+            title: {
+                text: 'Author'
+            }
+
+        },
+
+        yAxis: {
+            min: 0,
+            allowDecimals: false,
+            title: {
+                text: 'citations'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'receibed <b>{point.y}</b> citations'
+        },
+        series: [{
+            name: 'Number of citations',
+                data: numero_citas,
+   
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                align: 'right',
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }],
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom',
+                    y: 10, x: -15
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
+            }
+
+    });
 
 
     }); // fin function
@@ -730,7 +828,7 @@ if(hay_entradas){
          echo'<hr style="clear: left;"> <div id="regions_div" ></div>';
          echo"<div id='png_regions' class='boton_impresion'></div> <br>";
 
-         //echo'<hr> <div id="container_autores" ></div>';
+         echo'<hr> <div id="container_autores" ></div>';
 
 
       }  
@@ -748,7 +846,8 @@ if(hay_entradas){
         if($entradasTotales>15){
           echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p>';   
         }
-        echo '<hr>';
+
+        echo'<hr> <div id="container_citas" ></div>';
 
       }
 

@@ -657,6 +657,18 @@ echo "<hr style='clear: left;'>";
   var titulo = 'Publications in the last years of ';
   titulo = titulo.concat(nombre_autor,apellidos_autor);
 
+
+var anios_publiaciones=[];
+var cuenta_publiaciones=[];
+var contador_anios=0;
+for (var i = 0; i < soloAnios.length; i++) { 
+  if ( (typeof soloAnios[i]!="undefined")&&(soloAnios[i]!="")&&(contador_anios<100)) {
+    anios_publiaciones.push(soloAnios[i]);
+    cuenta_publiaciones.push(parseInt(counts[soloAnios[i]]));
+    contador_anios++;
+  }
+}
+
 $(function () {
 
     $('#container_columns').highcharts({
@@ -685,7 +697,8 @@ $(function () {
             }
         },
         xAxis: {
-            categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
+          categories: anios_publiaciones,
+            //categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
             title: {
                 text: 'Years'
             }
@@ -700,7 +713,8 @@ $(function () {
         series: [{
             //type: 'area',   // Barras pasan a tener forma de area
             name: 'Number of publications',
-            data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]], counts[soloAnios[20]], counts[soloAnios[21]], counts[soloAnios[22]], counts[soloAnios[23]], counts[soloAnios[24]], counts[soloAnios[25]]]
+            data: cuenta_publiaciones,
+            //data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]], counts[soloAnios[20]], counts[soloAnios[21]], counts[soloAnios[22]], counts[soloAnios[23]], counts[soloAnios[24]], counts[soloAnios[25]]]
             
         }],
 
@@ -746,7 +760,7 @@ $(function () {
   }
 
   // la función "unique" eliminará los elementos repetidos del array
-  //soloAnios_tema=soloAnios_tema.unique()
+  soloAnios_tema=soloAnios_tema.unique()
 
 
   //Calculamos los años y apariciones de un tema (CUANDO HAY VARIOS, DEL 1)
@@ -825,6 +839,8 @@ $(function () {
 
 
 
+  var anios =[];
+  var publications=[];
   var series_temas ="";
   var title_temas ="Publications about ";
   var tema_autor = <?php echo json_encode($tema_aux); ?>;
@@ -833,13 +849,21 @@ $(function () {
 
 
   if(tema_autor != ""){
+
+      title_temas = title_temas.concat(tema_autor,' of the author ',nombre_autor,apellidos_autor);     
+
+      for (var i = 0; i < soloAnios_tema.length; i++) { 
+        if ( (typeof soloAnios_tema[i]!="undefined")&&(soloAnios_tema[i]!="")) {
+          publications.push(parseInt(counts_tema[soloAnios_tema[i]]));
+          anios.push(parseInt(soloAnios_tema[i]));
+        }
+      }
       series_temas = [{
-                  name: tema_autor,
-                  data: [counts_tema[2003], counts_tema[2004], counts_tema[2005], counts_tema[2006], counts_tema[2007], counts_tema[2008], counts_tema[2009], counts_tema[2010], counts_tema[2011], counts_tema[2012], counts_tema[2013], counts_tema[2014], counts_tema[2015]]
-              }];
-      title_temas = title_temas.concat(tema_autor,' of the author ',nombre_autor,apellidos_autor);      
+        name: tema_autor,
+        data: publications }];
   }
   else{  
+    //En caso de varios temas no podemos automatizarlo, ya que no coinciden los años entre varios temas: escogemos el rango de años de 2003 a 2015
       if(lista_temas_autor.length == 2){
         series_temas =[
             {
@@ -850,6 +874,7 @@ $(function () {
                 data: [counts_tema1[2003], counts_tema1[2004], counts_tema1[2005], counts_tema1[2006], counts_tema1[2007], counts_tema1[2008], counts_tema1[2009], counts_tema1[2010], counts_tema1[2011], counts_tema1[2012], counts_tema1[2013], counts_tema1[2014], counts_tema1[2015]]
             }];
         title_temas = title_temas.concat(lista_temas_autor[0],' and ',lista_temas_autor[1],' of ',nombre_autor,apellidos_autor);  
+        anios = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015] ;
       }
       else{ 
         if(lista_temas_autor.length == 3){
@@ -865,6 +890,7 @@ $(function () {
                   data: [counts_tema2[2003], counts_tema2[2004], counts_tema2[2005], counts_tema2[2006], counts_tema2[2007], counts_tema2[2008], counts_tema2[2009], counts_tema2[2010], counts_tema2[2011], counts_tema2[2012], counts_tema2[2013], counts_tema2[2014], counts_tema2[2015]]
               }];
           title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],' and ',lista_temas_autor[2],' of ',nombre_autor,apellidos_autor); 
+          anios = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015] ;
         } 
         else{ 
 
@@ -883,6 +909,7 @@ $(function () {
                   data: [counts_tema3[2003], counts_tema3[2004], counts_tema3[2005], counts_tema3[2006], counts_tema3[2007], counts_tema3[2008], counts_tema3[2009], counts_tema3[2010], counts_tema3[2011], counts_tema3[2012], counts_tema3[2013], counts_tema3[2014], counts_tema3[2015]]
               }];
           title_temas = title_temas.concat(lista_temas_autor[0],', ',lista_temas_autor[1],', ',lista_temas_autor[2],' and ',lista_temas_autor[3],' of ',nombre_autor,apellidos_autor);
+          anios = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015] ;
 
         }    
       }         
@@ -906,7 +933,8 @@ $(function () {
                     ''
         },
         xAxis: {
-            categories: [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+            categories: anios
+            //categories: [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
         },
 
         yAxis: {
