@@ -43,25 +43,23 @@
 
   <body >
 
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
-        </div>  
+        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="https://github.com/JCristobal">About</a></li>
-            <li><a href="mailto:tobas92@gmail.com">Contact</a></li>
+            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
           </ul>
-        </div>   
-      </div>
+        </div>
+      </div> 
     </nav>
 
     <div class="container">
@@ -359,18 +357,42 @@ for(index = 0; index < listaCreadores.length; index++) {
       }
     }
 
-    //Contamos las veces que se repite cada año
+    //Contamos las veces que se repite cada autor y guardamos ambos datos en tuplas
     var counts_Autores = new Array();
+
     for(var i=0;i< soloAutores.length;i++){
       var key = soloAutores[i];
-      counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;       
+      counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;     
+
+    }
+
+    var listado_autores_aux=new Array();
+    for(var i=0;i< soloAutores.length;i++){
+      // lo ponemos en este formato para poder ordenarlo
+      listado_autores_aux[i]= counts_Autores[soloAutores[i]]+":"+soloAutores[i] ; 
     }
 
     // la función "unique" eliminará los elementos repetidos del array
-    Array.prototype.unique=function(a){
-      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+    listado_autores_aux=listado_autores_aux.unique();
+
+    // Separamos según ":" 
+    var listado_aut=new Array();
+    for(var i=0;i< soloAutores.length;i++){
+      if( typeof listado_autores_aux[i]=="undefined"){listado_autores_aux[i]="";}
+      var a =0;
+      a = listado_autores_aux[i].indexOf(":");
+      a = a+1;
+      var numero = listado_autores_aux[i].substring(0,(a-1));
+      var autor = listado_autores_aux[i].substring(a);
+      listado_aut[i]= [ numero , autor ];
+    }
+
+    //Y ordenamos de mayor a menor según el número de veces citado
+    listado_aut.sort(function(a,b){
+    return parseInt(a[0]) < parseInt(b[0]); 
     });
-    soloAutores=soloAutores.unique()
+
+
 
 
 
@@ -419,7 +441,7 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
         if(soloAnios.length == 1){
-          document.write(counts_anios[soloAnios[0]]+" publications in the year "+soloAnios[0]+'<hr>');}
+          document.write("<p style='text-align: center;'>"+counts_anios[soloAnios[0]]+" publications in the year <b>"+soloAnios[0]+'</b></p><hr>');}
         else{
           // Pintamos el gráfico por años primero
           document.write('<div id="container_columns" ></div> <hr> ');
@@ -593,7 +615,6 @@ for (var i = 0; i < soloAnios.length; i++) {
             },
             xAxis: {
                 categories: anios_publiaciones,
-                //categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
                 title: {
                     text: 'Years'
                 }
@@ -608,9 +629,7 @@ for (var i = 0; i < soloAnios.length; i++) {
             series: [{
                 //type: 'area',
                 name: 'Number of publications',
-                data: cuenta_publiaciones,
-                //data: [counts_anios[soloAnios[0]], counts_anios[soloAnios[1]], counts_anios[soloAnios[2]], counts_anios[soloAnios[3]], counts_anios[soloAnios[4]], counts_anios[soloAnios[5]], counts_anios[soloAnios[6]], counts_anios[soloAnios[7]], counts_anios[soloAnios[8]], counts_anios[soloAnios[9]], counts_anios[soloAnios[10]], counts_anios[soloAnios[11]], counts_anios[soloAnios[12]], counts_anios[soloAnios[13]], counts_anios[soloAnios[14]], counts_anios[soloAnios[15]], counts_anios[soloAnios[16]], counts_anios[soloAnios[17]], counts_anios[soloAnios[18]], counts_anios[soloAnios[19]], counts_anios[soloAnios[20]], counts_anios[soloAnios[21]], counts_anios[soloAnios[22]], counts_anios[soloAnios[23]], counts_anios[soloAnios[24]], counts_anios[soloAnios[25]]]
-                
+                data: cuenta_publiaciones,                
             }],
 
             navigation: {
@@ -638,6 +657,14 @@ for (var i = 0; i < soloAnios.length; i++) {
         });
 
 
+var publi_autores=[];
+var cuenta_autores=[];
+for (var i = 0; i < listado_aut.length; i++) { 
+  if ( (typeof listado_aut[i]!="undefined")&&(listado_aut[i]!="")) {
+    publi_autores.push(listado_aut[i][1]);
+    cuenta_autores.push(parseInt(listado_aut[i][0]));
+  }
+}
 
     $('#container_autores').highcharts({
         chart: {
@@ -645,7 +672,7 @@ for (var i = 0; i < soloAnios.length; i++) {
             zoomType: 'x'
         },
         title: {
-            text: 'Number of last publications per author'
+            text: 'Number of publications per author'
         },
         subtitle: {
             text: document.ontouchstart === undefined ?
@@ -653,7 +680,8 @@ for (var i = 0; i < soloAnios.length; i++) {
                     ''
         },
          xAxis: {
-            categories: [soloAutores[0], soloAutores[1], soloAutores[2], soloAutores[3], soloAutores[4], soloAutores[5], soloAutores[6], soloAutores[7], soloAutores[8], soloAutores[9], soloAutores[10], soloAutores[11], soloAutores[12], soloAutores[13], soloAutores[14], soloAutores[15], soloAutores[16], soloAutores[17], soloAutores[18], soloAutores[19], soloAutores[20], soloAutores[21], soloAutores[22], soloAutores[23], soloAutores[24], soloAutores[25], soloAutores[26], soloAutores[27], soloAutores[28], soloAutores[29]],
+            categories: publi_autores,
+            //categories: [soloAutores[0], soloAutores[1], soloAutores[2], soloAutores[3], soloAutores[4], soloAutores[5], soloAutores[6], soloAutores[7], soloAutores[8], soloAutores[9], soloAutores[10], soloAutores[11], soloAutores[12], soloAutores[13], soloAutores[14], soloAutores[15], soloAutores[16], soloAutores[17], soloAutores[18], soloAutores[19], soloAutores[20], soloAutores[21], soloAutores[22], soloAutores[23], soloAutores[24], soloAutores[25], soloAutores[26], soloAutores[27], soloAutores[28], soloAutores[29]],
             title: {
                 text: 'Publications'
             }
@@ -675,7 +703,8 @@ for (var i = 0; i < soloAnios.length; i++) {
         },
         series: [{
             name: 'Numer of publications',
-                data: [counts_Autores[soloAutores[0]], counts_Autores[soloAutores[1]], counts_Autores[soloAutores[2]], counts_Autores[soloAutores[3]], counts_Autores[soloAutores[4]], counts_Autores[soloAutores[5]], counts_Autores[soloAutores[6]], counts_Autores[soloAutores[7]], counts_Autores[soloAutores[8]], counts_Autores[soloAutores[9]], counts_Autores[soloAutores[10]], counts_Autores[soloAutores[11]], counts_Autores[soloAutores[12]], counts_Autores[soloAutores[13]], counts_Autores[soloAutores[14]], counts_Autores[soloAutores[15]], counts_Autores[soloAutores[16]], counts_Autores[soloAutores[17]], counts_Autores[soloAutores[18]], counts_Autores[soloAutores[19]], counts_Autores[soloAutores[20]], counts_Autores[soloAutores[21]], counts_Autores[soloAutores[22]], counts_Autores[soloAutores[23]], counts_Autores[soloAutores[24]], counts_Autores[soloAutores[25]], counts_Autores[soloAutores[26]], counts_Autores[soloAutores[27]], counts_Autores[soloAutores[28]], counts_Autores[soloAutores[29]]],
+                data:cuenta_autores,
+                //data: [counts_Autores[soloAutores[0]], counts_Autores[soloAutores[1]], counts_Autores[soloAutores[2]], counts_Autores[soloAutores[3]], counts_Autores[soloAutores[4]], counts_Autores[soloAutores[5]], counts_Autores[soloAutores[6]], counts_Autores[soloAutores[7]], counts_Autores[soloAutores[8]], counts_Autores[soloAutores[9]], counts_Autores[soloAutores[10]], counts_Autores[soloAutores[11]], counts_Autores[soloAutores[12]], counts_Autores[soloAutores[13]], counts_Autores[soloAutores[14]], counts_Autores[soloAutores[15]], counts_Autores[soloAutores[16]], counts_Autores[soloAutores[17]], counts_Autores[soloAutores[18]], counts_Autores[soloAutores[19]], counts_Autores[soloAutores[20]], counts_Autores[soloAutores[21]], counts_Autores[soloAutores[22]], counts_Autores[soloAutores[23]], counts_Autores[soloAutores[24]], counts_Autores[soloAutores[25]], counts_Autores[soloAutores[26]], counts_Autores[soloAutores[27]], counts_Autores[soloAutores[28]], counts_Autores[soloAutores[29]]],
    
             dataLabels: {
                 enabled: true,
@@ -735,9 +764,7 @@ for (var i in listado_citas) {
             }
         },
         colors: [
-            '#ff0000',
-            '#00ff00',
-            '#0000ff'
+          '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'
         ],
 
         title: {
@@ -823,7 +850,7 @@ for (var i in listado_citas) {
             echo' <div id="donutchart" ></div> ';
             echo"<div style='clear: left;'></div>  <div id='png_donut'  ></div> <br>";
           }
-          else{echo' <p  style="width: 80%; margin: 60px 0px 0px 0px; float: left;"> 100% in '.$phpaises[0].'</p>';}
+          else{echo' <p  style="width: 80%; margin: 60px auto; "> (All the publications in '.$phpaises[0].')</p>';}
 
          echo'<hr style="clear: left;"> <div id="regions_div" ></div>';
          echo"<div id='png_regions' class='boton_impresion'></div> <br>";

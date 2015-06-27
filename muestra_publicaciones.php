@@ -83,15 +83,14 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
           if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
           echo "</p>";
 
-          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
-
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
+          echo "<p> Type $muestratipo ($muestrasubtipo) </p>";
                                                                                                                                                                
-          echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
+          echo"<p> <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
           
-          //echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
+          echo"<a style= \"margin-left: 20px;\" href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
+
           if($muestra_citas_publicaciones){
-            echo "<div class='citas'>";
+            echo "<div class='citas'> <p>In the publications: </p>";
             $muestra_citas_publicaciones = explode("*", $muestra_citas_publicaciones);
               for($a=1; $a<count($muestra_citas_publicaciones); $a++){
                 echo"<p> - $muestra_citas_publicaciones[$a] </p>"; 

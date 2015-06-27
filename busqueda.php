@@ -34,25 +34,23 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
-        </div>  
+        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="https://github.com/JCristobal">About</a></li>
-            <li><a href="mailto:tobas92@gmail.com">Contact</a></li>
+            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
           </ul>
-        </div>   
-      </div>
+        </div>
+      </div> 
     </nav>
 
     <div class="container">

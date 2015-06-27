@@ -33,25 +33,23 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
-        </div>  
+        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="https://github.com/JCristobal">About</a></li>
-            <li><a href="mailto:tobas92@gmail.com">Contact</a></li>
+            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
           </ul>
-        </div>   
-      </div>
+        </div>
+      </div> 
     </nav>
 
     <div class="container">
@@ -101,10 +99,11 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
           $muestraenlace=$row['enlace_preview'];
           $muestradoi=$row['doi'];
           $muestracitedby=$row['enlace_citedby'];
-          $muestraeid=$row['eid'];
+          //$muestraeid=$row['eid'];
           $muestraissn=$row['issn'];
           $muestracoautores=$row['enlace_coautores'];
-
+          $muestra_citas_publicaciones=$row['citas'];
+          
           if(($i%2)==0){echo "<div class='content-section-a'>";} // Alternamos la clase según las entradas
           else{echo"<div class='content-section-b'>";}  
 
@@ -152,13 +151,20 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
           if($muestrafecha!=0){echo "with cover date $muestrafecha ";}
           echo "</p>";
 
-          echo "<p> Type $muestratipo: $muestrasubtipo </p>";
+          echo "<p> Type $muestratipo ($muestrasubtipo) </p>";
 
-          echo"<p><a href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
-                                                                                                                                                             
-          echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
+          echo"<p> <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
           
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
+          echo"<a style= \"margin-left: 20px;\" href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
+         
+          if($muestra_citas_publicaciones){
+            echo "<div class='citas'> <p>In the publications: </p>";
+            $muestra_citas_publicaciones = explode("*", $muestra_citas_publicaciones);
+              for($a=1; $a<count($muestra_citas_publicaciones); $a++){
+                echo"<p> - $muestra_citas_publicaciones[$a] </p>"; 
+              }
+            echo "</div>";
+          }
 
           echo '</div>  <div style="clear: left"></div> ';
 

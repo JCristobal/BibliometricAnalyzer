@@ -1,15 +1,24 @@
 body {
-  /*padding-top: 50px;*/
   font-family: "Tahoma", "Geneva", sans-serif; 
 }
-.template {
-  padding: 40px 15px;
+
+.navbar{
+	background-color: #003322;
 }
 
+.navbar-brand{
+	font-size: 14px;;
+}
+.navbar-inverse .navbar-nav  .active  a{
+	background-color: #334433;
+}
 
+.template {
+  padding: 5px 15px;
+}
 
 .footer {
-	border-top: 2px solid grey;
+	border-top: 2px solid #003322;
 	padding-top: 20px;
 	color: black;
 	width: 100%;
@@ -35,13 +44,8 @@ body {
 #datos_autor img{
 	margin: 10px 20px 0px;
 }
-/*
-#datos_autor2{
-float: left; 
-margin: 70px 10px 50px 10px;
-max-width: 33%;
-}
-*/
+
+
 
 /* Estilo para las celdas de datos de autor*/
 .bold-font {
@@ -58,7 +62,7 @@ definido aquí las pisan las cargadas de Google Charts*/
 .italic-color-font {
 	font-style: italic;
 	color: #FFFFFF;
-	background-color: #008000;
+	background-color: #334433;
 }
 
 #tabla_datos {
@@ -151,7 +155,7 @@ hr {
 /* Reglas de estilo de cada entrada*/
 
 #lista_entradas{
-	height:600px;
+	max-height:600px;
 	overflow:auto;
 	overflow-x:hidden;
 }
@@ -188,6 +192,7 @@ hr {
 	max-height:500px; 
 	overflow:auto; 
 	overflow-x:hidden;
+	padding-bottom: 30px
 }
 
 table#paises, th, td {

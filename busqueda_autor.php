@@ -46,25 +46,23 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
-        </div>  
+        </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="https://github.com/JCristobal">About</a></li>
-            <li><a href="mailto:tobas92@gmail.com">Contact</a></li>
+            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
           </ul>
-        </div>   
-      </div>
+        </div>
+      </div> 
     </nav>
 
     <div class="container">
@@ -226,7 +224,7 @@
 
         
         if($nombreGS==""){
-          echo "<h1><p> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</p></h1>";
+          echo "<h1><p style='text-align: center;'> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</p></h1>";
 
 
           echo '<div id="datos_autor" style="width:100%;"> <p><b>'.$autor_limpio.' '.$autor_limpio2.'</b></p><img src="img/user.jpg" height="150" width="150"/><br>'; 
@@ -236,7 +234,7 @@
 
         }else{
 
-          echo "<h1><p> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
+          echo "<h1><p style='text-align: center;'> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
 
           echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 
@@ -259,7 +257,7 @@ echo "
       google.setOnLoadCallback(drawTable);
 
       var cssClassNames = {
-        'headerRow': 'italic-color-font large-font celda-datos',
+        'headerRow': 'italic-color-font  celda-datos',
         'tableRow': 'celda-datos',
         'oddTableRow': 'celda-datos',
         'selectedTableRow': 'large-font celda-datos',
@@ -291,7 +289,7 @@ echo "
 <style>
   .celda-datos {
     text-align: center;
-    border-bottom-color: #008000;
+    border-bottom-color: #334433;
     border-bottom-style: solid;
     border-width: 1px;
     margin: 0px auto;
@@ -318,14 +316,14 @@ if(count($coautores)!=0){
 
         var data = {
           nodes:{
-            autor_principal:{'color':'#000000','shape':'rectangle','label':'".$nombreGS."'},";
+            autor_principal:{'color':'#003322','shape':'rectangle','label':'".$nombreGS."'},";
 
           $muestra_2_nivel= array();
 
           $tamanio_aux=0;         
           if(count($coautores)>=11){
             for ($i = 0; $i <11; $i++) { 
-                echo "autor".$i.":{'color':'#707070 ','label':'".$coautores[$i]."'},";
+                echo "autor".$i.":{'color':'#334433 ','label':'".$coautores[$i]."'},";
                 $tamanio_aux++;
 
               $coautores_2_nivel= array();          
@@ -339,9 +337,9 @@ if(count($coautores)!=0){
 
 
               // Mostramos sólo los 3 primeros autores relacionados (a 2º nivel)
-              if(($coautores_2_nivel[0] != "")&&($coautores_2_nivel[0] != $nombreGS)){echo "autor0_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[0]."'},"; $vacio0=true;}
-              if(($coautores_2_nivel[1] != "")&&($coautores_2_nivel[1] !=$nombreGS)){echo "autor1_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[1]."'},"; $vacio1=true;}
-              if(($coautores_2_nivel[2] != "")&&($coautores_2_nivel[2] !=$nombreGS)){echo "autor2_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[2]."'},"; $vacio2=true;}
+              if(($coautores_2_nivel[0] != "")&&($coautores_2_nivel[0] != $nombreGS)){echo "autor0_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[0]."'},"; }
+              if(($coautores_2_nivel[1] != "")&&($coautores_2_nivel[1] !=$nombreGS)){echo "autor1_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[1]."'},"; }
+              if(($coautores_2_nivel[2] != "")&&($coautores_2_nivel[2] !=$nombreGS)){echo "autor2_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[2]."'},"; }
 
               $muestra_2_nivel[]=array($coautores_2_nivel[0],$coautores_2_nivel[1],$coautores_2_nivel[2]); // Registramos el autor (a segundo nivel) para después mostrarlo o no mostrar un nodo vacío
 
@@ -349,7 +347,7 @@ if(count($coautores)!=0){
           }
           else{
               for ($i = 0; $i < count($coautores); $i++) { 
-                echo "autor".$i.":{'color':'#707070 ','label':'".$coautores[$i]."'},";
+                echo "autor".$i.":{'color':'#334433 ','label':'".$coautores[$i]."'},";
                 $tamanio_aux++;
 
               $coautores_2_nivel= array();          
@@ -363,9 +361,9 @@ if(count($coautores)!=0){
 
 
               // Mostramos sólo los 3 primeros autores relacionados (a 2º nivel)
-              if(($coautores_2_nivel[0] != "")&&($coautores_2_nivel[0] != $nombreGS)){echo "autor0_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[0]."'},"; $vacio0=true;}
-              if(($coautores_2_nivel[1] != "")&&($coautores_2_nivel[1] !=$nombreGS)){echo "autor1_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[1]."'},"; $vacio1=true;}
-              if(($coautores_2_nivel[2] != "")&&($coautores_2_nivel[2] !=$nombreGS)){echo "autor2_".$i.":{'color':'#B8B8B8','label':'".$coautores_2_nivel[2]."'},"; $vacio2=true;}
+              if(($coautores_2_nivel[0] != "")&&($coautores_2_nivel[0] != $nombreGS)){echo "autor0_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[0]."'},"; }
+              if(($coautores_2_nivel[1] != "")&&($coautores_2_nivel[1] !=$nombreGS)){echo "autor1_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[1]."'},"; }
+              if(($coautores_2_nivel[2] != "")&&($coautores_2_nivel[2] !=$nombreGS)){echo "autor2_".$i.":{'color':'#8FBC8F','label':'".$coautores_2_nivel[2]."'},"; }
 
               $muestra_2_nivel[]=array($coautores_2_nivel[0],$coautores_2_nivel[1],$coautores_2_nivel[2]); // Registramos el autor (a segundo nivel) para después mostrarlo o no mostrar un nodo vacío
 
