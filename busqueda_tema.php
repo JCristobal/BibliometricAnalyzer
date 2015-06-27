@@ -272,11 +272,11 @@
 
         $phpcreador = array(); 
         $phpcitas = array(); 
-        $consulta_citas= "SELECT creador,citas FROM publicaciones WHERE id=".$idConsulta;
+        $consulta_citas= "SELECT creador,veces_citado FROM publicaciones WHERE id=".$idConsulta;
         $resultados_citas=mysql_query($consulta_citas,$conexion);
         while ($row=mysql_fetch_array($resultados_citas)) {  
           $phpcreador[]=$row['creador'];
-          $phpcitas[]=$row['citas'];
+          $phpcitas[]=$row['veces_citado'];
         }
 
 

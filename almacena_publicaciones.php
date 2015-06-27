@@ -1,5 +1,7 @@
 <?php
 
+error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP
+
 /*
 Almacenaremos hasta las 200 entradas con datos de publicaciones que se ajusten a la consulta dada.
 
@@ -67,17 +69,17 @@ if($entradasTotales > 0){
           $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-          /*$lista_citas=array("");
-
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
           for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
-              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:creator"];
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
           }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
-          $citas=implode(",", $lista_citas); 
-          $citas = str_replace("'", "\'", $citas);*/
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                                                                                   
            mysql_query($insert) or die(mysql_error()); 
 
@@ -145,12 +147,18 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
           $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
-                                                                                  
-                 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
+                
                  mysql_query($insert) or die(mysql_error()); 
 
               }
@@ -215,12 +223,18 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
           $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
-                                                                                  
-                  
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
+
                   mysql_query($insert) or die(mysql_error()); 
 
               }
@@ -284,10 +298,17 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
          $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -352,10 +373,17 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
          $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-         $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -419,10 +447,17 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
          $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
           $datos_citas = json_decode(file_get_contents($array_citas),true);
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -485,10 +520,18 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
 
          $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
-          $datos_citas = json_decode(file_get_contents($array_citas),true);
-         $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+           $datos_citas = json_decode(file_get_contents($array_citas),true);
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("*", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
+
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 
@@ -551,11 +594,18 @@ else{ /*echo "NO ENTRIES";*/ $hay_entradas=false;}
 
          $arrayconsulta_citas= array("http://api.elsevier.com/content/search/scopus?query=refeid(",$eid,")&apikey=",$apikey);
           $array_citas=implode("", $arrayconsulta_citas); 
-          $datos_citas = json_decode(file_get_contents($array_citas),true);
-          $citas = $datos_citas["search-results"]["opensearch:totalResults"];
+           $datos_citas = json_decode(file_get_contents($array_citas),true);
+          //Almacenamos el nombre de las publicaicones que la citan (las 25 primeras)
+          $lista_citas=array("");
+          for($a = 0; $a < $datos_citas["search-results"]["opensearch:itemsPerPage"]; $a++){
+              $lista_citas[]= $datos_citas["search-results"]["entry"][$a]["dc:title"];
+          }
+          $citas=implode("^", $lista_citas); 
+          $citas = str_replace("'", "\'", $citas);
 
+          $veces_citado = $datos_citas["search-results"]["opensearch:totalResults"];
 
-           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$citas.'\')'; 
+           $insert = 'INSERT INTO publicaciones(id,eid, titulo, creador, nombre_publi, rango_pags,fecha_portada, fecha_portada_0, tipo_publi,subtipo_publi, issn, volumen, afiliacion_nombre, afiliacion_ciudad, afiliacion_pais, doi, enlace_coautores, enlace_preview, enlace_citedby, veces_citado, citas) VALUES (\''.$idConsulta.'\',\''.$eid.'\',\''.$titulo.'\',\''.$creador.'\',\''.$publicacion.'\',\''.$rang_pag.'\',\''.$fecha_letra.'\',\''.$fecha.'\',\''.$tipo.'\',\''.$subtipo.'\',\''.$issn.'\',\''.$volume.'\',\''.$afil.'\',\''.$afil_ciudad.'\',\''.$afil_pais.'\',\''.$doi.'\',\''.$enlace_coautores.'\',\''.$enlace_preview.'\',\''.$enlace_citedby.'\',\''.$veces_citado.'\',\''.$citas.'\')'; 
                   
                   mysql_query($insert) or die(mysql_error()); 
 

@@ -1,4 +1,7 @@
 <?php
+
+error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP
+
 /*
 Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
 
@@ -28,9 +31,10 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
           $muestraenlace=$row['enlace_preview'];
           $muestradoi=$row['doi'];
           $muestracitedby=$row['enlace_citedby'];
-          $muestraeid=$row['eid'];
+          //$muestraeid=$row['eid'];
           $muestraissn=$row['issn'];
           $muestracoautores=$row['enlace_coautores'];
+          $muestra_citas_publicaciones=$row['citas'];
 
           if(($i%2)==0){echo "<div class='content-section-a'>";} // Alternamos la clase según las entradas
           else{echo"<div class='content-section-b'>";}  
@@ -85,7 +89,16 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
                                                                                                                                                                
           echo" <a href=\"$muestracitedby\">  <img src=\"http://api.elsevier.com/content/abstract/citation-count?doi=$muestradoi&httpAccept=image/jpeg&apiKey=$apikey\"></img>  </a>";  
           
-          echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
+          //echo"<p><a href='http://api.elsevier.com/content/search/scopus?query=refeid%28$muestraeid%29&apiKey=$apikey'> Link to Scopus Cites </a></p>"; 
+          if($muestra_citas_publicaciones){
+            echo "<div class='citas'>";
+            $muestra_citas_publicaciones = explode("*", $muestra_citas_publicaciones);
+              for($a=1; $a<count($muestra_citas_publicaciones); $a++){
+                echo"<p> - $muestra_citas_publicaciones[$a] </p>"; 
+              }
+            echo "</div>";
+          }
+
 
           echo '</div>  <div style="clear: left"></div> ';
 
