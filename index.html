@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
-    
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
 
-    <title>BibliometricAnalyzer by JCristobal</title>
+    <title>BibliometricAnalyzer</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -69,11 +69,21 @@
     </script>
 
 
-<script src="js/pace.min.js"></script>
-<link href="css/pace_style.css" rel="stylesheet" />
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 
-
-
+    <script language=JavaScript>
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+    </script>
   </head>
 
   <body>
@@ -138,7 +148,7 @@
           <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%;" placeholder="Since" >
           <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%;" placeholder="to" ></p>
 
-          <input type="submit" value="Find" class="btn btn-default">
+          <input type="submit" value="Find" class="btn btn-default" onclick="espera()">
 
         </div>
 

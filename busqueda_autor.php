@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
-    
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
 
     <title>BibliometricAnalyzer: author analysis</title>
 
@@ -39,12 +39,34 @@
     <script language="javascript" type="text/javascript" src="js/arbor-graphics.js"></script>
     <script language="javascript" type="text/javascript" src="js/arbor-renderer.js"></script>
 
-    <script src="js/pace.min.js"></script>
-    <link href="css/pace_style.css" rel="stylesheet" />
 
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+    <script language=JavaScript>
+      function cargada() {
+        swal({
+          type: "success",
+          title: "",
+          text: "Bibliometric analysis is finished ",
+          confirmButtonColor: "#8FBC8F",
+          confirmButtonText: "See the results",
+        }); 
+      }
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+    </script>
   </head>
 
-  <body>
+  <body onLoad="cargada()">
 
     <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
@@ -224,17 +246,17 @@
 
         
         if($nombreGS==""){
-          echo "<h1><p style='text-align: center;'> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</p></h1>";
+          echo "<h1><p class='text-center'> Bibliometric analysis of the author ".$autor_limpio." ".$autor_limpio2."</p></h1>";
 
 
-          echo '<div id="datos_autor" style="width:100%;"> <p><b>'.$autor_limpio.' '.$autor_limpio2.'</b></p><img src="img/user.jpg" height="150" width="150"/><br>'; 
+          echo '<div id="datos_autor" style="width:100%; margin: 0px;"> <p><b>'.$autor_limpio.' '.$autor_limpio2.'</b></p><img src="img/user.jpg" height="150" width="150"/><br>'; 
 
           echo '<p> No mail or affiliation verified </p> </div>';
 
 
         }else{
 
-          echo "<h1><p style='text-align: center;'> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
+          echo "<h1><p class='text-center'> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
 
           echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 
@@ -422,7 +444,7 @@ if(count($coautores)!=0){
 
                $coautores[$i] = iso2utf($coautores[$i]);
 
-               echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> Analysis of the author </button></form><br>";
+               echo " <form> <input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =".$coautores[$i]."> <input type=\"text\" name=\"busqueda_autor_enlace\" style =\"visibility: hidden; width:1px; display: inline;\" value =http://scholar.google.es".$enlace_coautores[$i]."> <input type=\"text\" name=\"busqueda_coautor\" style =\"visibility: hidden; width:1px; display: inline;\" value =true> <button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\" onclick=\"espera()\"> Analysis of the author </button></form><br>";
                echo "</div> <p style='clear: left;'>  </p>";
             echo "</div>";  // fin .content-section-a/b  
             } 
@@ -431,7 +453,7 @@ if(count($coautores)!=0){
 
 }
 else{
-  echo "<p style='text-align: center;'> Without coauthors registered</p>";
+  echo "<p class='text-center'> Without coauthors registered</p>";
 }
 
 
@@ -681,6 +703,9 @@ $(function () {
             },*/
             zoomType: 'x' // Para ampliar al pinchar y arrastrar en el área
         },
+        credits: {
+            enabled: false
+        },
         title: {
             text: titulo
         },
@@ -690,13 +715,15 @@ $(function () {
                     ''
         },
         plotOptions: {
-            column: {
-                //depth: 25
+            bar: {
+                colorByPoint: true
             }
         },
+        colors: [
+          '#8FBC8F'
+        ],
         xAxis: {
           categories: anios_publiaciones,
-            //categories: [soloAnios[0], soloAnios[1], soloAnios[2], soloAnios[3], soloAnios[4], soloAnios[5], soloAnios[6], soloAnios[7], soloAnios[8], soloAnios[9], soloAnios[10], soloAnios[11], soloAnios[12], soloAnios[13], soloAnios[14], soloAnios[15], soloAnios[16], soloAnios[17], soloAnios[18], soloAnios[19], soloAnios[20], soloAnios[21], soloAnios[22], soloAnios[23], soloAnios[24], soloAnios[25] ],
             title: {
                 text: 'Years'
             }
@@ -711,18 +738,16 @@ $(function () {
         series: [{
             //type: 'area',   // Barras pasan a tener forma de area
             name: 'Number of publications',
-            data: cuenta_publiaciones,
-            //data: [counts[soloAnios[0]], counts[soloAnios[1]], counts[soloAnios[2]], counts[soloAnios[3]], counts[soloAnios[4]], counts[soloAnios[5]], counts[soloAnios[6]], counts[soloAnios[7]], counts[soloAnios[8]], counts[soloAnios[9]], counts[soloAnios[10]], counts[soloAnios[11]], counts[soloAnios[12]], counts[soloAnios[13]], counts[soloAnios[14]], counts[soloAnios[15]], counts[soloAnios[16]], counts[soloAnios[17]], counts[soloAnios[18]], counts[soloAnios[19]], counts[soloAnios[20]], counts[soloAnios[21]], counts[soloAnios[22]], counts[soloAnios[23]], counts[soloAnios[24]], counts[soloAnios[25]]]
-            
+            data: cuenta_publiaciones,         
         }],
 
             navigation: {
                 buttonOptions: {
-                    verticalAlign: 'bottom',
-                    y: 10, x: -15
+                    verticalAlign: 'bottom'
                 }
             },
             exporting: {
+                filename: titulo,
                 buttons: {
                     contextButton: {
                         text: 'Print chart',
@@ -921,7 +946,9 @@ $(function () {
             type: 'column',
             zoomType: 'x'
         },
-
+        credits: {
+            enabled: false
+        },
         title: {
             text: title_temas 
         },
@@ -946,11 +973,11 @@ $(function () {
 
             navigation: {
                 buttonOptions: {
-                    verticalAlign: 'bottom',
-                    y: 10, x: -15
+                    verticalAlign: 'bottom'
                 }
             },
             exporting: {
+                filename: title_temas,
                 buttons: {
                     contextButton: {
                         text: 'Print chart',
@@ -1002,7 +1029,7 @@ $(function () {
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
         
         if($entradasTotales>15){
-          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p> ';   
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'" onclick="espera()"> See all publications </a> </p> ';   
         }
         echo '<hr>';
 
@@ -1046,7 +1073,7 @@ $(function () {
     if($tiene_entradas){echo '<div id="container_varios" ></div>';}
 
   }else{
-    echo "<p> <p style='text-align: center;'> Author subtopics aren't registered </p></p>";  
+    echo "<p> <p class='text-center'> Author subtopics aren't registered </p></p>";  
   }
    
 

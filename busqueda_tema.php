@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Consulta por tema">
     <meta name="author" content="JCristobal">
-    
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
 
     <title>BibliometricAnalyzer: topics analysis</title>
 
@@ -34,14 +34,34 @@
 
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>  
 
-<!-- http://github.hubspot.com/pace/docs/welcome/  -->
-    <script src="js/pace.min.js"></script>
-    <link href="css/pace_style.css" rel="stylesheet" />
 
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 
+    <script language=JavaScript>
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+      function cargada() {
+        swal({
+          type: "success",
+          title: "",
+          text: "Bibliometric analysis is finished ",
+          confirmButtonColor: "#8FBC8F",
+          confirmButtonText: "See the results"
+        }); 
+      }
+    </script>
   </head>
 
-  <body >
+  <body onLoad="cargada()">
 
     <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
@@ -90,7 +110,7 @@
         $hay_fecha1=false;
 
 
-        echo "<h1> <p style='text-align: center;'> Bibliometric analysis";
+        echo "<h1> <p class='text-center'> Bibliometric analysis";
           if(strlen($palabra)){ echo " about '".$palabra."'"; $hay_palabra=true;}
           if(strlen($tema)){ echo " with topic ".$tema; $hay_tema=true;}
           if(strlen($titulo)){ echo " with '".$titulo."' in the title"; $hay_titulo=true;}
@@ -230,7 +250,7 @@
         if($hay_entradas){
           echo " <p id='cabecera'> Total number of results: " .$entradasTotales."</p>";
         }else{
-          echo " <p id='cabecera'>  Your search did not match any entries. </p> <p style='text-align:center;'><a href='index.html'>Go back</a></p>";     
+          echo " <p id='cabecera'>  Your search did not match any entries. </p> <p class='text-center'><a href='index.html'>Go back</a></p>";     
         }
 
 
@@ -441,7 +461,7 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
         if(soloAnios.length == 1){
-          document.write("<p style='text-align: center;'>"+counts_anios[soloAnios[0]]+" publications in the year <b>"+soloAnios[0]+'</b></p><hr>');}
+          document.write("<p class='text-center'>"+counts_anios[soloAnios[0]]+" publications in the year <b>"+soloAnios[0]+'</b></p><hr>');}
         else{
           // Pintamos el gráfico por años primero
           document.write('<div id="container_columns" ></div> <hr> ');
@@ -599,6 +619,9 @@ for (var i = 0; i < soloAnios.length; i++) {
                     depth: 70
                 }*/
             },
+            credits: {
+              enabled: false
+            },
             title: {
                 text: 'Number of publications each year'
             },
@@ -608,11 +631,13 @@ for (var i = 0; i < soloAnios.length; i++) {
                     ''
             },
             plotOptions: {
-                column: {
-                    //depth: 25
-                    //color: "#00FF00"
+                bar: {
+                    colorByPoint: true
                 }
             },
+            colors: [
+              '#8FBC8F'
+            ],
             xAxis: {
                 categories: anios_publiaciones,
                 title: {
@@ -634,11 +659,11 @@ for (var i = 0; i < soloAnios.length; i++) {
 
             navigation: {
                 buttonOptions: {
-                    verticalAlign: 'bottom',
-                    y: 10, x: -15
+                    verticalAlign: 'bottom'
                 }
             },
             exporting: {
+              filename: 'publications/year',
                 buttons: {
                     contextButton: {
                         text: 'Print chart',
@@ -671,6 +696,9 @@ for (var i = 0; i < listado_aut.length; i++) {
             type: 'column',
             zoomType: 'x'
         },
+        credits: {
+            enabled: false
+        },
         title: {
             text: 'Number of publications per author'
         },
@@ -679,9 +707,16 @@ for (var i = 0; i < listado_aut.length; i++) {
                     'Click and drag in an area to zoom in' :
                     ''
         },
-         xAxis: {
+        plotOptions: {
+                column: {
+                    colorByPoint: true
+                }
+        },
+        colors: [
+              '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'
+        ],
+        xAxis: {
             categories: publi_autores,
-            //categories: [soloAutores[0], soloAutores[1], soloAutores[2], soloAutores[3], soloAutores[4], soloAutores[5], soloAutores[6], soloAutores[7], soloAutores[8], soloAutores[9], soloAutores[10], soloAutores[11], soloAutores[12], soloAutores[13], soloAutores[14], soloAutores[15], soloAutores[16], soloAutores[17], soloAutores[18], soloAutores[19], soloAutores[20], soloAutores[21], soloAutores[22], soloAutores[23], soloAutores[24], soloAutores[25], soloAutores[26], soloAutores[27], soloAutores[28], soloAutores[29]],
             title: {
                 text: 'Publications'
             }
@@ -720,11 +755,11 @@ for (var i = 0; i < listado_aut.length; i++) {
 
             navigation: {
                 buttonOptions: {
-                    verticalAlign: 'bottom',
-                    y: 10, x: -15
+                    verticalAlign: 'bottom'
                 }
             },
             exporting: {
+                filename: 'publications/author about the topic',
                 buttons: {
                     contextButton: {
                         text: 'Print chart',
@@ -757,7 +792,9 @@ for (var i in listado_citas) {
             type: 'bar',
             zoomType: 'x'
         },
-
+        credits: {
+            enabled: false
+        },
         plotOptions: {
             bar: {
                 colorByPoint: true
@@ -814,11 +851,11 @@ for (var i in listado_citas) {
 
             navigation: {
                 buttonOptions: {
-                    verticalAlign: 'bottom',
-                    y: 10, x: -15
+                    verticalAlign: 'bottom'
                 }
             },
             exporting: {
+                filename: 'citations/author in the publications',
                 buttons: {
                     contextButton: {
                         text: 'Print chart',
@@ -871,7 +908,7 @@ for (var i in listado_citas) {
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
         if($entradasTotales>15){
-          echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'"> See all publications </a> </p>';   
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'" onclick="espera()"> See all publications </a> </p>';   
         }
 
         echo'<hr> <div id="container_citas" ></div>';

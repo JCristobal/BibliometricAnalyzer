@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
-    
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
 
     <title>BibliometricAnalyzer: authors</title>
 
@@ -26,10 +26,21 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-  <script src="js/pace.min.js"></script>
-  <link href="css/pace_style.css" rel="stylesheet" />
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 
-
+    <script language=JavaScript>
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+    </script>
   </head>
 
   <body>
@@ -137,7 +148,7 @@
             
 
       ?>
-    <h1> <p style='text-align: center;'>Authors that match whith that name </p></h1>
+    <h1> <p class='text-center'>Authors that match whith that name </p></h1>
 
     <script>
       //Copiamos los vectores  que hemos calculado con php
@@ -199,7 +210,7 @@
           }
 */
           //document.write('<form> <input type="text" name="busqueda_autor_afil" style ="visibility: hidden; display: inline;" value ="'+listaAfil[index]+'"> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor </button></form>');
-          document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default"> Analysis of the author </button></form>');
+          document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default" onclick="espera()"> Analysis of the author </button></form>');
           //document.write("<p> <a href='"+listaAut[index]+"'> Enlace (a G Scholar) del autor </a></p>");         
           document.write('</div> <div style="clear: left"> </div> ')          
 

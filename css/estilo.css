@@ -79,16 +79,16 @@ definido aquí las pisan las cargadas de Google Charts*/
 }
 
 #lista_coautores{
-	height:650px;
+	max-height:650px;
 	overflow:auto;
 	overflow-x:hidden;
 
 	width: 500px;
 	margin: 30px auto;	
 
-	border-color: grey;
+	/*border-color: grey;
 	border-style: solid; 
-	border-width: 1px;  
+	border-width: 1px;  */
 
 }
 

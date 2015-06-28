@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
-    
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
 
     <title>BibliometricAnalyzer: all the publications</title>
 
@@ -26,12 +26,33 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-  <script src="js/pace.min.js"></script>
-  <link href="css/pace_style.css" rel="stylesheet" />
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 
+    <script language=JavaScript>
+      function cargada() {
+        swal({
+          type: "success",
+          title: "",
+          text: "All the publications are loaded ",
+          confirmButtonColor: "#8FBC8F",
+          confirmButtonText: "See the publications",
+        }); 
+      }
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+    </script>
   </head>
 
-  <body>
+  <body onLoad="cargada()">
 
     <nav class="navbar navbar-inverse navbar-static-top" > 
       <div class="container">
@@ -64,7 +85,7 @@
 
 
 
-    echo "<h1 style='text-align:center'> Showing a total of $cantidadEntradas entries </h1>";
+    echo "<h1 class='text-center'> Showing a total of $cantidadEntradas entries </h1>";
 
 
 /*
@@ -133,15 +154,15 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
             $contectado=true;             // Si la lista de autores está rellena es que ha podido consultar el enlace de la publicación que sólo está disponible en redes asociadas a Scopus
             $coautores = explode(",", $muestracoautores);
 
-            echo $coautores[0]."<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[0]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautores[0]</button></form>";
+            echo $coautores[0]."<form style =\"float: left; margin: 0px;\">By<input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[0]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\" onclick=\"espera()\"> $coautores[0]</button></form>";
 
             for($cont=1; $cont<count($coautores); $cont++){
-              echo "<form style =\"float: left; margin: 0px;\"><input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[$cont]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\"> $coautores[$cont]</button></form>";
+              echo "<form style =\"float: left; margin: 0px;\"><input type=\"text\" name=\"busqueda_directa\" style =\"visibility: hidden; width:1px; display: inline;\" value =\"$coautores[$cont]\"><button type=\"submit\" formmethod=\"post\" formaction=\"busqueda_autor.php\" class=\"btn btn-link\" onclick=\"espera()\"> $coautores[$cont]</button></form>";
             }
           }
           
           if($contectado){echo "</p><p style=\"clear: left\">";}
-          else{echo "<p>By $muestracreador (to see all authors have to be registered in Scopus)";} //Si no estamos en una red de Scopus sólo podemos consultar el primer autor de la publicación (campo "creator")
+          else{echo "<p>By $muestracreador (to see all authors have to be registered in <a href='http://www.scopus.com/'>Scopus</a>)";} //Si no estamos en una red de Scopus sólo podemos consultar el primer autor de la publicación (campo "creator")
 
           if(strlen($muestraafil)){echo " of the affiliation $muestraafil in $muestraafil_ciudad ($muestraafil_pais) ";}
           else{echo "(No associated affiliation)  </p> ";}  
