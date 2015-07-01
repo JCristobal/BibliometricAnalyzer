@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-06-2015 a las 14:13:28
+-- Tiempo de generación: 01-07-2015 a las 19:18:15
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.5.19
 
@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `publicaciones` (
-  `consulta` varchar(50) NOT NULL,
   `id` varchar(20) NOT NULL,
   `eid` varchar(20) NOT NULL,
   `titulo` varchar(100) NOT NULL,
@@ -39,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `publicaciones` (
   `fecha_portada` varchar(20) NOT NULL,
   `fecha_portada_0` varchar(20) NOT NULL,
   `doi` varchar(50) NOT NULL,
-  `citas` varchar(500) NOT NULL,
+  `citas` varchar(600) NOT NULL,
   `veces_citado` int(11) NOT NULL,
   `afiliacion_nombre` varchar(50) NOT NULL,
   `afiliacion_ciudad` varchar(20) NOT NULL,

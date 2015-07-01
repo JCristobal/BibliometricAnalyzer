@@ -258,7 +258,7 @@
 
           echo "<h1><p class='text-center'> Bibliometric analysis of the author ".$nombreGS."</p></h1>";
 
-          echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
+          //echo "<p>enlace a autor en G Escolar: ".$enlace_autor."</p>";
 
 
           if($foto=='<img src="http://scholar.google.es/citations/images/avatar_scholar_150.jpg"/>'){
@@ -424,7 +424,13 @@ if(count($coautores)!=0){
           var img    = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');;
 
           img_grafo.innerHTML = '<p class=\"boton_impresion\"> <a href=\"'+img+'\"> <img src=\"img/print_button.png\"></img> Print tree </a></p>';
+
         }
+
+      if(window.innerWidth < 800){
+        htmlCanvas = document.getElementById('arbol_autores'),
+        htmlCanvas.width = window.innerWidth - 100;
+      }
 
 
     </script>   
@@ -457,8 +463,9 @@ else{
 }
 
 
-echo "<hr style='clear: left;'>";
+echo "<p style='clear: left;'></p>";
 
+echo'<div id="container_autores" ></div><hr> ';
 
 /*
         //$consulta_0 = array('http://api.elsevier.com/content/search/scopus?query=FIRSTAUTH(', $autor, ')&apiKey=',$apikey,'&httpAccept=application/json'); 
@@ -496,7 +503,23 @@ echo "<hr style='clear: left;'>";
       }
 
    
+/*         $phpautor = array(); 
+       $consulta_autor= "SELECT enlace_coautores FROM publicaciones WHERE id=".$idConsulta;
+        $resultados_autor=mysql_query($consulta_autor,$conexion);
+        while ($row=mysql_fetch_array($resultados_autor)) {  
+          $phpautor[]=$row['enlace_coautores'];
+        }
 
+        $aux = implode("",$phpautor);  // Si no estamos conectados a una red de Scopus la variable estará vacia. Trabajaremos con sólo el campo "creator", aunque sea menos preciso
+        if($aux == ""){*/
+          $phpautor = array(); 
+          $consulta_autor= "SELECT creador FROM publicaciones WHERE id=".$idConsulta;
+          $resultados_autor=mysql_query($consulta_autor,$conexion);
+          while ($row=mysql_fetch_array($resultados_autor)) {  
+            $phpautor[]=$row['creador'];
+          }
+
+//        }
 
 
 
@@ -671,6 +694,65 @@ echo "<hr style='clear: left;'>";
     document.write("Año "+soloAnios[index]+": "+counts[soloAnios[index]]+" publicaciones<br>");
   }*/
 
+
+
+
+    var listaAutores = <?php echo json_encode($phpautor); ?>;
+    var soloAutores = new Array();
+    var contador_autores=0;
+    // De cada entrada cogemos tódos los autores, separados por comas
+    for(index = 0; index < listaAutores.length; index++) {
+      var ss = listaAutores[index].split(",");
+      if(ss[0]!= ""){soloAutores[contador_autores]=ss[0]; contador_autores++;}
+      for(aux=1; aux< ss.length; aux++){
+        soloAutores[contador_autores]=ss[aux];
+        contador_autores++;
+      }
+    }
+
+    //Contamos las veces que se repite cada autor y guardamos ambos datos en tuplas
+    var counts_Autores = new Array();
+
+    for(var i=0;i< soloAutores.length;i++){
+      var key = soloAutores[i];
+      counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;     
+
+    }
+
+    var listado_autores_aux=new Array();
+    for(var i=0;i< soloAutores.length;i++){
+      // lo ponemos en este formato para poder ordenarlo
+      listado_autores_aux[i]= counts_Autores[soloAutores[i]]+":"+soloAutores[i] ; 
+    }
+
+    // la función "unique" eliminará los elementos repetidos del array
+    listado_autores_aux=listado_autores_aux.unique();
+
+    // Separamos según ":" 
+    var listado_aut=new Array();
+    for(var i=0;i< soloAutores.length;i++){
+      if( typeof listado_autores_aux[i]=="undefined"){listado_autores_aux[i]="";}
+      var a =0;
+      a = listado_autores_aux[i].indexOf(":");
+      a = a+1;
+      var numero = listado_autores_aux[i].substring(0,(a-1));
+      var autor = listado_autores_aux[i].substring(a);
+      listado_aut[i]= [ numero , autor ];
+    }
+
+    //Y ordenamos de mayor a menor según el número de veces citado
+    listado_aut.sort(function(a,b){
+    return parseInt(a[0]) < parseInt(b[0]); 
+    });
+
+
+
+
+
+
+
+
+
   var nombre_autor = <?php echo json_encode($autor_limpio); ?>;
   var apellidos_autor = <?php echo json_encode($autor_limpio2); ?>;
 
@@ -764,6 +846,105 @@ $(function () {
 
 
     }); // acaba #container_columns
+
+
+
+  listado_aut=listado_aut.unique()
+
+var publi_autores=[];
+var cuenta_autores=[];
+for (var i = 0; i < listado_aut.length; i++) { 
+  if ( (typeof listado_aut[i][1]!="undefined")&&(listado_aut[i][1]!="")) {
+    publi_autores.push(listado_aut[i][1]);
+    cuenta_autores.push(parseInt(listado_aut[i][0]));
+  }
+}
+
+    $('#container_autores').highcharts({
+        chart: {
+            type: 'column',
+            zoomType: 'x'
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Number of publications whith other authors'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in an area to zoom in' :
+                    ''
+        },
+        plotOptions: {
+                column: {
+                    colorByPoint: true
+                }
+        },
+        colors: [
+              '#33CC33', '#33CC00', '#339933', '#339900', '#336633', '#336600', '#50B432'
+        ],
+        xAxis: {
+            categories: publi_autores,
+            title: {
+                text: 'Publications'
+            }
+
+        },
+
+        yAxis: {
+            min: 0,
+            allowDecimals: false,
+            title: {
+                text: 'Author'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'with <b>{point.y}</b> publications'
+        },
+        series: [{
+            name: 'Numer of publications',
+                data:cuenta_autores, 
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                align: 'right',
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }],
+
+            navigation: {
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            exporting: {
+                filename: 'publications/author about the topic',
+                buttons: {
+                    contextButton: {
+                        text: 'Print chart',
+                        symbol: 'url(img/print_button.png)',
+                        //symbol: 'circle',
+                        menuItems: null,
+                        onclick: function () {
+                            this.exportChart();
+                        }
+                    }
+                }
+            }
+
+    });  // fin #container_autores
+
+
+
+
 
 
   //Calculamos los años y apariciones de un tema (SOLO HAY UN TEMA)
@@ -1001,14 +1182,14 @@ $(function () {
 </script>
 
 <?php
-
+/*
            $autor_limpio2 = str_replace("'", "\'", $autor_limpio2);
 
            $insert_autor = 'INSERT INTO autores(id,nombre, urlImagen, citas, citas_2010, h,h_2010, h10, h10_2010) VALUES (\''.$idConsulta.'\',\''.$autor_limpio.$autor_limpio2.'\',\''.$foto.'\',\''.$datos[0].'\',\''.$datos[1].'\',\''.$datos[2].'\',\''.$datos[3].'\',\''.$datos[4].'\',\''.$datos[5].'\')'; 
                                                                                   
            mysql_query($insert_autor) or die(mysql_error()); 
            ///echo "Autor almacenado<br>";
-
+*/
 
       $hay_entradas = $aux_entradas; // recuperamos el valor, ya que al consultar con los distintos temas del autor se a machacado
 
@@ -1016,6 +1197,8 @@ $(function () {
 
         $idConsulta = $aux_aleatorio;
         $entradasTotales = $aux_totales;
+
+
 
         echo '<div id="container_columns" ></div><br>';
 

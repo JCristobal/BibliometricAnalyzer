@@ -685,7 +685,7 @@ for (var i = 0; i < soloAnios.length; i++) {
 var publi_autores=[];
 var cuenta_autores=[];
 for (var i = 0; i < listado_aut.length; i++) { 
-  if ( (typeof listado_aut[i]!="undefined")&&(listado_aut[i]!="")) {
+  if ( (typeof listado_aut[i][1]!="undefined")&&(listado_aut[i][1]!="")) {
     publi_autores.push(listado_aut[i][1]);
     cuenta_autores.push(parseInt(listado_aut[i][0]));
   }
@@ -780,7 +780,7 @@ var autores_citados=[];
 var numero_citas=[];
 var contador_citas=0;
 for (var i in listado_citas) {
-  if ( (typeof listado_citas[i]!="undefined")&&(listado_citas[i]!="")&&(contador_citas<30)) {
+  if ( (typeof listado_citas[i][1]!="undefined")&&(listado_citas[i][1]!="")&&(contador_citas<30)) {
     autores_citados.push(listado_citas[i][1]);
     numero_citas.push(parseInt(listado_citas[i][0]));
     contador_citas++;

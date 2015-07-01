@@ -90,7 +90,7 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
           echo"<a style= \"margin-left: 20px;\" href=\"$muestraenlace&apiKey=$apikey\"> Link to Scopus PREVIEW </a></p>";
 
           if($muestra_citas_publicaciones){
-            echo "<div class='citas'> <p>In the publications: </p>";
+            echo "<div class='citas'> <p>Some os this publications: </p>";
             $muestra_citas_publicaciones = explode("*", $muestra_citas_publicaciones);
               for($a=1; $a<count($muestra_citas_publicaciones); $a++){
                 echo"<p> - $muestra_citas_publicaciones[$a] </p>"; 
