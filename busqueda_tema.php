@@ -212,7 +212,7 @@
 
         $palabra = iso2utf($palabra);
         $titulo = iso2utf($titulo);
-
+        $titulo_aux = $titulo;
 
         $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
         
@@ -908,18 +908,18 @@ for (var i in listado_citas) {
       include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
         if($entradasTotales>15){
-          echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'" onclick="espera()"> See all publications </a> </p>';   
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consultaT1='.$tema.'&consultaT2='.$palabra.'&consultaT3='.$titulo_aux.'&consultaT4='.$fecha0.'&consultaT5='.$fecha1.'" onclick="espera()"> See all publications </a> </p>';   
         }
 
         echo'<hr> <div id="container_citas" ></div>';
 
       }
 
-/*
+      //Borramos los datos de la consulta
       $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
       mysql_query($borratodo) or die(mysql_error()); 
-      echo "<p> Borrados los datos de la BD </p>";
-*/
+
+
 
 
 ?>

@@ -16,16 +16,6 @@
     <!-- Custom styles for this template -->
     <link href="css/estilo.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]
-    <script src="js/ie-emulation-modes-warning.js"></script>-->
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
     <!-- Alertas personalizadas "SweetAlert"-->
     <script src="js/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
@@ -42,7 +32,7 @@
       }
       function espera() {
         swal({
-          title: "Analyzing publications",
+          title: "Loading publications",
           text: "Please, wait the alert ",
           imageUrl: "img/BibliometricAnalyzer.png",
           showConfirmButton: false, 
@@ -80,22 +70,80 @@
 
 <?php
 
-    $idConsulta = $_GET['consulta'];
-    $cantidadEntradas = $_GET['cantidad'];
+    error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP   
+
+    //cargamos los datos de la consulta original
+    $autor2 = $_GET['consultaA2'];
+    $autor = $_GET['consultaA1'];
+
+    $tema = $_GET['consultaT1'];
+    $palabra = $_GET['consultaT2'];
+    $titulo = $_GET['consultaT3'];
+    $fecha0 = $_GET['consultaT4'];
+    $fecha1 = $_GET['consultaT5'];
+
+    $hay_tema=false;
+    $hay_palabra=false;
+    $hay_titulo=false;
+    if(strlen($tema)){ $hay_tema=true;}
+    if(strlen($palabra)){ $hay_palabra=true;}
+    if(strlen($titulo)){ $hay_titulo=true;}
 
 
+    include_once('funciones.php');
 
-    echo "<h1 class='text-center'> Showing a total of $cantidadEntradas entries </h1>";
+    $autor = iso2utf($autor);
+    $autor2 = iso2utf($autor2);
+    $palabra = iso2utf($palabra);
+    $titulo = iso2utf($titulo);
+
+    include'generaApiKey.php';
+
+    //Consulta de todas las publicaciones en el análisis de un tema
+    $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
+        
+    if($hay_tema){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_palabra){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_titulo){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_tema && $hay_palabra){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_tema && $hay_titulo){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_palabra && $hay_titulo){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+    if($hay_tema && $hay_palabra && $hay_titulo){
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+    }
+
+    //Consulta de todas las publicaciones en el análisis de un autor      
+    if(strlen($autor2)){
+      $consulta = array('http://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME(',$autor2,',',$autor,')&apiKey=',$apikey,'&httpAccept=application/json'); 
+    }
+
+    $idConsulta = mt_rand();
+
+    include'conexion.php'; 
+
+    include 'almacena_publicaciones.php';   // ALMACENAMOS EN LA BD las publicaciones
+
+    echo "<h1 class='text-center'> Showing a total of $entradasTotales entries </h1>";
 
 
 /*
 
-Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
+Mostraremos todas las entradas de las publicaciones que se ajusten a los datos introducimos para el análisis original
 
 */
 
-      include'conexion.php'; 
-      include'generaApiKey.php';
 
         $i=0;
 
@@ -195,12 +243,9 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a la consulta
         }
 
 
-
-
+        //Borramos los datos de la consulta
         $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
         mysql_query($borratodo) or die(mysql_error()); 
-        ///echo "<p> Borrados los datos de la BD </p>";
-
 
 
 ?>

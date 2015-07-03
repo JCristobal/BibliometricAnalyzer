@@ -1114,15 +1114,14 @@ $(function () {
         include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
         
         if($entradasTotales>15){
-          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consulta='.$idConsulta.'&cantidad='.$entradasTotales.'" onclick="espera()"> See all publications </a> </p> ';   
+          echo'<p style="text-align: center; margin: 15px 0px 10px 0px""><a id="enlace_publicaciones" href="todas_publicaciones.php?consultaA1='.$autor.'&consultaA2='.$autor2.'" onclick="espera()"> See all publications </a> </p> ';   
         }
         echo '<hr>';
 
-/*
+        //Borramos los datos de la consulta
         $borratodo= "DELETE FROM publicaciones WHERE id=".$idConsulta;            
         mysql_query($borratodo) or die(mysql_error()); 
-        echo "<p> Borrados los datos de la BD </p>";
-*/
+
 
       }
   
