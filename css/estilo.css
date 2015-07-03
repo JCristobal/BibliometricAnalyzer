@@ -152,6 +152,16 @@ hr {
 	color:black;
 }
 
+.boton_impresion a:hover{
+	background-color: #c7ddff;
+	border: 1px solid grey;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+	padding: 3px;
+
+}
+
 /* Reglas de estilo de cada entrada*/
 
 #lista_entradas{
