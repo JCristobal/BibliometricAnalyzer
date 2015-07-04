@@ -1,10 +1,9 @@
 <?php
 
-error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP
+    error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP
 
 /*
 Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la consulta dada (con $idConsulta)
-
 */
         $i=0;
 
@@ -39,9 +38,7 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
           if(($i%2)==0){echo "<div class='content-section-a'>";} // Alternamos la clase según las entradas
           else{echo"<div class='content-section-b'>";}  
 
-        echo "<div class='entrada'>";
-
-          //echo "<p> Entry number ".$i."</p>"; 
+          echo "<div class='entrada'>";
           $i++;
 
           // Comprobamos que tiene portada. Primero creamos el enlace a la portada
@@ -101,13 +98,11 @@ Mostraremos las entradas (hasta 15) de las publicaciones que se ajusten a la con
 
           echo '</div>  <div style="clear: left"></div> ';
 
-        echo "</div>  </div>"; // final de entrada y content-section-a/b
+          echo "</div>  </div>"; // final de entrada y content-section-a/b
    
     
         }
 
         echo "</div>"; //fin id='lista_entradas'
-
-
 
 ?>

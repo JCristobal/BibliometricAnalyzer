@@ -7,7 +7,7 @@
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
     <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
-
+    <!-- Consulta la licencia en el documento LICENSE -->
     <title>BibliometricAnalyzer: all the publications</title>
 
     <!-- Bootstrap core CSS -->
@@ -52,7 +52,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
+          <a class="navbar-brand" >BibliometricAnalyzer by JCristobal</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -168,7 +168,6 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a los datos i
           $muestraenlace=$row['enlace_preview'];
           $muestradoi=$row['doi'];
           $muestracitedby=$row['enlace_citedby'];
-          //$muestraeid=$row['eid'];
           $muestraissn=$row['issn'];
           $muestracoautores=$row['enlace_coautores'];
           $muestra_citas_publicaciones=$row['citas'];
@@ -176,9 +175,7 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a los datos i
           if(($i%2)==0){echo "<div class='content-section-a'>";} // Alternamos la clase según las entradas
           else{echo"<div class='content-section-b'>";}  
 
-        echo "<div class='entrada'>";
-
-          //echo "<p> Entry number ".$i."</p>"; 
+          echo "<div class='entrada'>";
           $i++;
 
           // Comprobamos que tiene portada. Primero creamos el enlace a la portada
@@ -237,7 +234,7 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a los datos i
 
           echo '</div>  <div style="clear: left"></div> ';
 
-        echo "</div>  </div>"; // final de entrada y content-section-a/b
+          echo "</div>  </div>"; // final de entrada y content-section-a/b
    
     
         }
@@ -252,7 +249,7 @@ Mostraremos todas las entradas de las publicaciones que se ajusten a los datos i
 
       </div>
 
-  <p class="footer"> JCristobal </p>
+  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
   
     </div><!-- /.container -->
 

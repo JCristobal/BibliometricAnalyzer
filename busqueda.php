@@ -7,7 +7,7 @@
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
     <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
-
+    <!-- Consulta la licencia en el documento LICENSE -->
     <title>BibliometricAnalyzer: authors</title>
 
     <!-- Bootstrap core CSS -->
@@ -15,16 +15,6 @@
 
     <!-- Custom styles for this template -->
     <link href="css/estilo.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]
-    <script src="js/ie-emulation-modes-warning.js"></script>-->
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <!-- Alertas personalizadas "SweetAlert"-->
     <script src="js/sweetalert.min.js"></script>
@@ -53,7 +43,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
+          <a class="navbar-brand" >BibliometricAnalyzer by JCristobal</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -78,9 +68,7 @@
         $autor2 = $_POST['busqueda_basica_autor2'];
 
 
-        ///echo "<h1> Looking for authors ".$autor." ".$autor2."</h1>";
-
-        include_once('simple_html_dom.php');           // simple_html_dom  http://simplehtmldom.sourceforge.net/
+        include_once('simple_html_dom.php');         
 
 
         $autor = str_replace(" ", "%20", $autor);
@@ -92,37 +80,29 @@
         error_reporting( error_reporting() & ~E_NOTICE ); // Desactiva errores PHP    
 
 
+                                       
 
-        ///echo "<p> ---------- CONSULTA A GOOGLE ACADEM.----------  </p>";
 
-
-                                                                                  //  &mauthors=autor:', $autor, '&hl=es&oi=ao');
-        /*if($hay_nombre){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor, '&hl=en&oi=ao');     
-        }
-        if($hay_nombre2){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor2, '&hl=en&oi=ao');     
-        }*/
-        //if($hay_nombre && $hay_nombre2){
-          $consulta2 = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=', $autor,'%20',$autor2,'&hl=en&oi=ao');     
-        //}
-
-        $string2=implode("", $consulta2); 
+        //Creamos la consulta a Google Scholar 
+        // las variables $autor y $autor2 contienen nombre y apellidos, respectivamente, introducidos por el usuario
+        $consulta = array('http://scholar.google.es/citations?view_op=search_authors&mauthors=',$autor,'%20',$autor2,'&hl=en&oi=ao');     
+                                                               //  &mauthors=autor:', $autor, '&hl=es&oi=ao'); // para reducir el campo de búsqueda
+        $string2=implode("", $consulta); 
         
-        ///echo "( <a href='",$string2,"'> URL de consulta  </a> )";
 
-        // Create DOM from URL or file
+        // Create DOM from the URL Creamos un DOM de la URL que hemos creado 
+        //y lo almacenamos en $html para parsear los distintos datos devueltos
         $html = file_get_html($string2);
 
-
+        // En $listaFotos almacenaremos los perfiles de los usuarios devueltos
         $listaFotos = array();
         foreach($html->find('img') as $element){
                $foto = array('<img src="http://scholar.google.es',$element->src,'"</img>');
                $foto=implode("", $foto); 
-               //echo $foto."<br>";
                $listaFotos[]= $foto ;
                
         }
+
         //
         $listaAutores = array(); 
         foreach($html->find('div.gsc_1usr_text h3 a') as $elemento){
@@ -151,15 +131,12 @@
     <h1> <p class='text-center'>Authors that match whith that name </p></h1>
 
     <script>
-      //Copiamos los vectores  que hemos calculado con php
+
+      //Copiamos los vectores  que hemos calculado con PHO
       var listaAut = <?php echo json_encode($listaAutores); ?>; 
       var listaFot = <?php echo json_encode($listaFotos); ?>; 
       var listaNom = <?php echo json_encode($listaNombres); ?>; 
       var listaAfil = <?php echo json_encode($listaAfiliaciones); ?>; 
-
-//      var hay_nombre = <?php echo json_encode($hay_nombre); ?>;
-//      var hay_nombre2 = <?php echo json_encode($hay_nombre2); ?>; 
-
 
 
       for(index = 0; index < listaAut.length; index++) {
@@ -183,45 +160,26 @@
           var nombreCompleto = listaNom[index].split(" ");
           var inicial ="";
 
-//          if(hay_nombre && hay_nombre2){
-            autor = autor.split(" ");
-            for(i = 0; i < autor.length; i++) {       // Tomamos la iniciales orientandonos en el nombre introducido
-              inicial = inicial + autor[i].substring(0, 1)  + ".";
-            }
-            nombreCompleto.splice(0,autor.length);    // borramos solo el nombre orientandonos en el nombre introducido
-            nombreCompleto = nombreCompleto.join(" ");
-            ///document.write("(buscaremos por: "+inicial+" "+nombreCompleto+")");
-/*          }else{
-            if(hay_nombre){
-              autor = autor.split(" ");
-              for(i = 0; i < autor.length; i++) {      // Tomamos la iniciales orientandonos en el nombre introducido
-                inicial = inicial + autor[i].substring(0, 1)  + ".";
-              }
-              nombreCompleto.splice(0,autor.length);  // borramos solo el nombre orientandonos en el nombre introducido
-              nombreCompleto = nombreCompleto.join(" ");
-              document.write("<b> buscaremos por: "+inicial+" "+nombreCompleto+"</b>");
-            }
-            else{                  // solo se ha introducido el apellido
-              inicial = nombreCompleto[0].substring(0, 1)  + ".";
-              nombreCompleto.splice(0,1);             // borramos la primera palabra, ya hemos cogido su inicial
-              nombreCompleto = nombreCompleto.join(" ");
-              document.write("<b> buscaremos por: "+inicial+" "+nombreCompleto+"</b>");
-            }
+
+          autor = autor.split(" ");
+          for(i = 0; i < autor.length; i++) {       // Tomamos la iniciales orientandonos en el nombre introducido
+            inicial = inicial + autor[i].substring(0, 1)  + ".";
           }
-*/
-          //document.write('<form> <input type="text" name="busqueda_autor_afil" style ="visibility: hidden; display: inline;" value ="'+listaAfil[index]+'"> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default">Info sobre el autor </button></form>');
+          nombreCompleto.splice(0,autor.length);    // borramos solo el nombre orientandonos en el nombre introducido
+          nombreCompleto = nombreCompleto.join(" ");
+
+
           document.write('<form> <input type="text" name="busqueda_autor2" style ="visibility: hidden; display: inline;" value ="'+nombreCompleto+'">  <input type="text" name="busqueda_autor" style ="visibility: hidden; display: inline;" value ="'+inicial+'"> <input type="text" name="busqueda_autor_enlace" style ="visibility: hidden; display: inline;" value ="'+listaAut[index]+'"> <br> <button type="submit" formmethod="post" formaction="busqueda_autor.php" class="btn btn-default" onclick="espera()"> Analysis of the author </button></form>');
-          //document.write("<p> <a href='"+listaAut[index]+"'> Enlace (a G Scholar) del autor </a></p>");         
+      
           document.write('</div> <div style="clear: left"> </div> ')          
 
-          document.write("</div>"); // acaba .entrada
-          document.write("</div>"); // acaba .content-section-a o .content-section-b
+          document.write("</div> </div> "); // acaba .entrada y .content-section-a/b
       }  
 
     </script>
       </div>
 
-  <p class="footer"> JCristobal </p>
+  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
   
     </div><!-- /.container -->
 

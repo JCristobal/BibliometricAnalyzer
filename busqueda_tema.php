@@ -7,7 +7,7 @@
     <meta name="description" content="Consulta por tema">
     <meta name="author" content="JCristobal">
     <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
-
+    <!-- Consulta la licencia en el documento LICENSE -->
     <title>BibliometricAnalyzer: topics analysis</title>
 
     <!-- Bootstrap core CSS -->
@@ -16,24 +16,13 @@
     <!-- Custom styles for this template -->
     <link href="css/estilo.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]
-    <script src="js/ie-emulation-modes-warning.js"></script>-->
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
+    <!-- Gráficos Highcharts-->
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-3d.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
+    <!-- Gráficos Charts de Google-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>  
-
 
     <!-- Alertas personalizadas "SweetAlert"-->
     <script src="js/sweetalert.min.js"></script>
@@ -71,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
+          <a class="navbar-brand" >BibliometricAnalyzer by JCristobal</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -123,7 +112,7 @@
         if($hay_fecha0==false){$fecha0=1800;}else{$fecha0--;} // La fecha no incluye la fecha de comienzo (es restrictivo), restándole uno hacemos que aparezcan publicaciones publicadas desde el año que se indica
         if($hay_fecha1==false){$fecha1=2050;}else{$fecha1++;}
 
-
+        // En el caso de buscar según un tema lo formateamos para realizar la consulta
         switch ($tema) {
           case "Agricultural and Biological Sciences":
               $tema="AGRI";
@@ -208,12 +197,11 @@
               break;
         }
       
-
-
         $palabra = iso2utf($palabra);
         $titulo = iso2utf($titulo);
         $titulo_aux = $titulo;
 
+        // Realizamos la consulta
         $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
         
         if($hay_tema){
@@ -254,7 +242,7 @@
         }
 
 
-
+        // Extraemos los paises de las publicaciones
         $phpaises = array(); 
         $consulta_paises= "SELECT afiliacion_pais FROM publicaciones WHERE id=".$idConsulta;
         $resultados_paises=mysql_query($consulta_paises,$conexion);
@@ -262,7 +250,7 @@
           $phpaises[]=$row['afiliacion_pais'];
         }
         
-
+        // Extramos la feca
         $phpanios = array(); 
         $consulta_anios= "SELECT fecha_portada_0 FROM publicaciones WHERE id=".$idConsulta." ORDER BY `fecha_portada_0` ASC";
         $resultados_anios=mysql_query($consulta_anios,$conexion);
@@ -270,14 +258,15 @@
           $phpanios[]=$row['fecha_portada_0'];
         }
 
+        // Extraemos los autores
         $phpautor = array(); 
         $consulta_autor= "SELECT enlace_coautores FROM publicaciones WHERE id=".$idConsulta;
         $resultados_autor=mysql_query($consulta_autor,$conexion);
         while ($row=mysql_fetch_array($resultados_autor)) {  
           $phpautor[]=$row['enlace_coautores'];
         }
-
-        $aux = implode("",$phpautor);  // Si no estamos conectados a una red de Scopus la variable estará vacia. Trabajaremos con sólo el campo "creator", aunque sea menos preciso
+        // Si no estamos conectados a una red de Scopus la variable estará vacia. Trabajaremos con sólo el campo "creator", aunque sea menos preciso
+        $aux = implode("",$phpautor);  
         if($aux == ""){
           $phpautor = array(); 
           $consulta_autor= "SELECT creador FROM publicaciones WHERE id=".$idConsulta;
@@ -288,6 +277,7 @@
 
         }
 
+        // Extraemos el creador y las veces que lo citan
         $phpcreador = array(); 
         $phpcitas = array(); 
         $consulta_citas= "SELECT creador,veces_citado FROM publicaciones WHERE id=".$idConsulta;
@@ -306,31 +296,29 @@
      
   if(hay_entradas){ 
 
-var listaCreadores = <?php echo json_encode($phpcreador); ?>;
-var listaCitas = <?php echo json_encode($phpcitas); ?>;
-// Sumamos todas las citas de un autor
-var citas=new Array();
-var autor_cita=new Array();
-for(index = 0; index < listaCreadores.length; index++) {
-  autor_cita[index] = listaCreadores[index]; 
-  citas[index] = listaCitas[index]; 
-  for(i = 0; i < listaCreadores.length; i++) {
-    if(i != index){  // para que no coincida con el mismo, si no se repite
-      if(listaCreadores[i]==listaCreadores[index]){  
-        var aux =  parseInt(citas[index]) +  parseInt(listaCitas[i]);
-        citas[index]=aux;  
+    // Calcularemos los datos para el gráfico de citas por autor
+    var listaCreadores = <?php echo json_encode($phpcreador); ?>;
+    var listaCitas = <?php echo json_encode($phpcitas); ?>;
+    // Sumamos todas las citas de un autor
+    var citas=new Array();
+    var autor_cita=new Array();
+    for(index = 0; index < listaCreadores.length; index++) {
+      autor_cita[index] = listaCreadores[index]; 
+      citas[index] = listaCitas[index]; 
+      for(i = 0; i < listaCreadores.length; i++) {
+        if(i != index){  // para que no coincida con el mismo, si no se repite
+          if(listaCreadores[i]==listaCreadores[index]){  
+            var aux =  parseInt(citas[index]) +  parseInt(listaCitas[i]);
+            citas[index]=aux;  
+          }
+        }
       }
     }
-  }
-}
-
-
+    // lo ponemos en este formato para poder ordenarlo
     var listado_aux=new Array();
-    for(var i=0;i< autor_cita.length;i++){
-      // lo ponemos en este formato para poder ordenarlo
+    for(var i=0;i< autor_cita.length;i++){   
       listado_aux[i]= citas[i]+":"+autor_cita[i] ; 
     }
-
 
     // la función "unique" eliminará los elementos repetidos del array
     Array.prototype.unique=function(a){
@@ -349,21 +337,14 @@ for(index = 0; index < listaCreadores.length; index++) {
       var autor = listado_aux[i].substring(a);
       listado_citas[i]= [ numero , autor ];
     }
-
     //Y ordenamos de mayor a menor según el número de veces citado
     listado_citas.sort(function(a,b){
     return parseInt(a[0]) < parseInt(b[0]); 
     });
 
-/*
-    for(var i=0;i< listado_citas.length;i++){
-       document.write("--> <b>"+listado_citas[i][0]+" "+listado_citas[i][1]+"</b> <br>");
-    }
-*/
 
 
-
-
+    // Trabajamos con los autores que tratan el tema
     var listaAutores = <?php echo json_encode($phpautor); ?>;
     var soloAutores = new Array();
     var contador_autores=0;
@@ -376,25 +357,21 @@ for(index = 0; index < listaCreadores.length; index++) {
         contador_autores++;
       }
     }
-
     //Contamos las veces que se repite cada autor y guardamos ambos datos en tuplas
     var counts_Autores = new Array();
-
     for(var i=0;i< soloAutores.length;i++){
       var key = soloAutores[i];
       counts_Autores[key] = (counts_Autores[key])? counts_Autores[key] + 1 : 1 ;     
 
     }
-
+    // lo ponemos en este formato para poder ordenarlo
     var listado_autores_aux=new Array();
-    for(var i=0;i< soloAutores.length;i++){
-      // lo ponemos en este formato para poder ordenarlo
+    for(var i=0;i< soloAutores.length;i++){ 
       listado_autores_aux[i]= counts_Autores[soloAutores[i]]+":"+soloAutores[i] ; 
     }
 
     // la función "unique" eliminará los elementos repetidos del array
     listado_autores_aux=listado_autores_aux.unique();
-
     // Separamos según ":" 
     var listado_aut=new Array();
     for(var i=0;i< soloAutores.length;i++){
@@ -406,7 +383,6 @@ for(index = 0; index < listaCreadores.length; index++) {
       var autor = listado_autores_aux[i].substring(a);
       listado_aut[i]= [ numero , autor ];
     }
-
     //Y ordenamos de mayor a menor según el número de veces citado
     listado_aut.sort(function(a,b){
     return parseInt(a[0]) < parseInt(b[0]); 
@@ -414,33 +390,24 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
 
+    //Vemos los paises de publicación
+    //Copiamos el vector de paises que hemos calculado con PHP
+    var listaPaises = <?php echo json_encode($phpaises); ?>; 
+
+    //Contamos las veces que se repite cada país
+    var counts = new Array();
+    for(var i=0;i< listaPaises.length;i++){
+      var key = listaPaises[i];
+      counts[key] = (counts[key])? counts[key] + 1 : 1 ;       
+    }
+    // la función "unique" eliminará los elementos repetidos del array
+    listaPaises=listaPaises.unique()
 
 
 
-
-        //Copiamos el vector de paises que hemos calculado con php
-        var listaPaises = <?php echo json_encode($phpaises); ?>; 
-
-        //Contamos las veces que se repite cada país
-        var counts = new Array();
-        for(var i=0;i< listaPaises.length;i++){
-          var key = listaPaises[i];
-          counts[key] = (counts[key])? counts[key] + 1 : 1 ;       
-        }
-
-
-        // la función "unique" eliminará los elementos repetidos del array
-        /*Array.prototype.unique=function(a){
-          return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-        });*/
-        listaPaises=listaPaises.unique()
-
-
-
-
+    //Vemos los años de sus publicaciones
     var listaAnios = <?php echo json_encode($phpanios); ?>;
     var soloAnios = new Array();
-
     //Cogemos sólo el año de la fecha
     for(index = 0; index < listaAnios.length; index++) {
       var ss = listaAnios[index].split("-");
@@ -452,30 +419,26 @@ for(index = 0; index < listaCreadores.length; index++) {
       var key = soloAnios[i];
       counts_anios[key] = (counts_anios[key])? counts_anios[key] + 1 : 1 ;       
     }
-
     // la función "unique" eliminará los elementos repetidos del array
-    /*Array.prototype.unique=function(a){
-      return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-    });*/
     soloAnios=soloAnios.unique()
 
 
-        if(soloAnios.length == 1){
-          document.write("<p class='text-center'>"+counts_anios[soloAnios[0]]+" publications in the year <b>"+soloAnios[0]+'</b></p><hr>');}
-        else{
-          // Pintamos el gráfico por años primero
-          document.write('<div id="container_columns" ></div> <hr> ');
-        }
-        //mostramos los paises
-        document.write(' <div id="listado_paises" >');
-        document.write('<table id="paises"> <caption>Countries and his number or publications</caption>');
-        for(index = 0; index < listaPaises.length; index++) {
-          if(listaPaises[index]!= ""){
-            document.write("<tr> <td>"+listaPaises[index]+"</td> <td>"+counts[listaPaises[index]]+"</td> </tr>");
-          }
-
-        }
-        document.write(' </table> </div>');
+    // Mostramos los datos publicaciones/año
+    if(soloAnios.length == 1){
+      document.write("<p class='text-center'>"+counts_anios[soloAnios[0]]+" publications in the year <b>"+soloAnios[0]+'</b></p><hr>');}
+    else{
+      // Pintamos el gráfico por años primero
+      document.write('<div id="container_columns" ></div> <hr> ');
+    }
+    //mostramos los paises
+    document.write(' <div id="listado_paises" >');
+    document.write('<table id="paises"> <caption>Number of publications by each country</caption>');
+    for(index = 0; index < listaPaises.length; index++) {
+      if(listaPaises[index]!= ""){
+        document.write("<tr> <td>"+listaPaises[index]+"</td> <td>"+counts[listaPaises[index]]+"</td> </tr>");
+      }
+    }
+    document.write(' </table> </div>');
 
 
     
@@ -483,7 +446,7 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 
 
-
+      //Generamos el gráfico de distribución geográfica
       google.load("visualization", "1", {packages:["geochart"]});
       google.setOnLoadCallback(drawRegionsMap);
 
@@ -564,7 +527,7 @@ for(index = 0; index < listaCreadores.length; index++) {
       }
 
 
-      // DONUT
+      // Creamos el gráfico de contribuciones por paises, pie chart o "DONUT"
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
@@ -595,29 +558,25 @@ for(index = 0; index < listaCreadores.length; index++) {
 
 if(hay_entradas){ 
 
+    //Calculamos los datos de publicaciones/año para su gráfico
+    var anios_publiaciones=[];
+    var cuenta_publiaciones=[];
+    var contador_anios=0;
+    for (var i = 0; i < soloAnios.length; i++) { 
+      if ( (typeof soloAnios[i]!="undefined")&&(soloAnios[i]!="")&&(contador_anios<100)) {
+        anios_publiaciones.push(soloAnios[i]);
+        cuenta_publiaciones.push(parseInt(counts_anios[soloAnios[i]]));
+        contador_anios++;
+      }
+    }
 
-var anios_publiaciones=[];
-var cuenta_publiaciones=[];
-var contador_anios=0;
-for (var i = 0; i < soloAnios.length; i++) { 
-  if ( (typeof soloAnios[i]!="undefined")&&(soloAnios[i]!="")&&(contador_anios<100)) {
-    anios_publiaciones.push(soloAnios[i]);
-    cuenta_publiaciones.push(parseInt(counts_anios[soloAnios[i]]));
-    contador_anios++;
-  }
-}
+    //Generamos el gráfico de publicaciones/año
     $(function () {
         $('#container_columns').highcharts({
             chart: {
                 type: 'bar',
                 margin: 75,
-                zoomType: 'x', 
-                /*options3d: {
-                    enabled: true,
-                    alpha: 10,
-                    beta: 25,
-                    depth: 70
-                }*/
+                zoomType: 'x'
             },
             credits: {
               enabled: false
@@ -643,7 +602,6 @@ for (var i = 0; i < soloAnios.length; i++) {
                 title: {
                     text: 'Years'
                 }
-
             },
             yAxis: {
                 allowDecimals: false,
@@ -652,7 +610,6 @@ for (var i = 0; i < soloAnios.length; i++) {
                 }
             },
             series: [{
-                //type: 'area',
                 name: 'Number of publications',
                 data: cuenta_publiaciones,                
             }],
@@ -668,7 +625,6 @@ for (var i = 0; i < soloAnios.length; i++) {
                     contextButton: {
                         text: 'Print chart',
                         symbol: 'url(img/print_button.png)',
-                        //symbol: 'circle',
                         menuItems: null,
                         onclick: function () {
                             this.exportChart();
@@ -677,20 +633,20 @@ for (var i = 0; i < soloAnios.length; i++) {
                 }
             }
 
+        }); // fin container_columns
 
 
-        });
+    //Calculamos lso datos publicaciones/autor
+    var publi_autores=[];
+    var cuenta_autores=[];
+    for (var i = 0; i < listado_aut.length; i++) { 
+      if ( (typeof listado_aut[i][1]!="undefined")&&(listado_aut[i][1]!="")) {
+        publi_autores.push(listado_aut[i][1]);
+        cuenta_autores.push(parseInt(listado_aut[i][0]));
+      }
+    }
 
-
-var publi_autores=[];
-var cuenta_autores=[];
-for (var i = 0; i < listado_aut.length; i++) { 
-  if ( (typeof listado_aut[i][1]!="undefined")&&(listado_aut[i][1]!="")) {
-    publi_autores.push(listado_aut[i][1]);
-    cuenta_autores.push(parseInt(listado_aut[i][0]));
-  }
-}
-
+    //Generamos el gráfico de publicaciones/autor
     $('#container_autores').highcharts({
         chart: {
             type: 'column',
@@ -722,7 +678,6 @@ for (var i = 0; i < listado_aut.length; i++) {
             }
 
         },
-
         yAxis: {
             min: 0,
             allowDecimals: false,
@@ -739,8 +694,7 @@ for (var i = 0; i < listado_aut.length; i++) {
         series: [{
             name: 'Numer of publications',
                 data:cuenta_autores,
-                //data: [counts_Autores[soloAutores[0]], counts_Autores[soloAutores[1]], counts_Autores[soloAutores[2]], counts_Autores[soloAutores[3]], counts_Autores[soloAutores[4]], counts_Autores[soloAutores[5]], counts_Autores[soloAutores[6]], counts_Autores[soloAutores[7]], counts_Autores[soloAutores[8]], counts_Autores[soloAutores[9]], counts_Autores[soloAutores[10]], counts_Autores[soloAutores[11]], counts_Autores[soloAutores[12]], counts_Autores[soloAutores[13]], counts_Autores[soloAutores[14]], counts_Autores[soloAutores[15]], counts_Autores[soloAutores[16]], counts_Autores[soloAutores[17]], counts_Autores[soloAutores[18]], counts_Autores[soloAutores[19]], counts_Autores[soloAutores[20]], counts_Autores[soloAutores[21]], counts_Autores[soloAutores[22]], counts_Autores[soloAutores[23]], counts_Autores[soloAutores[24]], counts_Autores[soloAutores[25]], counts_Autores[soloAutores[26]], counts_Autores[soloAutores[27]], counts_Autores[soloAutores[28]], counts_Autores[soloAutores[29]]],
-   
+
             dataLabels: {
                 enabled: true,
                 color: '#FFFFFF',
@@ -753,126 +707,121 @@ for (var i = 0; i < listado_aut.length; i++) {
             }
         }],
 
-            navigation: {
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-            exporting: {
-                filename: 'publications/author about the topic',
-                buttons: {
-                    contextButton: {
-                        text: 'Print chart',
-                        symbol: 'url(img/print_button.png)',
-                        //symbol: 'circle',
-                        menuItems: null,
-                        onclick: function () {
-                            this.exportChart();
-                        }
+        navigation: {
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+        exporting: {
+            filename: 'publications/author about the topic',
+            buttons: {
+                 contextButton: {
+                    text: 'Print chart',
+                    symbol: 'url(img/print_button.png)',
+                    menuItems: null,
+                    onclick: function () {
+                        this.exportChart();
                     }
                 }
             }
+        }
 
-    });
+    });  // fin container_autores
 
+    //Calculamo las citas por autor (hasta 30)
+    var autores_citados=[];
+    var numero_citas=[];
+    var contador_citas=0;
+    for (var i in listado_citas) {
+      if ( (typeof listado_citas[i][1]!="undefined")&&(listado_citas[i][1]!="")&&(contador_citas<30)) {
+        autores_citados.push(listado_citas[i][1]);
+        numero_citas.push(parseInt(listado_citas[i][0]));
+        contador_citas++;
+      }
+    }
+     //Generamos el gráfico de citas por autor
+     $('#container_citas').highcharts({
+          chart: {
+              type: 'bar',
+              zoomType: 'x'
+          },
+          credits: {
+              enabled: false
+          },
+          plotOptions: {
+              bar: {
+                  colorByPoint: true
+              }
+          },
+          colors: [
+            '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'
+          ],
+          title: {
+              text: 'Most cited authors '
+          },
+          subtitle: {
+              text: document.ontouchstart === undefined ?
+                      'Click and drag in an area to zoom in' :
+                      ''
+          },
+          xAxis: {
+              categories: autores_citados,
+              title: {
+                  text: 'Author'
+              }
 
-var autores_citados=[];
-var numero_citas=[];
-var contador_citas=0;
-for (var i in listado_citas) {
-  if ( (typeof listado_citas[i][1]!="undefined")&&(listado_citas[i][1]!="")&&(contador_citas<30)) {
-    autores_citados.push(listado_citas[i][1]);
-    numero_citas.push(parseInt(listado_citas[i][0]));
-    contador_citas++;
-  }
-}
+          },
+          yAxis: {
+              min: 0,
+              allowDecimals: false,
+              title: {
+                  text: 'citations'
+              }
+          },
+          legend: {
+              enabled: false
+          },
+          tooltip: {
+              pointFormat: 'receibed <b>{point.y}</b> citations'
+          },
+          series: [{
+              name: 'Number of citations',
+                  data: numero_citas,
+     
+              dataLabels: {
+                  enabled: true,
+                  color: '#FFFFFF',
+                  align: 'right',
+                  y: 10, // 10 pixels down from the top
+                  style: {
+                      fontSize: '13px',
+                      fontFamily: 'Verdana, sans-serif'
+                  }
+              }
+          }],
 
-   $('#container_citas').highcharts({
-        chart: {
-            type: 'bar',
-            zoomType: 'x'
-        },
-        credits: {
-            enabled: false
-        },
-        plotOptions: {
-            bar: {
-                colorByPoint: true
-            }
-        },
-        colors: [
-          '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'
-        ],
-
-        title: {
-            text: 'Most cited authors '
-        },
-        subtitle: {
-            text: document.ontouchstart === undefined ?
-                    'Click and drag in an area to zoom in' :
-                    ''
-        },
-         xAxis: {
-            categories: autores_citados,
-            title: {
-                text: 'Author'
-            }
-
-        },
-
-        yAxis: {
-            min: 0,
-            allowDecimals: false,
-            title: {
-                text: 'citations'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: 'receibed <b>{point.y}</b> citations'
-        },
-        series: [{
-            name: 'Number of citations',
-                data: numero_citas,
-   
-            dataLabels: {
-                enabled: true,
-                color: '#FFFFFF',
-                align: 'right',
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }],
-
-            navigation: {
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-            exporting: {
-                filename: 'citations/author in the publications',
-                buttons: {
-                    contextButton: {
-                        text: 'Print chart',
-                        symbol: 'url(img/print_button.png)',
-                        //symbol: 'circle',
-                        menuItems: null,
-                        onclick: function () {
-                            this.exportChart();
-                        }
-                    }
-                }
-            }
-
-    });
+          navigation: {
+              buttonOptions: {
+                  verticalAlign: 'bottom'
+              }
+          },
+          exporting: {
+              filename: 'citations/author in the publications',
+              buttons: {
+                   contextButton: {
+                       text: 'Print chart',
+                      symbol: 'url(img/print_button.png)',
+                       menuItems: null,
+                       onclick: function () {
+                           this.exportChart();
+                      }
+                  }
+              }
+          }
+      });  // fin container_citas
 
 
-    }); // fin function
+  }); // fin function
 
 }
 
@@ -883,21 +832,26 @@ for (var i in listado_citas) {
 
       if($hay_entradas){ 
 
-          if($entradasTotales>1){
-            echo' <div id="donutchart" ></div> ';
-            echo"<div style='clear: left;'></div>  <div id='png_donut'  ></div> <br>";
-          }
-          else{echo' <p  style="width: 80%; margin: 60px auto; "> (All the publications in '.$phpaises[0].')</p>';}
+        if($entradasTotales>1){
+          // Dibujamos el gráfico de donut y su botón de descarga
+          echo' <div id="donutchart" ></div> ';
+          echo"<div style='clear: left;'></div>  <div id='png_donut'  ></div> <br>";
+        } // si solo hay una publicación sólo habrá un pais, por lo que no dibujamos el "donut"
+        else{echo' <p  style="width: 80%; margin: 60px auto; "> (All the publications in '.$phpaises[0].')</p>';}
 
-         echo'<hr style="clear: left;"> <div id="regions_div" ></div>';
-         echo"<div id='png_regions' class='boton_impresion'></div> <br>";
+        // Dibujamos el gráfico de mapa de la distribución geográfica
+        echo'<hr style="clear: left;"> <p id="cabecera" style="margin: 10px 0px 30px;"> Geographic distribution </p>  <div id="regions_div" ></div>';
+        echo"<div id='png_regions' class='boton_impresion'></div> <br>";
 
-         echo'<hr> <div id="container_autores" ></div>';
+        //Dibujamos el gráfico de publicaciones/tema
+        echo'<hr> <div id="container_autores" ></div>';
 
 
       }  
 
       if($hay_entradas){ 
+
+        // Mostramos hasta las 15 primeras entradas del tema
         if($entradasTotales<15){
           echo '<p id="cabecera"> <b>'.$entradasTotales.' latests publications: </b></p>'; 
         }
@@ -905,12 +859,14 @@ for (var i in listado_citas) {
           echo '<p id="cabecera"><b> 15 latests publications: </b></p>';   
         }
 
-      include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
+        include 'muestra_publicaciones.php';   // MOSTRAMOS las publicaciones
 
+        // Si hay más de 15 entradas mostramos el enlace hacia la página con todas las publicaciones
         if($entradasTotales>15){
           echo'<p style="text-align: center; margin: 15px 0px 10px 0px;"><a id="enlace_publicaciones" href="todas_publicaciones.php?consultaT1='.$tema.'&consultaT2='.$palabra.'&consultaT3='.$titulo_aux.'&consultaT4='.$fecha0.'&consultaT5='.$fecha1.'" onclick="espera()"> See all publications </a> </p>';   
         }
 
+        // Dibujamos el gráfico de citas por autor
         echo'<hr> <div id="container_citas" ></div>';
 
       }
@@ -920,14 +876,12 @@ for (var i in listado_citas) {
       mysql_query($borratodo) or die(mysql_error()); 
 
 
-
-
 ?>
 
 
       </div>
 
-  <p class="footer"> JCristobal </p>
+  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
 
     </div><!-- /.container -->
 
@@ -936,8 +890,7 @@ for (var i in listado_citas) {
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+    <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>

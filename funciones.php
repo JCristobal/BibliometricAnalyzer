@@ -1,5 +1,5 @@
 <?php
-
+/* Función para formatear un string a formato ISO */
   function utf2iso($string){
 
         $string = str_replace("%20", " ", $string);
@@ -27,7 +27,7 @@
 
   }
 
-
+/* Función para formatear un string a formato UTF */
   function iso2utf($string){
 
         $string = str_replace(" ", "%20", $string);

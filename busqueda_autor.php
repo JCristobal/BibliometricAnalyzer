@@ -7,7 +7,7 @@
     <meta name="description" content="consultas basicas">
     <meta name="author" content="JCristobal">
     <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
-
+    <!-- Consulta la licencia en el documento LICENSE -->
     <title>BibliometricAnalyzer: author analysis</title>
 
     <!-- Bootstrap core CSS -->
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BibliometricAnalyzer by JCristobal</a>
+          <a class="navbar-brand">BibliometricAnalyzer by JCristobal</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -1166,7 +1166,7 @@ $(function () {
 ?>
 
 
-  <p class="footer"> JCristobal </p>
+  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
 
 
     </div><!-- /.container -->
