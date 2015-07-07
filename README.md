@@ -1,7 +1,5 @@
-# BibliometricAnalyzer
+# BibliometricAnalyzer ![logo](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/BibliometricAnalyzer_icon.png?raw=true)
 Herramienta web para el análisis bibliométrico de temas o autores extraídos automáticamente de las bases de datos de Scopus y Google Académico
-
-![logo](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/BibliometricAnalyzer_icon.png?raw=true)
 
 
 
@@ -34,10 +32,12 @@ pero para desplegar las funcionalidades debes:
 >
 >0 - Instalar un [servidor web](https://www.apachefriends.org/download.html). 
 >
->1 - Importar la tabla de "publicaciones" (en "BD") al gestor de bases de datos (MySQL) del servidor.
+>1 - Sustituir en contenido de la carpeta htdocs por la del repositorio
 >
->2 - Editar el archivo 'conexion.php' para conectarse a ella.
+>2 - Importar la tabla de "publicaciones" (en "BD") al gestor de bases de datos (MySQL) del servidor.
 >
->3 - Desplegar la web en el servidor. 
+>3 - Editar el archivo 'conexion.php' para conectarse a ella.
+>
+>4 - Desplegar la web en el servidor. 
 >
 
