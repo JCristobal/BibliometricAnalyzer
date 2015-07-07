@@ -1,18 +1,11 @@
         <?php
 
-/*
-            //para bahia
-            $dsn = "localhost"; 
-            $usuario= "26050687";
-            $password= "29392";
-            $bd="26050687";
-*/
 
-            // para mi localhost
+            // para  localhost
             $dsn = "localhost"; 
-            $usuario= "root";
-            $password= "29392";
-            $bd="prueba";
+            $usuario= "";
+            $password= "";
+            $bd="";
 
             //$conexion = @mysql_connect($dsn,$usuario, $password);
             $conexion = @mysql_connect($dsn,$usuario);
