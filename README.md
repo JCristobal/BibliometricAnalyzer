@@ -1,9 +1,12 @@
 # BibliometricAnalyzer ![logo](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/BibliometricAnalyzer_icon.png?raw=true)
 Herramienta web para el análisis bibliométrico de temas o autores extraídos automáticamente de las bases de datos de Scopus y Google Académico
 
+***
+
+Puedes consultar [BibliometricAnalyzer en OpenShift](http://bibliometricanalyzer-jcristobal.rhcloud.com/), con el análisis por temas completo y con la funcionalidad de análisis de autores reducida (sin desambiguación ni información personal de éstos). 
 
 
-Puedes consultar [BibliometricAnalyzer en OpenShift](http://bibliometricanalyzer-jcristobal.rhcloud.com/), pero sólo está disponible el análisis por temas, no permite las peticiones generadas en el análisis por autores.
+
 
 A continuación puedes ver varias capturas de pantalla mostrando algunos resultados:
 
@@ -21,6 +24,7 @@ Y en el análisis de un tema su distribución por paises y éstos localizados ge
 ![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/mapa%20en%20analisis%20tema.png?raw=true)
 
 ![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/citas%20en%20analisis%20tema.png?raw=true)
+
 
 
 ***
