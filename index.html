@@ -109,9 +109,9 @@
         <form name="formulario_autor" id="formulario_autor" action="busqueda.php" method="POST">
             <div class="ui-widget">
 
-                <p><input type="text" id="busqueda_basica_autor" name="busqueda_basica_autor" class="form-control" style="width:33%;display:inline" placeholder="author name" ></p>
+                <p><input type="text" id="busqueda_basica_autor" name="busqueda_basica_autor" class="form-control" style="width:33%; min-width: 200px; display:inline" placeholder="author name" ></p>
 
-                <p><input type="text" id="busqueda_basica_autor2" name="busqueda_basica_autor2" class="form-control" style="width:33%;display:inline" placeholder="author last name" ></p>
+                <p><input type="text" id="busqueda_basica_autor2" name="busqueda_basica_autor2" class="form-control" style="width:33%; min-width: 200px;display:inline" placeholder="author last name" ></p>
 
                 <input type="submit" value="Find" class="btn btn-default">
             </div>
@@ -128,14 +128,14 @@
 
         <div class="ui-widget">
 
-          <p><input id="tags" class="a" name="busqueda_tema" type="text" class="form-control" style="width:33%;" placeholder="Fill with a topic available" ></p>
+          <p><input id="tags" class="a" name="busqueda_tema" type="text" class="form-control" style="width:33%; min-width: 200px;" placeholder="Fill with a topic available" ></p>
 
-          <p><input type="text" class="a" id="busqueda_basica" name="busqueda_basica" class="form-control" style="width:33%;" placeholder="Introduce a keyword" ></p>
+          <p><input type="text" class="a" id="busqueda_basica" name="busqueda_basica" class="form-control" style="width:33%; min-width: 200px;" placeholder="Introduce a keyword" ></p>
 
-          <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%;" placeholder="Search by title" ></p>
+          <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%; min-width: 200px;" placeholder="Search by title" ></p>
 
-          <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%;" placeholder="Since" >
-          <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%;" placeholder="to" ></p>
+          <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%; min-width: 70px;" placeholder="Since" >
+          <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%; min-width: 70px;" placeholder="to" ></p>
 
           <input type="submit" value="Find" class="btn btn-default" onclick="espera()">
 
@@ -216,12 +216,6 @@
 </script>
 
 
-
-<!-- 
-<form>
-    <input type="submit" value="Borrar BD publicaciones" formaction="borra_publicaciones.php">
-</form>
-   -->
   
   <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
 

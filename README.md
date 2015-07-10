@@ -6,7 +6,7 @@ Herramienta web para el análisis bibliométrico de temas o autores extraídos a
 Puedes consultar [BibliometricAnalyzer en OpenShift](http://bibliometricanalyzer-jcristobal.rhcloud.com/), con el análisis por temas completo y con la funcionalidad de análisis de autores reducida (sin desambiguación ni información personal de éstos). 
 
 
-
+***
 
 A continuación puedes ver varias capturas de pantalla mostrando algunos resultados:
 
