@@ -339,7 +339,7 @@
     }
     //Y ordenamos de mayor a menor según el número de veces citado
     listado_citas.sort(function(a,b){
-    return parseInt(a[0]) < parseInt(b[0]); 
+    return parseInt(b[0]) - parseInt(a[0]); 
     });
 
 
@@ -385,7 +385,7 @@
     }
     //Y ordenamos de mayor a menor según el número de veces citado
     listado_aut.sort(function(a,b){
-    return parseInt(a[0]) < parseInt(b[0]); 
+    return parseInt(b[0]) - parseInt(a[0]); 
     });
 
 
