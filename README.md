@@ -29,9 +29,7 @@ Y en el análisis de un tema su distribución por paises y éstos localizados ge
 
 ***
 
-Puedes acceder a la portada:
-http://jcristobal.github.io/BibliometricAnalyzer/
-pero para desplegar las funcionalidades debes: 
+Para desplegar las funcionalidades debes: 
 
 >
 >0 - Instalar un [servidor web](https://www.apachefriends.org/download.html). 
@@ -44,4 +42,6 @@ pero para desplegar las funcionalidades debes:
 >
 >4 - Desplegar la web en el servidor. 
 >
+
+o desplegar la aplicación automáticamente con mediante el script *despliegue.sh*
 
