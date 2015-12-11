@@ -43,5 +43,11 @@ Para desplegar las funcionalidades debes:
 >4 - Desplegar la web en el servidor. 
 >
 
-o desplegar la aplicación automáticamente con mediante el script *despliegue.sh*
+o desplegar la aplicación automáticamente con mediante el script *despliegue.sh*:
+
+Descarárgate la aplicación con `git clone https://github.com/JCristobal/BibliometricAnalyzer.git`
+
+Sitúate dentro `cd BibliometricAnalyze`
+
+Y despliega con `sudo sh despliegue.sh` 
 

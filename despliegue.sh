@@ -1,27 +1,28 @@
 
+echo "Despliega dentro de la carpeta de BibliometricAnalyzer"
+
 if [[ $EUID -ne 0 ]]; then
 	echo "Debes tener permisos de administrador para ejecutar el script"
 
 else	
-
-	# Instalamos git si fuese necesario
-	if [[ $(dpkg-query -W -f='${Status}\n' git) != 'install ok installed' ]]; then
-		echo 'Instalamos Git'
-		apt-get install git-all
+	
+	if [ -d /opt/lampp/lampp ]; then
+		#Arrancamos XAMPP si ya lo tenemos
+		/opt/lampp/lampp start
+	else
+		#Instalamos XAMPP si no lo tenemos
+		add-apt-repository ppa:upubuntu-com/xampp
+		apt-get update && apt-get install xampp
+		#Lo arrancamos 
+		/opt/lampp/lampp start
 	fi
 
-	# Clonamos el repositorio
-	git clone https://github.com/JCristobal/BibliometricAnalyzer.git
-
-	
-	# Instalamos XAMPP
- 	add-apt-repository ppa:upubuntu-com/xampp
-	apt-get update && apt-get install xampp
 
 
-	#Arrancamos XAMPP
-	/opt/lampp/lampp start
 
+	#Copiamos la aplicación dentro de "htdocs" del servidor
+	cd Aplicación
+	cp -r  * /opt/lampp/htdocs
 
 	# Instalamos mysql si fuese necesario
 	if [[ $(dpkg-query -W -f='${Status}\n' mysql) != 'install ok installed' ]]; then
@@ -30,7 +31,7 @@ else
 	fi
 
 	#Importamos "publicaciones", introduce la contraseña de mysql cuando te lo pida
-	cd ~/BibliometricAnalyzer/Aplicación/BD
+	cd BD
 	#mysql CREATE DATABASE `bibliometricanalyzer`; 
 	#mysql USE `bibliometricanalyzer`;
 	mysql -u root -p  < publicaciones.sql
