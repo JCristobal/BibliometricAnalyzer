@@ -1,3 +1,7 @@
+CREATE DATABASE `bibliometricanalyzer`; 
+USE `bibliometricanalyzer`;
+
+
 -- phpMyAdmin SQL Dump
 -- version 4.2.11
 -- http://www.phpmyadmin.net
@@ -17,7 +21,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `prueba`
+-- Base de datos: `bibliometricanalyzer`
 --
 
 -- --------------------------------------------------------

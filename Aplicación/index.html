@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="consultas basicas">
+    <meta name="author" content="JCristobal">
+    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
+    <!-- Consulta la licencia en el documento LICENSE -->
+    <title>BibliometricAnalyzer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/estilo.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script>
+        $(function() {
+            var temas = [                    
+              "Agricultural and Biological Sciences", //Agricultura y ciencias biológicas
+              "Arts and Humanities",                  //Artes y Humanidades
+              "Biochemistry, Genetics and Molecular Biology", //Bioquímica, genética y biología molecular
+              "Business, Management and Accounting",  //Empresas , Administración y Contabilidad
+              "Chemical Engineering",                 //Ingeniería Química
+              "Chemistry",                            //Química
+              "Computer Science",                     //Ciencias de la Computación
+              "Decision Sciences",                    // Teoría de la decisión
+              "Dentistry",                            // Odontología
+              "Earth and Planetary Sciences",         //Ciencia de la Tierra y Planetarias
+              "Economics, Econometrics and Finance",  // Economía, Econometría y Finanzas
+              "Energy",                               //Energía
+              "Engineering",                          //Ingeniería
+              "Environmental Science",                //Ciencias Medioambientales
+              "Health Professions",                   //Salud
+              "Immunology and Microbiology",          // Inmunología y Microbiología
+              "Materials Science",                    // Ciencia de los Materiales
+              "Mathematics",                          // Matemáticas
+              "Medicine",                             // Medicina
+              "Neuroscience",                         // Neurociencia
+              "Nursing",                              // Enfermería
+              "Pharmacology, Toxicology and Pharmaceutics", // Farmacología, Toxicología y Farmacia
+              "Physics and Astronomy",                // Física y Astronomía
+              "Psychology",                           // Psicología
+              "Social Sciences",                      // Ciencias Sociales
+              "Veterinary",                           // Veterinaria
+              "Multidisciplinary"                     // Multidisciplinar
+            ];
+            $( "#tags" ).autocomplete({
+              source: temas
+            });
+        });
+  
+    </script>
+
+
+    <!-- Alertas personalizadas "SweetAlert"-->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+    <script language=JavaScript>
+      function espera() {
+        swal({
+          title: "Analyzing publications",
+          text: "Please, wait the alert ",
+          imageUrl: "img/BibliometricAnalyzer.png",
+          showConfirmButton: false, 
+          timer:5000
+        }); 
+      }
+    </script>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-static-top" > <!-- navbar-fixed-top --> 
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >BibliometricAnalyzer by JCristobal</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
+          </ul>
+        </div>
+      </div> 
+    </nav>
+
+    <div class="container">
+
+      <div class="template">
+ <div class="content-section-b" style=" padding: 5px 20%; text-align: center;">
+
+
+        <h1> <p>Analysis of an author </p></h1>
+
+        <form name="formulario_autor" id="formulario_autor" action="busqueda.php" method="POST">
+            <div class="ui-widget">
+
+                <p><input type="text" id="busqueda_basica_autor" name="busqueda_basica_autor" class="form-control" style="width:33%; min-width: 200px; display:inline" placeholder="author name" ></p>
+
+                <p><input type="text" id="busqueda_basica_autor2" name="busqueda_basica_autor2" class="form-control" style="width:33%; min-width: 200px;display:inline" placeholder="author last name" ></p>
+
+                <input type="submit" value="Find" class="btn btn-default">
+            </div>
+        </form>
+      <br>
+ 
+</div> <!-- /.content-section-b -->
+    
+<div class="content-section-a" style=" padding: 5px 10%; text-align: center;">
+
+      <h1><p > Analysis by topics, keywords or the title </p></h1>
+ 
+      <form name="formulario" id="formulario" action="busqueda_tema.php" method="POST" >
+
+        <div class="ui-widget">
+
+          <p><input id="tags" class="a" name="busqueda_tema" type="text" class="form-control" style="width:33%; min-width: 200px;" placeholder="Fill with a topic available" ></p>
+
+          <p><input type="text" class="a" id="busqueda_basica" name="busqueda_basica" class="form-control" style="width:33%; min-width: 200px;" placeholder="Introduce a keyword" ></p>
+
+          <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%; min-width: 200px;" placeholder="Search by title" ></p>
+
+          <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%; min-width: 70px;" placeholder="Since" >
+          <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%; min-width: 70px;" placeholder="to" ></p>
+
+          <input type="submit" value="Find" class="btn btn-default" onclick="espera()">
+
+        </div>
+
+      </form>
+
+</div>     <!-- /.content-section-a -->
+
+      </div>
+
+
+
+
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+<script>
+
+    jQuery.validator.addMethod("valid", function(value, element, param) {
+      var salida = true;
+      for(var a=0; a<value.length; a++ ){
+          if( (value[a] == "$")||(value[a] == "<")||(value[a] == ">") ){salida=false;}   
+      }
+      return this.optional(element) || salida ;
+    }, "");
+
+
+    $( "#formulario" ).validate({
+      rules: {
+        busqueda_basica: {
+          require_from_group: [1, ".a"],
+          valid: ""
+        },
+        busqueda_tema: {
+          require_from_group: [1, ".a"],
+          valid: ""
+        },
+        busqueda_titulo: {
+          require_from_group: [1, ".a"],
+          valid: ""
+        }
+        ,
+        busqueda_fecha0: {
+          require_from_group: [1, ".a"],
+          valid: ""
+        }
+        ,
+        busqueda_fecha1: {
+          require_from_group: [1, ".a"],
+          valid: ""
+        }
+      },
+       messages: {
+          busqueda_basica: "Enter some keyword",
+          busqueda_tema: "Complete with a theme available",
+          busqueda_titulo: "Enter a word to search by title",
+          busqueda_fecha0: "Since the year",
+          busqueda_fecha1: "To the year"
+      }
+    });
+
+    $( "#formulario_autor" ).validate({
+      rules: {
+        busqueda_basica_autor: {
+          require_from_group: [2, ".form-control"],
+          valid: ""
+        },
+        busqueda_basica_autor2: {
+          require_from_group: [2, ".form-control"],
+          valid: ""
+        }
+      },
+       messages: {
+          busqueda_basica_autor: "Enter a name ",
+          busqueda_basica_autor2: "Enter a  lastname"
+      }
+    });
+</script>
+
+
+  
+  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
+
+    </div><!-- /.container -->
+
+
+  
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster-->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
