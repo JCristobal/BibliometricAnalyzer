@@ -1,4 +1,4 @@
-# BibliometricAnalyzer ![logo](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/Aplicaci%C3%B3n/BibliometricAnalyzer_icon.png?raw=true)
+# BibliometricAnalyzer ![logo](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/BibliometricAnalyzer_icon.png)
 Herramienta web para el análisis bibliométrico de temas o autores extraídos automáticamente de las bases de datos de Scopus y Google Académico
 
 ***
