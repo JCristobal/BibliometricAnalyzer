@@ -1,235 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="consultas basicas">
-    <meta name="author" content="JCristobal">
-    <link rel="icon" href="BibliometricAnalyzer_icon.png"> 
-    <!-- Consulta la licencia en el documento LICENSE -->
-    <title>BibliometricAnalyzer</title>
+<!DOCTYPE HTML>
+<!--
+	Parallelism by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>BibliometricAnalyzer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+		<meta name="author" content="JCristobal">
+    	<link rel="icon" href="images/BibliometricAnalyzer_icon.png"> 
 
-    <!-- Custom styles for this template -->
-    <link href="css/estilo.css" rel="stylesheet">
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body>
 
+		<div id="wrapper">
 
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+			<div id="main">
+				<div id="reel">
 
-    <script>
-        $(function() {
-            var temas = [                    
-              "Agricultural and Biological Sciences", //Agricultura y ciencias biológicas
-              "Arts and Humanities",                  //Artes y Humanidades
-              "Biochemistry, Genetics and Molecular Biology", //Bioquímica, genética y biología molecular
-              "Business, Management and Accounting",  //Empresas , Administración y Contabilidad
-              "Chemical Engineering",                 //Ingeniería Química
-              "Chemistry",                            //Química
-              "Computer Science",                     //Ciencias de la Computación
-              "Decision Sciences",                    // Teoría de la decisión
-              "Dentistry",                            // Odontología
-              "Earth and Planetary Sciences",         //Ciencia de la Tierra y Planetarias
-              "Economics, Econometrics and Finance",  // Economía, Econometría y Finanzas
-              "Energy",                               //Energía
-              "Engineering",                          //Ingeniería
-              "Environmental Science",                //Ciencias Medioambientales
-              "Health Professions",                   //Salud
-              "Immunology and Microbiology",          // Inmunología y Microbiología
-              "Materials Science",                    // Ciencia de los Materiales
-              "Mathematics",                          // Matemáticas
-              "Medicine",                             // Medicina
-              "Neuroscience",                         // Neurociencia
-              "Nursing",                              // Enfermería
-              "Pharmacology, Toxicology and Pharmaceutics", // Farmacología, Toxicología y Farmacia
-              "Physics and Astronomy",                // Física y Astronomía
-              "Psychology",                           // Psicología
-              "Social Sciences",                      // Ciencias Sociales
-              "Veterinary",                           // Veterinaria
-              "Multidisciplinary"                     // Multidisciplinar
-            ];
-            $( "#tags" ).autocomplete({
-              source: temas
-            });
-        });
-  
-    </script>
+					<!-- Header Item -->
 
+						<div id="header" class="item" data-width="450">
+							<div class="inner">
+								<h1><a href="https://github.com/JCristobal/BibliometricAnalyzer">BibliometricAnalyzer</a></h1>
+								<p>Web tool for bibliometric analysis <br />
+								of topics or authors automatically <br />
+								extracted from Scopus database <br />
+								and Google Scholar </p>
 
-    <!-- Alertas personalizadas "SweetAlert"-->
-    <script src="js/sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+							</div>
+						</div>
 
-    <script language=JavaScript>
-      function espera() {
-        swal({
-          title: "Analyzing publications",
-          text: "Please, wait the alert ",
-          imageUrl: "img/BibliometricAnalyzer.png",
-          showConfirmButton: false, 
-          timer:5000
-        }); 
-      }
-    </script>
-  </head>
+					<!-- Thumb Items -->
 
-  <body>
+						<article class="item thumb" data-width="300">
+							<h2>Coauthors information</h2>
+							<a href="images/arbol en analisis autor.png" class="image"><img src="images/arbol en analisis autor.png" alt=""></a>
+						</article>
 
-    <nav class="navbar navbar-inverse navbar-static-top" > <!-- navbar-fixed-top --> 
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" >BibliometricAnalyzer by JCristobal</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="https://github.com/JCristobal/BibliometricAnalyzer">About</a></li>
-          </ul>
-        </div>
-      </div> 
-    </nav>
+						<article class="item thumb" data-width="374">
+							<h2>Topics and subtopics</h2>
+							<a href="images/varios temas en analisis autor.png" class="image"><img src="images/varios temas en analisis autor.png" alt=""></a>
+						</article>
 
-    <div class="container">
+						<article class="item thumb" data-width="350">
+							<h2>Contributions by countries</h2>
+							<a href="images/donut en analisis tema.png" class="image"><img src="images/donut en analisis tema.png" alt=""></a>
+						</article>
 
-      <div class="template">
- <div class="content-section-b" style=" padding: 5px 20%; text-align: center;">
+						<article class="item thumb" data-width="300">
+							<h2>Maps with contributions</h2>
+							<a href="images/mapa en analisis tema.png" class="image"><img src="images/mapa en analisis tema.png" alt=""></a>
+						</article>
+
+						<article class="item thumb" data-width="476">
+							<h2>Most cited authors</h2>
+							<a href="images/citas en analisis tema.png" class="image"><img src="images/citas en analisis tema.png" alt=""></a>
+						</article>
+
+						<article class="item thumb" data-width="290">
+							<h2>And a lot of more information!</h2>
+							<a href="images/publicaciones.png" class="image"><img src="images/publicaciones.png" alt=""></a>
+						</article>
 
 
-        <h1> <p>Analysis of an author </p></h1>
+				</div>
+			</div>
 
-        <form name="formulario_autor" id="formulario_autor" action="busqueda.php" method="POST">
-            <div class="ui-widget">
+			<div id="footer">
+				<div class="left">
+					<p>
+					This is the portfolio site of BibliometricAnalyzer, <a href="https://github.com/JCristobal">JCristobal</a> Degree Final Proyect <br />
+					</p>
+				</div>
+				<div class="right">
+					<ul class="contact">
+						<li><a href="https://github.com/JCristobal/BibliometricAnalyzer" class="icon fa-github"><span class="label">GitHub</span></a></li> 
+						<li><a href="mailto:tobas92@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li>
+						<li> </li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; BibliometricAnalyzer by JCristobal </li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</div>
 
-                <p><input type="text" id="busqueda_basica_autor" name="busqueda_basica_autor" class="form-control" style="width:33%; min-width: 200px; display:inline" placeholder="author name" ></p>
+		</div>
 
-                <p><input type="text" id="busqueda_basica_autor2" name="busqueda_basica_autor2" class="form-control" style="width:33%; min-width: 200px;display:inline" placeholder="author last name" ></p>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="website//assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
 
-                <input type="submit" value="Find" class="btn btn-default">
-            </div>
-        </form>
-      <br>
- 
-</div> <!-- /.content-section-b -->
-    
-<div class="content-section-a" style=" padding: 5px 10%; text-align: center;">
-
-      <h1><p > Analysis by topics, keywords or the title </p></h1>
- 
-      <form name="formulario" id="formulario" action="busqueda_tema.php" method="POST" >
-
-        <div class="ui-widget">
-
-          <p><input id="tags" class="a" name="busqueda_tema" type="text" class="form-control" style="width:33%; min-width: 200px;" placeholder="Fill with a topic available" ></p>
-
-          <p><input type="text" class="a" id="busqueda_basica" name="busqueda_basica" class="form-control" style="width:33%; min-width: 200px;" placeholder="Introduce a keyword" ></p>
-
-          <p><input type="text" class="a" id="busqueda_titulo" name="busqueda_titulo" class="form-control" style="width:33%; min-width: 200px;" placeholder="Search by title" ></p>
-
-          <p><input type="number" min="1" max="2020" class="a" id="busqueda_fecha0" name="busqueda_fecha0" class="form-control" style="width:14%; min-width: 70px;" placeholder="Since" >
-          <input type="number" min="1" max="2020" class="a" id="busqueda_fecha1" name="busqueda_fecha1" class="form-control" style="width:14%; min-width: 70px;" placeholder="to" ></p>
-
-          <input type="submit" value="Find" class="btn btn-default" onclick="espera()">
-
-        </div>
-
-      </form>
-
-</div>     <!-- /.content-section-a -->
-
-      </div>
-
-
-
-
-<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
-<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
-<script>
-
-    jQuery.validator.addMethod("valid", function(value, element, param) {
-      var salida = true;
-      for(var a=0; a<value.length; a++ ){
-          if( (value[a] == "$")||(value[a] == "<")||(value[a] == ">") ){salida=false;}   
-      }
-      return this.optional(element) || salida ;
-    }, "");
-
-
-    $( "#formulario" ).validate({
-      rules: {
-        busqueda_basica: {
-          require_from_group: [1, ".a"],
-          valid: ""
-        },
-        busqueda_tema: {
-          require_from_group: [1, ".a"],
-          valid: ""
-        },
-        busqueda_titulo: {
-          require_from_group: [1, ".a"],
-          valid: ""
-        }
-        ,
-        busqueda_fecha0: {
-          require_from_group: [1, ".a"],
-          valid: ""
-        }
-        ,
-        busqueda_fecha1: {
-          require_from_group: [1, ".a"],
-          valid: ""
-        }
-      },
-       messages: {
-          busqueda_basica: "Enter some keyword",
-          busqueda_tema: "Complete with a theme available",
-          busqueda_titulo: "Enter a word to search by title",
-          busqueda_fecha0: "Since the year",
-          busqueda_fecha1: "To the year"
-      }
-    });
-
-    $( "#formulario_autor" ).validate({
-      rules: {
-        busqueda_basica_autor: {
-          require_from_group: [2, ".form-control"],
-          valid: ""
-        },
-        busqueda_basica_autor2: {
-          require_from_group: [2, ".form-control"],
-          valid: ""
-        }
-      },
-       messages: {
-          busqueda_basica_autor: "Enter a name ",
-          busqueda_basica_autor2: "Enter a  lastname"
-      }
-    });
-</script>
-
-
-  
-  <p class="footer"> <a href="mailto:tobas92@gmail.com"> JCristobal </a></p>
-
-    </div><!-- /.container -->
-
-
-  
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster-->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+	</body>
 </html>

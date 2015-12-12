@@ -117,7 +117,7 @@
           case "Agricultural and Biological Sciences":
               $tema="AGRI";
               break;
-          case "Artes y Humanidades":
+          case "Arts and Humanities":
               $tema="ARTS";
               break;
           case "Biochemistry, Genetics and Molecular Biology":

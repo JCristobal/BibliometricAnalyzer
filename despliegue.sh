@@ -11,7 +11,6 @@ apt-get update && apt-get install xampp
 
 
 #Copiamos la aplicación dentro de "htdocs" del servidor
-cd Aplicación
 cp -r  * /opt/lampp/htdocs
 
 
