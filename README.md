@@ -1,4 +1,4 @@
-# BibliometricAnalyzer ![logo](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/Aplicaci%C3%B3n/BibliometricAnalyzer_icon.png?raw=true)
+# BibliometricAnalyzer ![logo](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/BibliometricAnalyzer_icon.png)
 Herramienta web para el análisis bibliométrico de temas o autores extraídos automáticamente de las bases de datos de Scopus y Google Académico
 
 ***
@@ -12,18 +12,18 @@ A continuación puedes ver varias capturas de pantalla mostrando algunos resulta
 
 En el análisis de un autor su "arbol de relaciones con autores" y los temas que trata a lo largo de los años:
 
-![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/arbol%20en%20analisis%20autor.png?raw=true)
+![](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/arbol%20en%20analisis%20autor.png)
 
-![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/varios%20temas%20en%20analisis%20autor.png?raw=true)
+![](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/varios%20temas%20en%20analisis%20autor.png)
 
 
 Y en el análisis de un tema su distribución por paises y éstos localizados geográficamente. También se puede ver los autores más citados y las citas que tienen:
 
-![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/donut%20en%20analisis%20tema.png?raw=true)
+![](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/donut%20en%20analisis%20tema.png)
 
-![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/mapa%20en%20analisis%20tema.png?raw=true)
+![](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/mapa%20en%20analisis%20tema.png)
 
-![](https://github.com/JCristobal/BibliometricAnalyzer/blob/gh-pages/screenshots/citas%20en%20analisis%20tema.png?raw=true)
+![](https://raw.githubusercontent.com/JCristobal/BibliometricAnalyzer/gh-pages/images/citas%20en%20analisis%20tema.png)
 
 
 
