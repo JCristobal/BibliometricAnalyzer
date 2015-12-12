@@ -202,28 +202,28 @@
         $titulo_aux = $titulo;
 
         // Realizamos la consulta
-        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
+        $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')&apiKey=',$apikey,'&httpAccept=application/json');
         
         if($hay_tema){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20KEY(',$palabra,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20TITLE("',$titulo,'")%20AND%20SUBJAREA(',$tema,')&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
         if($hay_tema && $hay_palabra && $hay_titulo){
-          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR%3C',$fecha1,')%20and%20(PUBYEAR%3E',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
+          $consulta = array('http://api.elsevier.com:80/content/search/scopus?query=(PUBYEAR+%3C+',$fecha1,')%20and%20(PUBYEAR+%3E+',$fecha0,')%20and%20KEY(',$palabra,')%20AND%20SUBJAREA(',$tema,')%20AND%20TITLE("',$titulo,'")&apiKey=',$apikey,'&httpAccept=application/json');     
         }
 
       $idConsulta = mt_rand();
