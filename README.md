@@ -3,6 +3,8 @@ Herramienta web para el análisis bibliométrico de temas o autores extraídos a
 
 ***
 
+[![Build Status](https://travis-ci.org/JCristobal/BibliometricAnalyzer.svg?branch=master)](https://travis-ci.org/JCristobal/BibliometricAnalyzer)
+
 Puedes consultar [BibliometricAnalyzer en OpenShift](http://bibliometricanalyzer-jcristobal.rhcloud.com/), con el análisis por temas completo y con la funcionalidad de análisis de autores reducida (sin desambiguación ni información personal de éstos). 
 
 
