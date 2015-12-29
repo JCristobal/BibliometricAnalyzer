@@ -8,8 +8,6 @@ var url = "http://bibliometricanalyzer-jcristobal.rhcloud.com/"; //URL de la web
 
 var apikey = "c0dee35412af407a9c07b4fabc7bc447";
 
-var segunda = "http://localhost:8080/registro";
-
 
 describe('Test básicos', function() {
 
