@@ -1,0 +1,26 @@
+{
+   "name": "BibliometricAnalyzer",
+
+   "version": "1.1.0",
+
+   "author": "JCristobal",
+
+
+   "description": "Repositorio del TFG BibliometricAnalyzer: herramienta web para el análisis bibliométrico de temas o autores extraídos automáticamente de las bases de datos de Scopus y Google Académico",
+
+
+  "keywords": [
+	"Bibliometric, Analyzer, Scopus, GoogleScholar"
+   ],
+
+   "devDependencies": {
+    "chai": "*",
+    "mocha": "*",
+    "supertest": "^1.1.0"
+   },
+
+
+   "scripts": {
+     "test": "mocha --timeout 15000"
+   }
+}
